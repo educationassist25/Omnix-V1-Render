@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rewiring Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f4f6f5; --surface:#ffffff; --surface-2:#eef1ef; --ink:#141a1b; --ink-2:#4b5557; --ink-3:#6f797b;
+  --line:#dde2df; --line-strong:#b9c1be; --accent:#00695c; --accent-ink:#ffffff; --focus:#00695c;
+  --e-gained:#1baf7a; --e-lost:#4a3aa7; --e-flipped:#e87ba4; --e-intact:#aab3b0;
+  --g-a:#2a78d6; --g-b:#eb6834;
+  --div-neg:#2a78d6; --div-mid:#f0efec; --div-pos:#e34948;
+  --good:#0a7d0a; --warn:#9a6700; --crit:#c03030;
+  --shadow:0 1px 2px rgba(20,30,30,.06),0 4px 16px rgba(20,30,30,.05);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#101415; --surface:#171c1d; --surface-2:#1e2425; --ink:#eef2f1; --ink-2:#b3bcbc; --ink-3:#8b9596;
+    --line:#2a3133; --line-strong:#3d4648; --accent:#4fb8b0; --accent-ink:#0b1414; --focus:#4fb8b0;
+    --e-gained:#199e70; --e-lost:#9085e9; --e-flipped:#d55181; --e-intact:#566062;
+    --g-a:#3987e5; --g-b:#d95926;
+    --div-neg:#3987e5; --div-mid:#383835; --div-pos:#e66767;
+    --good:#3fc43f; --warn:#fab219; --crit:#e66767; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#101415; --surface:#171c1d; --surface-2:#1e2425; --ink:#eef2f1; --ink-2:#b3bcbc; --ink-3:#8b9596;
+  --line:#2a3133; --line-strong:#3d4648; --accent:#4fb8b0; --accent-ink:#0b1414; --focus:#4fb8b0;
+  --e-gained:#199e70; --e-lost:#9085e9; --e-flipped:#d55181; --e-intact:#566062;
+  --g-a:#3987e5; --g-b:#d95926;
+  --div-neg:#3987e5; --div-mid:#383835; --div-pos:#e66767;
+  --good:#3fc43f; --warn:#fab219; --crit:#e66767; --shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;padding-inline:16px;padding-block:12px 32px}
+.wrap{max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;text-wrap:balance;margin:0}
+h1{font-size:26px;font-weight:600}
+h2{font-size:18px;font-weight:600}
+h3{font-size:16px;font-weight:600;line-height:1.3}
+.mono,.num{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+p{margin:0}
+.muted{color:var(--ink-2)}
+.fmt{font-size:12px;color:var(--ink-2)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.report-head{display:flex;flex-direction:column;gap:4px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 10px 4px 8px;cursor:pointer;font:inherit;font-size:13px;color:var(--ink)}
+.chip[aria-pressed="false"]{opacity:.45}
+button:focus-visible,.card:focus-visible,tr:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.stat{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
+.stat .k{font-size:12px;color:var(--ink-2)}
+.stat .swatch{display:inline-block;width:18px;vertical-align:middle;margin-right:6px}
+/* network gets the full width so full metabolite and pathway names stay readable; pair panel below */
+.grid-main{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.detail.panel{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:10px 22px;align-items:start}
+.detail>*{grid-column:1/-1}
+.detail>.pair-plot{grid-column:1}.detail>.pair-side{grid-column:2}
+@media (max-width:820px){.detail>.pair-plot,.detail>.pair-side{grid-column:1/-1}}
+.net-panel{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.net-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline}
+#net{width:100%;height:auto;display:block;max-width:1080px;margin:0 auto}
+.net-ctl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:12px;color:var(--ink-2)}
+.net-ctl label{display:inline-flex;gap:6px;align-items:center}
+.net-ctl select{font:inherit;font-size:12px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:3px 6px}
+.dl{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--ink-2)}
+.dl button{font:inherit;font-size:12px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:3px 8px;cursor:pointer}
+.dl button:hover{border-color:var(--line-strong)}
+.fig-foot{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:6px;margin-top:2px}
+#net{overflow:visible}
+#net .pw-stat{font-weight:400;fill:var(--ink-2);font-family:"IBM Plex Mono",monospace;font-size:10.5px}
+#net text{fill:var(--ink-2);font-size:10.5px;font-family:"IBM Plex Sans",sans-serif}
+#net .pw-label{fill:var(--ink);font-size:12.5px;font-weight:600;font-family:"IBM Plex Sans Condensed",sans-serif}
+#net .node{stroke:var(--surface);stroke-width:2;cursor:pointer}
+#net .node.sel{stroke:var(--ink);stroke-width:2}
+#net .edge{fill:none;pointer-events:none}
+#net .hit{fill:none;stroke:transparent;stroke-width:10;cursor:pointer;pointer-events:stroke}
+#net .dim{opacity:.12}
+#net .lab-hi{fill:var(--ink);font-weight:600}
+#net .leg-t{fill:var(--ink-2);font-size:12px}
+.fc-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2);flex-wrap:wrap}
+.fc-bar{width:120px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--div-neg),var(--div-mid),var(--div-pos))}
+.detail{padding:14px 16px}
+#scatter{width:100%;height:auto;display:block}
+#scatter text{fill:var(--ink-2);font-size:11px;font-family:"IBM Plex Sans",sans-serif}
+#scatter .axis{stroke:var(--line-strong)}
+#scatter .grid{stroke:var(--line)}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pair-side{display:flex;flex-direction:column;gap:10px}
+.kv div{background:var(--surface-2);border-radius:6px;padding:7px 9px;min-width:0}
+.kv .k{font-size:11.5px;color:var(--ink-3);overflow-wrap:anywhere}
+.kv .v{font-family:"IBM Plex Mono",monospace;font-size:14px;font-variant-numeric:tabular-nums}
+.note{font-size:13px;color:var(--ink-2);background:var(--surface-2);border-radius:6px;padding:8px 10px}
+.class-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:2px 9px 2px 7px}
+.cards-head{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+@media (max-width:420px){.cards{grid-template-columns:1fr}}
+.card{padding:14px 16px;display:flex;flex-direction:column;gap:10px;cursor:pointer}
+.card.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.card-top{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.rank{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3)}
+.verdict{font-size:12px;font-weight:600;border-radius:4px;padding:2px 8px;display:inline-flex;gap:5px;align-items:center}
+.verdict.robust{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+.verdict.fragile{color:var(--crit);background:color-mix(in srgb,var(--crit) 12%,transparent)}
+.verdict.mixed{color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent)}
+.verdict.exploratory{color:var(--ink-2);background:var(--surface-2)}
+.rx-box{border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.rx-box .rx-title{font-weight:600;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rx-box .rx-names{color:var(--ink-2);font-size:12px}
+.ratio-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ratio-row div{background:var(--surface-2);border-radius:6px;padding:6px 8px}
+.ratio-row .k{font-size:11.5px;color:var(--ink-3)}
+.ratio-row .v{font-family:"IBM Plex Mono",monospace;font-size:14px;font-variant-numeric:tabular-nums}
+.rx-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--ink-2);border:1px solid var(--line-strong);border-radius:4px;padding:0 5px}
+tr.active td{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+#net .rxe{fill:none;stroke:var(--ink-3);pointer-events:none}
+.card .interp{font-size:13px;color:var(--ink-2)}
+.meter{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2)}
+.meter .track{flex:1;height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;border:1px solid var(--line)}
+.meter .fill{height:100%;background:var(--accent);display:block}
+.checks{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.checks li{display:flex;gap:8px;align-items:flex-start}
+.checks .ic{flex:none;width:16px;text-align:center;font-weight:700}
+.checks .ok{color:var(--good)} .checks .bad{color:var(--crit)} .checks .na{color:var(--ink-3)}
+.next{font-size:13px;border-top:1px solid var(--line);padding-top:8px}
+.next b{font-weight:600}
+.table-wrap{overflow-x:auto;max-height:420px;overflow-y:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{position:sticky;top:0;background:var(--surface);font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer;user-select:none}
+td.n{text-align:right;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+th.n{text-align:right}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--surface-2)}
+.tip{position:fixed;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line-strong);border-radius:6px;padding:7px 9px;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.18);z-index:10;max-width:280px}
+.banner{font-size:13px;padding:8px 12px;border-radius:8px;background:color-mix(in srgb,var(--warn) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line))}
+section{display:flex;flex-direction:column;gap:12px}
+.empty{padding:28px;text-align:center;color:var(--ink-2)}
+@media (prefers-reduced-motion:no-preference){.card,.chip{transition:border-color .15s,opacity .15s}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="tip" id="tip" hidden></div>
+<script id="payload" type="application/json">/*__REWIRING_PAYLOAD__*/</script>
+<script>
+(function(){
+"use strict";
+const D=JSON.parse(document.getElementById("payload").textContent);
+const OPT=D.options||{};
+if(OPT.theme==="dark"||OPT.theme==="light")document.documentElement.setAttribute("data-theme",OPT.theme);
+const $=id=>document.getElementById(id);
+const CLS=[{k:"lost",label:"Lost",dash:"7 4",v:"--e-lost"},{k:"gained",label:"Gained",dash:"",v:"--e-gained"},{k:"flipped",label:"Flipped",dash:"2 3",v:"--e-flipped"},{k:"intact",label:"Intact",dash:"",v:"--e-intact"}];
+const clsInfo=k=>CLS.find(c=>c.k===k);
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const f2=x=>x==null?"–":(x>=0?"+":"−")+Math.abs(x).toFixed(2);
+const fr=x=>x==null?"–":(x<0?"−":"")+Math.abs(x).toFixed(2);
+const fq=q=>q==null?"–":(q<1e-4?q.toExponential(1).replace("e-","e−"):q.toFixed(4));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function swatch(k,w=22){const c=clsInfo(k);return `<svg width="${w}" height="8" aria-hidden="true"><line x1="1" y1="4" x2="${w-1}" y2="4" stroke="var(${c.v})" stroke-width="${k==="intact"?2:3}" stroke-dasharray="${c.dash}" stroke-linecap="round"/></svg>`}
+function hexToRgb(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");const n=parseInt(h,16);return[(n>>16)&255,(n>>8)&255,n&255]}
+function divColor(v){const t=Math.max(-1,Math.min(1,(v||0)/1.5));const mid=hexToRgb(css("--div-mid")||"#f0efec"),end=hexToRgb(css(t<0?"--div-neg":"--div-pos")||"#888888");const a=Math.abs(t);return `rgb(${mid.map((m,i)=>Math.round(m+(end[i]-m)*a)).join(",")})`}
+const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+
+const F=D.features,G=D.groups,S=D.summary,pairs=D.pairs,cards=D.hypotheses||[],RX=D.reactions||[],PW=D.pathways||[];
+const colsA=[],colsB=[];D.group.forEach((g,i)=>(g===0?colsA:colsB).push(i));
+const state={show:{lost:true,gained:true,flipped:true,intact:true,reaction:true},sel:null,activeMod:null,activePw:null,sort:{k:"q",dir:1}};
+const rew=pairs.filter(p=>p.cls&&p.cls!=="intact");
+state.sel=(cards[0]&&cards[0].pairs[0])?findPair(cards[0].pairs[0][0],cards[0].pairs[0][1]):(rew.slice().sort((a,b)=>a.q-b.q)[0]||(D.top_pairs||[])[0]||null);
+function findPair(i,j){const a=Math.min(i,j),b=Math.max(i,j);return pairs.find(p=>p.i===a&&p.j===b)||RX.find(p=>p.i===a&&p.j===b)||(D.top_pairs||[]).find(p=>p.i===a&&p.j===b)||null}
+function rxInfo(p){if(!p)return null;if(p.rx)return p;const r=RX.find(x=>x.i===p.i&&x.j===p.j);return r||null}
+function rxArrow(p){const a=F[p.i].name,b=F[p.j].name;return p.rxd==="a>b"?`${a} → ${b}`:p.rxd==="b>a"?`${b} → ${a}`:`${a} ⇄ ${b}`}
+
+// ---------- skeleton ----------
+const notes=(S.notes||[]);
+const perm=S.permutation;
+$("app").innerHTML=`
+  ${OPT.title?`<div class="report-head"><div class="eyebrow">Omnix Metabolomics · Correlation Rewiring Map</div><h1>${esc(OPT.title)}</h1><p class="fmt">${esc(G[0])} (n=${D.n[0]}) vs ${esc(G[1])} (n=${D.n[1]}) · ${D.method==="spearman"?"Spearman":"Pearson"} · ${D.cutoff_on==="p"?(S.fdr_method==="permutation"?"permutation p":"p"):(S.fdr_method==="permutation"?"permutation FDR":"BH FDR")} ≤ ${D.fdr} · |Δr| ≥ ${D.min_delta}${OPT.generated?` · ${esc(OPT.generated)}`:""}</p></div>`:""}
+  ${notes.length?`<div class="banner">${notes.map(esc).join("<br>")}</div>`:""}
+  <div class="stats" id="stats"></div>
+  <div class="toolbar"><div class="chips" id="chips" role="group" aria-label="Edge classes shown"></div><span class="fmt">Node fill: log2 FC (${esc(G[1])} / ${esc(G[0])}) <span class="num">−1.5</span> <span class="fc-bar" style="display:inline-block;vertical-align:middle" aria-hidden="true"></span> <span class="num">+1.5</span></span></div>
+  <div class="grid-main">
+    <div class="panel net-panel">
+      <div class="net-head"><h2>Correlation rewiring network</h2></div>
+      ${PW.length?`<div class="net-ctl" role="group" aria-label="Pathways shown"><label>Pathways shown <select id="pwTop">${[5,10,15,20,0].map(v=>`<option value="${v}">${v?"Top "+v:"All"}</option>`).join("")}</select></label><label>ranked by <select id="pwMetric"><option value="p">p-value</option><option value="q">FDR q-value</option></select></label><label>cutoff ≤ <select id="pwCut">${[0.001,0.01,0.05,0.1,0.2,0.25,0.5,1].map(v=>`<option value="${v}">${v}</option>`).join("")}</select></label></div>`:""}
+      <p class="fmt" id="netNote"></p>
+      <p class="muted" style="font-size:13px">Click an edge, node or table row to inspect a pair. Click a hypothesis card to highlight its module.</p>
+      <svg id="net" viewBox="-520 -460 1040 920" role="img" aria-label="Circular network of metabolites with rewired correlation edges"></svg>
+      <div class="fig-foot" id="netDl"></div>
+    </div>
+    <div class="panel detail" id="detail"></div>
+  </div>
+  <section>
+    <div class="cards-head"><h2>Hypothesis cards</h2><p class="fmt">Ranked by effect size × robustness. Each card is a hypothesis to test, built from the pairs listed under Evidence.</p></div>
+    <div class="cards" id="cards"></div>
+  </section>
+  ${(D.pathways||[]).length?`<section class="panel" style="padding:14px 16px"><div class="cards-head"><h2>Pathway-level rewiring</h2><p class="fmt">${esc(S.pathway_library||"")} pathways with ≥3 measured members. Statistic: mean z² of the pairs inside the pathway vs. the same label permutations; FDR q-value = Benjamini–Hochberg across pathways. Click a row to highlight its metabolites.</p></div><div class="table-wrap"><table id="ptbl"><thead></thead><tbody></tbody></table></div></section>`:""}
+  ${OPT.show_table===false?"":`<section class="panel" style="padding:14px 16px"><div class="cards-head"><h2>Rewired pairs</h2><span class="fmt" id="table-count"></span></div><div class="table-wrap"><table id="tbl"><thead></thead><tbody></tbody></table></div></section>`}
+`;
+
+function renderStats(){
+  const c=S.counts||{};
+  const p=perm?`<span class="v">${perm.p_value<0.01?"&lt;0.01":perm.p_value.toFixed(3)}</span><span class="k">Global rewiring p-value (${perm.exact?`exact, all ${perm.n_permutations} label splits`:`${perm.n_permutations} permutations`}${perm.stratified_by_batch?", within batch":""})</span>`:`<span class="v muted">–</span><span class="k">Global permutation test not run</span>`;
+  const rl=S.reaction_links||{};
+  $("stats").innerHTML=`
+  <div class="stat"><span class="v">${S.n_features}</span><span class="k">Metabolites · ${D.n[0]} ${esc(G[0])} / ${D.n[1]} ${esc(G[1])}</span></div>
+  <div class="stat"><span class="v">${c.lost||0}</span><span class="k"><span class="swatch">${swatch("lost",18)}</span>Couplings lost</span></div>
+  <div class="stat"><span class="v">${c.gained||0}</span><span class="k"><span class="swatch">${swatch("gained",18)}</span>Couplings gained</span></div>
+  <div class="stat"><span class="v">${c.flipped||0}</span><span class="k"><span class="swatch">${swatch("flipped",18)}</span>Sign flips</span></div>
+  <div class="stat"><span class="v">${rl.rewired_with_reaction||0}</span><span class="k">Rewired pairs linked by a reaction (of ${(rl.direct||0)+(rl.two_step||0)} measured reaction pairs)</span></div>
+  <div class="stat"><span class="v">${S.n_pathways_tested?`${S.n_pathways_significant||0}<span class="muted" style="font-size:14px"> / ${S.n_pathways_tested}</span>`:"–"}</span><span class="k">Pathways rewired (FDR q-value &lt; 0.05)</span></div>
+  <div class="stat"><span class="v">${S.hidden_rewired_features||0}</span><span class="k">Rewired metabolites with no significant fold change</span></div>
+  <div class="stat">${p}</div>`;
+}
+function renderChips(){
+  const c=S.counts||{};
+  $("chips").innerHTML=CLS.map(x=>{const n=x.k==="intact"?pairs.filter(p=>p.cls==="intact").length:(c[x.k]||0);return `<button type="button" class="chip" data-k="${x.k}" aria-pressed="${state.show[x.k]}">${swatch(x.k)}<span>${x.label}</span><span class="num muted">${n}</span></button>`}).join("")+(RX.length?`<button type="button" class="chip" data-k="reaction" aria-pressed="${state.show.reaction}"><svg width="22" height="8" aria-hidden="true"><line x1="1" y1="4" x2="21" y2="4" stroke="var(--ink-3)" stroke-width="1.5"/><path d="M15 1 L21 4 L15 7" fill="none" stroke="var(--ink-3)" stroke-width="1.5"/></svg><span>Reactions</span><span class="num muted">${RX.length}</span></button>`:"");
+  $("chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{state.show[b.dataset.k]=!state.show[b.dataset.k];renderChips();renderNet();renderTable()});
+}
+
+// ---------- network ----------
+const NET={top:OPT.pw_top!=null?OPT.pw_top:(PW.length?10:0),metric:OPT.pw_metric||"p",cutoff:OPT.pw_cutoff!=null?OPT.pw_cutoff:0.05};
+// Which pathways the network shows: same rule as rewiring_figures.network_groups (Python)
+function netGroups(){
+  if(!NET.top||!PW.length){const order=[];F.forEach(f=>{if(!order.includes(f.pathway))order.push(f.pathway)});return {groupOf:F.map(f=>f.pathway),order,sel:[],absorbed:[]}}
+  const key=NET.metric==="q"?"q":"p";
+  const sel=PW.map((w,k)=>({w,k})).filter(o=>o.w[key]<=NET.cutoff+1e-12).sort((a,b)=>(a.w[key]-b.w[key])||(b.w.stat-a.w.stat)||(a.k-b.k)).slice(0,NET.top).map(o=>o.w);
+  const groupOf=new Array(F.length).fill(null);const order=[];
+  sel.forEach(w=>{let placed=false;w.idx.forEach(i=>{if(groupOf[i]===null){groupOf[i]=w.name;placed=true}});if(placed)order.push(w.name)});
+  return {groupOf,order,sel,absorbed:sel.filter(w=>!order.includes(w.name)).map(w=>w.name)};
+}
+function layout(){
+  const G=netGroups();const members=G.order.map(g=>F.map((_,i)=>i).filter(i=>G.groupOf[i]===g));
+  const n=members.reduce((s,m)=>s+m.length,0);const pos=new Array(F.length).fill(null);const arcs=[];
+  if(!n)return {pos,arcs,G,n};
+  const gap=G.order.length>1?Math.min(0.12,0.9/G.order.length):0;const step=(2*Math.PI-gap*G.order.length)/n;
+  // ring radius grows with the number of metabolites so neighbouring (radial) names never touch:
+  // where the names start (Rn + LAB_OFF) they must be at least LAB_LINE apart
+  const Rn=Math.max(215,LAB_LINE/step-LAB_OFF);
+  let a=-Math.PI/2;
+  G.order.forEach((g,k)=>{const start=a;members[k].forEach(i=>{pos[i]={a:a+step/2};a+=step});arcs.push({pw:g,start,end:a});a+=gap});
+  pos.forEach(p=>{if(p){p.x=Rn*Math.cos(p.a);p.y=Rn*Math.sin(p.a)}});
+  return {pos,arcs,G,n,Rn};
+}
+const LAB_OFF=13,LAB_LINE=15,PW_LH=15,NODE_R=6.5;let L=layout();
+// text width measured with the exact SVG styles in use (fonts, weights), so layout matches what is drawn
+function textW(t,cls,tspanCls,style){const svg=$("net");const e=document.createElementNS("http://www.w3.org/2000/svg","text");if(cls)e.setAttribute("class",cls);if(style)e.setAttribute("style",style);
+  if(tspanCls){const s=document.createElementNS("http://www.w3.org/2000/svg","tspan");s.setAttribute("class",tspanCls);s.textContent=String(t);e.appendChild(s)}else e.textContent=String(t);
+  svg.appendChild(e);const w=e.getComputedTextLength();e.remove();return w}
+function wrapText(t,w){const words=String(t).split(/\s+/);const out=[];let cur="";words.forEach(x=>{if((cur+" "+x).trim().length>w&&cur){out.push(cur);cur=x}else cur=(cur+" "+x).trim()});if(cur)out.push(cur);return out}
+// Pathway labels: each label box starts just outside the pathway arcs, on the side facing away from the
+// centre, so no part of it can reach the arcs, the metabolite names or the edges inside. Labels are placed
+// nearest-the-equator first; a label that would touch one already placed moves further up (top half) or down
+// (bottom half), which only takes it further from the ring, and gets a thin leader line to its arc.
+function placePwLabels(items,Ra){
+  const R0=Ra+14,placed=[],leaders=[];
+  const hitBox=b=>placed.some(p=>b.x0<p.x1+10&&b.x1>p.x0-10&&b.y0<p.y1+6&&b.y1>p.y0-6);
+  const segHits=(s,boxes,pad)=>{const n=Math.max(2,Math.ceil(Math.hypot(s.x2-s.x1,s.y2-s.y1)/2));for(let k=0;k<=n;k++){const x=s.x1+(s.x2-s.x1)*k/n,y=s.y1+(s.y2-s.y1)*k/n;if(boxes.some(b=>x>b.x0-pad&&x<b.x1+pad&&y>b.y0-pad&&y<b.y1+pad))return true}return false};
+  items.map((o,k)=>k).sort((p,q)=>Math.abs(Math.sin(items[p].a))-Math.abs(Math.sin(items[q].a))||p-q).forEach(k=>{
+    const o=items[k];const c=Math.cos(o.a),s=Math.sin(o.a);const right=c>=0;const ax=R0*c,ay=R0*s;
+    const centred=Math.abs(s)<0.2;const dir=s<0?-1:1;
+    const mk=t=>({x0:right?ax:ax-o.w,x1:right?ax+o.w:ax,y0:t,y1:t+o.h});
+    const top0=centred?ay-o.h/2:(s<0?ay-o.h:ay);let b=mk(top0),lead=null;
+    for(let it=0;it<3000;it++){
+      const moved=Math.abs(b.y0-top0)>1;
+      lead=moved?{x1:(Ra+4)*c,y1:(Ra+4)*s,x2:right?b.x0-3:b.x1+3,y2:dir<0?b.y1+2:b.y0-2}:null;
+      if(!hitBox(b)&&!(lead&&segHits(lead,placed,3))&&!leaders.some(l=>segHits(l,[b],3)))break;
+      b=mk(b.y0+dir*2);
+    }
+    o.box=b;o.right=right;o.lead=lead;placed.push(b);if(lead)leaders.push(lead);
+  });
+  return items;
+}
+// Legend drawn inside the network image (so it is part of every download), in rows below the ring,
+// wrapped to the ring's width; every item is measured so swatches and labels never touch.
+function drawNetLegend(svg){
+  let bb;try{bb=svg.getBBox()}catch(e){return}
+  const items=[];
+  CLS.forEach(c=>{if(state.show[c.k]&&(c.k!=="intact"||pairs.some(p=>p.cls==="intact")))items.push({kind:"line",label:{lost:"Coupling lost",gained:"Coupling gained",flipped:"Sign flipped",intact:"Intact coupling"}[c.k],stroke:css(c.v),dash:c.dash,sw:c.k==="intact"?2:3})});
+  if(state.show.reaction&&RX.length){items.push({kind:"line",label:"Reaction (direct)",stroke:css("--ink-3"),dash:"",sw:1.4,arrow:true});items.push({kind:"line",label:"Reaction (2 steps)",stroke:css("--ink-3"),dash:"1.5 3",sw:1.4,arrow:true})}
+  items.push({kind:"grad",label:`Node colour: log2 FC (${G[1]} / ${G[0]})`});
+  const SW=30,GW=110,gapIn=7,gapOut=26,rowH=24;
+  items.forEach(o=>{o.tw=textW(o.label,"leg-t");o.w=(o.kind==="grad"?textW("−1.5","leg-t")+GW+gapIn*4+textW("+1.5","leg-t")+o.tw:SW+gapIn+o.tw)});
+  const maxW=Math.max(bb.width,300);const rows=[[]];let cw=0;
+  items.forEach(o=>{if(rows[rows.length-1].length&&cw+gapOut+o.w>maxW){rows.push([]);cw=0}cw+=(rows[rows.length-1].length?gapOut:0)+o.w;rows[rows.length-1].push(o)});
+  const cx=bb.x+bb.width/2;let y=bb.y+bb.height+34;let g=`<g class="net-legend">`;
+  const neg=css("--div-neg")||"#2a78d6",mid=css("--div-mid")||"#f0efec",pos=css("--div-pos")||"#e34948";
+  g+=`<defs><linearGradient id="fcGrad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="${neg}"/><stop offset="0.5" stop-color="${mid}"/><stop offset="1" stop-color="${pos}"/></linearGradient></defs>`;
+  rows.forEach(r=>{const tot=r.reduce((a,o)=>a+o.w,0)+gapOut*(r.length-1);let x=cx-tot/2;
+    r.forEach(o=>{
+      if(o.kind==="line"){g+=`<line x1="${x.toFixed(1)}" y1="${y}" x2="${(x+SW).toFixed(1)}" y2="${y}" stroke="${o.stroke}" stroke-width="${o.sw}" stroke-dasharray="${o.dash}" stroke-linecap="round"/>`;
+        if(o.arrow)g+=`<path d="M${(x+SW-6).toFixed(1)},${y-3.5} L${(x+SW).toFixed(1)},${y} L${(x+SW-6).toFixed(1)},${y+3.5}" fill="none" stroke="${o.stroke}" stroke-width="1.2"/>`;
+        g+=`<text class="leg-t" x="${(x+SW+gapIn).toFixed(1)}" y="${y}" dy="0.35em">${esc(o.label)}</text>`}
+      else{const lw=textW("−1.5","leg-t")+gapIn;g+=`<text class="leg-t" x="${x.toFixed(1)}" y="${y}" dy="0.35em">−1.5</text>`;
+        const gx=x+lw;g+=`<rect x="${gx.toFixed(1)}" y="${y-5}" width="${GW}" height="10" rx="3" fill="url(#fcGrad)" stroke="${css("--line-strong")||"#b9c1be"}" stroke-width="0.5"/>`;
+        g+=`<text class="leg-t" x="${(gx+GW+gapIn).toFixed(1)}" y="${y}" dy="0.35em">+1.5</text>`;
+        g+=`<text class="leg-t" x="${(gx+GW+gapIn+textW("+1.5","leg-t")+gapIn*2).toFixed(1)}" y="${y}" dy="0.35em">${esc(o.label)}</text>`}
+      x+=o.w+gapOut});
+    y+=rowH});
+  svg.insertAdjacentHTML("beforeend",g+"</g>");
+}
+function netNote(){const el=$("netNote");if(!el)return;const G=L.G;const key=NET.metric==="q"?"FDR q-value":"p-value";
+  if(NET.top&&PW.length&&!G.sel.length){el.textContent=`No pathway has ${key} ≤ ${NET.cutoff}. Raise the cutoff or show all pathways.`;return}
+  el.textContent=(NET.top&&PW.length?`Showing the top ${G.sel.length} pathway${G.sel.length===1?"":"s"} by ${key} ≤ ${NET.cutoff} (${L.n} metabolites; each drawn once, under its best-ranked pathway).`:`Showing all ${L.n} metabolites, grouped by pathway.`)+(G.absorbed.length?` Also selected, with all their metabolites shown under a higher-ranked pathway: ${G.absorbed.join("; ")}.`:"")}
+function renderNet(){
+  const svg=$("net");const m=L.n;const showLabels=m<=200;const vis=i=>L.pos[i]!==null;const Rn=L.Rn;
+  const mod=state.activeMod?cards.find(x=>x.key===state.activeMod):null;
+  const pwSel=state.activePw!==null?PW[state.activePw]:null;
+  let modSet=mod?new Set(mod.pairs.map(p=>Math.min(p[0],p[1])+"-"+Math.max(p[0],p[1]))):null;let modNodes=mod?new Set(mod.feature_idx):null;
+  if(pwSel){modNodes=new Set(pwSel.idx);modSet=new Set();pairs.concat(RX).forEach(p=>{if(modNodes.has(p.i)&&modNodes.has(p.j))modSet.add(p.i+"-"+p.j)})}
+  const sel=state.sel;let h="";
+  // pathway arcs sit just outside the longest (full) metabolite name, measured in the page font
+  let maxLab=0;if(showLabels)F.forEach((f,i)=>{if(L.pos[i])maxLab=Math.max(maxLab,textW(f.name,"lab-hi"))});
+  const Ra=Rn+(showLabels?LAB_OFF+maxLab+14:26);
+  const key=NET.metric==="q"?"q":"p";const items=[];
+  L.arcs.forEach(arc=>{const s=arc.start+0.004,e=arc.end-0.004;if(e<=s)return;const large=(e-s)>Math.PI?1:0;
+    h+=`<path class="pw-arc" d="M${(Ra*Math.cos(s)).toFixed(1)},${(Ra*Math.sin(s)).toFixed(1)} A${Ra},${Ra} 0 ${large} 1 ${(Ra*Math.cos(e)).toFixed(1)},${(Ra*Math.sin(e)).toFixed(1)}" stroke="var(--line-strong)" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    const lines=wrapText(arc.pw,24);const w=PW.find(x=>x.name===arc.pw);const stat=w&&NET.top?`${key==="q"?"FDR q-value":"p-value"} = ${fq(w[key])}`:null;
+    const wid=Math.max(...lines.map(ln=>textW(ln,"pw-label")),stat?textW(stat,"pw-label","pw-stat"):0);
+    items.push({a:(s+e)/2,w:wid,h:(lines.length+(stat?1:0))*PW_LH+2,lines,stat,pw:arc.pw});
+  });
+  placePwLabels(items,Ra).forEach(o=>{const b=o.box;const x=o.right?b.x0:b.x1;
+    if(o.lead)h+=`<path class="pw-lead" d="M${o.lead.x1.toFixed(1)},${o.lead.y1.toFixed(1)} L${o.lead.x2.toFixed(1)},${o.lead.y2.toFixed(1)}" stroke="var(--line-strong)" stroke-width="1" fill="none"/>`;
+    const all=o.lines.concat(o.stat?[o.stat]:[]);
+    h+=`<text class="pw-label" text-anchor="${o.right?"start":"end"}"><title>${esc(o.pw)}</title>${all.map((ln,k)=>`<tspan x="${x.toFixed(1)}" y="${(b.y0+13+k*PW_LH).toFixed(1)}"${o.stat&&k===all.length-1?' class="pw-stat"':""}>${esc(ln)}</tspan>`).join("")}</text>`});
+  if(state.show.reaction){let rh="";RX.forEach(p=>{if(!vis(p.i)||!vis(p.j))return;const a=L.pos[p.i],b=L.pos[p.j];const cx=(a.x+b.x)*0.18,cy=(a.y+b.y)*0.18;
+      const fwd=p.rxd!=="b>a";const [s,t]=fwd?[a,b]:[b,a];const d=`M${s.x.toFixed(1)},${s.y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${t.x.toFixed(1)},${t.y.toFixed(1)}`;
+      const dim=modSet?!modSet.has(p.i+"-"+p.j):false;
+      rh+=`<path class="rxe${dim?" dim":""}" d="${d}" stroke-width="1.1" stroke-dasharray="${p.rx===2?"1.5 3":""}" opacity="0.55" ${p.rxd==="both"?"":'marker-end="url(#rxarrow)"'}/>`});
+    h+=`<defs><marker id="rxarrow" viewBox="0 0 8 8" refX="11" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="var(--ink-3)"/></marker></defs>`+rh}
+  const drawOrder=["intact","lost","gained","flipped"];
+  const edges=pairs.filter(p=>p.cls&&state.show[p.cls]&&vis(p.i)&&vis(p.j)).sort((a,b)=>drawOrder.indexOf(a.cls)-drawOrder.indexOf(b.cls)||Math.abs(a.dr)-Math.abs(b.dr));
+  let eh="",hh="";
+  edges.forEach(p=>{const a=L.pos[p.i],b=L.pos[p.j];const cx=(a.x+b.x)*0.18,cy=(a.y+b.y)*0.18;const d=`M${a.x.toFixed(1)},${a.y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${b.x.toFixed(1)},${b.y.toFixed(1)}`;const c=clsInfo(p.cls);
+    const isSel=sel&&sel.i===p.i&&sel.j===p.j;const w=p.cls==="intact"?1:(1.2+Math.min(1.4,Math.abs(p.dr))*2.2);
+    const dim=modSet?!modSet.has(p.i+"-"+p.j):false;
+    eh+=`<path class="edge${dim?" dim":""}" d="${d}" stroke="var(${c.v})" stroke-width="${isSel?w+2:w}" stroke-dasharray="${c.dash}" stroke-linecap="round" opacity="${p.cls==="intact"?0.55:0.9}"/>`;
+    if(p.cls!=="intact")hh+=`<path class="hit" d="${d}" data-i="${p.i}" data-j="${p.j}"/>`;
+  });
+  if(state.show.reaction)RX.forEach(p=>{if(!vis(p.i)||!vis(p.j))return;if(p.cls&&p.cls!=="intact"&&state.show[p.cls])return;const a=L.pos[p.i],b=L.pos[p.j];const cx=(a.x+b.x)*0.18,cy=(a.y+b.y)*0.18;
+    hh=`<path class="hit rxhit" d="M${a.x.toFixed(1)},${a.y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${b.x.toFixed(1)},${b.y.toFixed(1)}" data-i="${p.i}" data-j="${p.j}"/>`+hh});
+  h+=eh+hh;
+  F.forEach((f,i)=>{const p=L.pos[i];if(!p)return;const dim=modNodes?!modNodes.has(i):false;const isSel=sel&&(sel.i===i||sel.j===i);
+    h+=`<circle class="node${isSel?" sel":""}${dim?" dim":""}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${NODE_R}" fill="${divColor(f.lfc)}" data-n="${i}"/>`;
+    if(showLabels||isSel){const lr=Rn+LAB_OFF;const deg=p.a*180/Math.PI;const right=Math.cos(p.a)>=0;const x=lr*Math.cos(p.a),y=lr*Math.sin(p.a);
+      const nm=f.name;
+      h+=`<text class="${isSel?"lab-hi":""}${dim?" dim":""}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" dy="0.35em" text-anchor="${right?"start":"end"}" transform="rotate(${(right?deg:deg+180).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})">${esc(nm)}</text>`}
+  });
+  if(!m)h+=`<text x="0" y="0" text-anchor="middle" class="pw-label">No pathway passes the current cutoff</text>`;
+  svg.innerHTML=h;
+  if(m)drawNetLegend(svg);
+  try{const bb=svg.getBBox();const pad=24;svg.setAttribute("viewBox",`${(bb.x-pad).toFixed(0)} ${(bb.y-pad).toFixed(0)} ${(bb.width+2*pad).toFixed(0)} ${(bb.height+2*pad).toFixed(0)}`)}catch(e){}
+  netNote();
+  svg.querySelectorAll(".hit").forEach(el=>{
+    el.addEventListener("mousemove",ev=>{const p=findPair(+el.dataset.i,+el.dataset.j);showTip(ev,pairTip(p))});
+    el.addEventListener("mouseleave",hideTip);
+    el.addEventListener("click",()=>selectPair(+el.dataset.i,+el.dataset.j));
+  });
+  svg.querySelectorAll(".node").forEach(el=>{const i=+el.dataset.n;
+    el.addEventListener("mousemove",ev=>{const f=F[i];const deg=rew.filter(p=>p.i===i||p.j===i).length;showTip(ev,`<b>${esc(f.name)}</b><br>${esc(f.pathway)}<br>log2 FC <span class="mono">${f2(f.lfc)}</span> · FDR q-value <span class="mono">${fq(f.q)}</span><br>${deg} rewired edge${deg===1?"":"s"}`)});
+    el.addEventListener("mouseleave",hideTip);
+    el.addEventListener("click",()=>{const best=rew.filter(p=>p.i===i||p.j===i).sort((a,b)=>Math.abs(b.dr)-Math.abs(a.dr))[0];if(best)selectPair(best.i,best.j)});
+  });
+}
+function pairTip(p){if(!p)return"";const c=p.cls?clsInfo(p.cls):null;const rx=rxInfo(p);return `<b>${esc(F[p.i].name)} ↔ ${esc(F[p.j].name)}</b><br>${c?swatch(p.cls,16)+" "+c.label:"Not rewired"}<br>r ${esc(G[0])} <span class="mono">${fr(p.rA)}</span> → ${esc(G[1])} <span class="mono">${fr(p.rB)}</span><br>p-value <span class="mono">${fq(p.p)}</span> · FDR q-value <span class="mono">${fq(p.q)}</span>${rx?`<br>⚗ ${rx.rx===1?"Direct reaction":"2 steps via "+esc(rx.rxv||"")}: ${esc(rxArrow(rx))}`:""}`}
+function showTip(ev,html){const t=$("tip");t.innerHTML=html;t.hidden=false;const w=t.offsetWidth,hh=t.offsetHeight;let x=ev.clientX+14,y=ev.clientY+14;if(x+w>innerWidth-8)x=ev.clientX-w-14;if(y+hh>innerHeight-8)y=ev.clientY-hh-14;t.style.left=x+"px";t.style.top=y+"px"}
+function hideTip(){$("tip").hidden=true}
+function selectPair(i,j){const p=findPair(i,j);if(!p)return;state.sel=p;renderNet();renderDetail()}
+
+// ---------- detail ----------
+function renderDetail(){
+  const el=$("detail");const p=state.sel;
+  if(!p){el.innerHTML=`<h2>Pair detail</h2><p class="muted">No rewired pairs pass the current thresholds. Loosen the p-value / FDR q-value cutoff or the minimum |Δr|, or check that each group has enough samples.</p>`;return}
+  const xi=D.values[String(p.i)],xj=D.values[String(p.j)];
+  if(!xi||!xj){el.innerHTML=`<h2>${esc(F[p.i].name)} ↔ ${esc(F[p.j].name)}</h2><p class="muted">Values for this pair are not included in the view.</p>`;return}
+  // axis titles and legend are measured and wrapped so full names always fit inside the plot image
+  const SC_FONT="font-size:11px;font-family:'IBM Plex Sans',sans-serif";const tw=t=>textW(t,"","",SC_FONT);
+  const fitLines=(name,avail)=>{const one="Relative Abundance ("+name+")";if(tw(one)<=avail)return [one];
+    const words=("("+name+")").split(/\s+/);const out=["Relative Abundance"];let cur="";
+    words.forEach(w=>{const nx=(cur?cur+" ":"")+w;if(cur&&tw(nx)>avail){out.push(cur);cur=w}else cur=nx});if(cur)out.push(cur);
+    return out.flatMap(l=>{if(tw(l)<=avail)return [l];const parts=[];let c="";[...l].forEach(ch=>{if(c&&tw(c+ch)>avail){parts.push(c);c=ch}else c+=ch});if(c)parts.push(c);return parts})};
+  const W=380,H0=290,mr=14;
+  const legItems=[[G[0],"--g-a",p.rA],[G[1],"--g-b",p.rB]].map(([g,col,r])=>({g,col,txt:`${g} (r = ${fr(r!=null?r:NaN)})`}));
+  legItems.forEach(o=>o.w=14+tw(o.txt));
+  const legRows=legItems[0].w+18+legItems[1].w<=W-46-mr?[[legItems[0],legItems[1]]]:[[legItems[0]],[legItems[1]]];
+  const mt=22+legRows.length*16;
+  const xLines=fitLines(F[p.i].name,W-46-mr-4);
+  let H=H0+(xLines.length-1)*14,mb=40+(xLines.length-1)*14;
+  const yLines=fitLines(F[p.j].name,H-mt-mb-4);const ml=46+(yLines.length-1)*14;
+  const xmin=Math.min(...xi),xmax=Math.max(...xi),ymin=Math.min(...xj),ymax=Math.max(...xj);
+  const px=(xmax-xmin)*0.06||1,py=(ymax-ymin)*0.06||1;const X0=xmin-px,X1=xmax+px,Y0=ymin-py,Y1=ymax+py;
+  const sx=v=>ml+(v-X0)/(X1-X0)*(W-ml-mr),sy=v=>H-mb-(v-Y0)/(Y1-Y0)*(H-mt-mb);
+  const ticks=(a,b)=>{const span=b-a,raw=span/4,mag=Math.pow(10,Math.floor(Math.log10(raw))),st=[1,2,2.5,5,10].map(s=>s*mag).find(s=>span/s<=5)||mag*10;const out=[];for(let v=Math.ceil(a/st)*st;v<=b+1e-9;v+=st)out.push(+v.toFixed(6));return out};
+  let s="";
+  ticks(Y0,Y1).forEach(v=>{s+=`<line class="grid" x1="${ml}" x2="${W-mr}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${ml-6}" y="${sy(v)}" dy="0.35em" text-anchor="end">${v}</text>`});
+  ticks(X0,X1).forEach(v=>{s+=`<text x="${sx(v)}" y="${H-mb+15}" text-anchor="middle">${v}</text>`});
+  s+=`<line class="axis" x1="${ml}" x2="${W-mr}" y1="${H-mb}" y2="${H-mb}"/>`;
+  legRows.forEach((row,k)=>{let lx=ml;const ly=12+k*16;row.forEach(o=>{s+=`<circle cx="${lx+5}" cy="${ly}" r="4.5" fill="var(${o.col})"/><text x="${lx+14}" y="${ly}" dy="0.35em">${esc(o.txt)}</text>`;lx+=o.w+18})});
+  const unit=D.scale_label==="log2"?"log2 ":"";
+  s+=`<text class="ax-title" text-anchor="middle">${xLines.map((ln,k)=>`<tspan x="${(ml+W-mr)/2}" y="${H-mb+32+k*14}">${esc(ln)}</tspan>`).join("")}</text>`;
+  s+=`<text class="ax-title" transform="translate(${ml-34-(yLines.length-1)*14} ${(mt+H-mb)/2}) rotate(-90)" text-anchor="middle">${yLines.map((ln,k)=>`<tspan x="0" y="${k*14}">${esc(ln)}</tspan>`).join("")}</text>`;
+  [[colsA,"--g-a"],[colsB,"--g-b"]].forEach(([cols,col])=>{
+    const x=cols.map(c=>xi[c]),y=cols.map(c=>xj[c]);const mx=mean(x),my=mean(y);let sxy=0,sxx=0;x.forEach((v,k)=>{sxy+=(v-mx)*(y[k]-my);sxx+=(v-mx)**2});const b=sxx?sxy/sxx:0;
+    const xa=Math.min(...x),xb=Math.max(...x);const cl=v=>Math.max(Y0,Math.min(Y1,v));
+    cols.forEach(c=>{s+=`<circle cx="${sx(xi[c]).toFixed(1)}" cy="${sy(xj[c]).toFixed(1)}" r="4" fill="var(${col})" fill-opacity="0.75" stroke="var(--surface)" stroke-width="1.5"><title>${esc(D.samples[c]||"")}</title></circle>`});
+    s+=`<line x1="${sx(xa)}" y1="${sy(cl(my+b*(xa-mx)))}" x2="${sx(xb)}" y2="${sy(cl(my+b*(xb-mx)))}" stroke="var(${col})" stroke-width="2.5" stroke-linecap="round"/>`;
+  });
+  const c=clsInfo(p.cls||"intact");const fA=F[p.i],fB=F[p.j];
+  const quiet=[fA,fB].filter(f=>f.q>=0.05).length;
+  const fcNote=quiet===2?"Neither metabolite changes significantly in level (FDR q-value ≥ 0.05). A volcano plot would show nothing here.":quiet===1?"One of the two metabolites has no significant level change, so a volcano plot would miss half of this relationship.":"Both metabolites also change in level; the rewiring adds information about how they are coordinated.";
+  const nm=x=>x.length>14?x.slice(0,13)+"…":x;
+  el.innerHTML=`
+    <div class="net-head"><h2 style="font-size:17px">${esc(fA.name)} ↔ ${esc(fB.name)}</h2>${p.cls?`<span class="class-pill">${swatch(p.cls,16)}${c.label}</span>`:""}</div>
+    <p class="fmt">${esc(fA.pathway)} · ${esc(fB.pathway)}</p>
+    <div class="pair-plot">
+    <svg id="scatter" viewBox="0 0 ${W} ${H}" role="img" aria-label="Correlation plot of the two metabolites by group">${s}</svg>
+    <div class="fig-foot">${dlButtons("scatter","Download correlation plot")}</div>
+    <p class="fmt">Relative abundance on the analysed ${esc(D.scale_label||"log2")} scale.</p>
+    </div>
+    <div class="pair-side">
+    <div class="kv">
+      <div><div class="k">Δr</div><div class="v">${f2(p.dr)}</div></div>
+      <div><div class="k">z</div><div class="v">${f2(p.z)}</div></div>
+      <div><div class="k">p-value</div><div class="v">${fq(p.p)}</div></div>
+      <div><div class="k">FDR q-value</div><div class="v">${fq(p.q)}</div></div>
+      <div><div class="k">log2 FC · ${esc(fA.name)}</div><div class="v">${f2(fA.lfc)}</div></div>
+      <div><div class="k">log2 FC · ${esc(fB.name)}</div><div class="v">${f2(fB.lfc)}</div></div>
+      <div><div class="k">Fold-change FDR q-value (both)</div><div class="v">${fq(fA.q)} · ${fq(fB.q)}</div></div>
+    </div>
+    <p class="note">${fcNote}</p>${rxBlock(p)}
+    </div>`;
+}
+function rxBlock(p){const r=rxInfo(p);if(!r)return "";
+  const names=(r.rxn||"").split(" | ").slice(0,3).map(esc).join("<br>");
+  const unit=`log2(${esc(F[r.prod!=null?r.prod:r.j].name)} / ${esc(F[r.sub!=null?r.sub:r.i].name)})`;
+  const ratio=r.rs!=null?`<div class="ratio-row"><div><div class="k">${esc(G[0])}</div><div class="v">${f2(r.ra)}</div></div><div><div class="k">${esc(G[1])}</div><div class="v">${f2(r.rb)}</div></div><div><div class="k">Shift · FDR q-value</div><div class="v">${f2(r.rs)} · ${fq(r.rsq)}</div></div></div><p class="fmt">${unit}${r.rxd==="both"?" (reversible; orientation as listed)":""}. A shift means the balance between the two moved even if their correlation did not.</p>`:"";
+  return `<div class="rx-box"><div class="rx-title"><span class="rx-tag">⚗ ${r.rx===1?"Direct reaction":"2 steps"}</span>${esc(rxArrow(r))}${r.rx===2&&r.rxv?` <span class="muted" style="font-weight:400">via ${esc(r.rxv)}</span>`:""}</div><div class="rx-names">${names}${r.ec?`<br>EC ${esc(r.ec.split(";").slice(0,4).join(", "))}`:""}</div>${ratio}</div>`}
+
+// ---------- cards ----------
+function checkLi(ok,text){const cls=ok===true?"ok":ok===false?"bad":"na";const ic=ok===true?"✓":ok===false?"✕":"–";return `<li><span class="ic ${cls}">${ic}</span><span>${text}</span></li>`}
+function renderCards(){
+  const el=$("cards");
+  if(!cards.length){el.innerHTML=`<div class="panel empty">No rewired modules at these thresholds.</div>`;return}
+  el.innerHTML=cards.map((M,k)=>{
+    const same=M.pathway_a===M.pathway_b;const n=M.n_pairs;
+    const ex=M.pair_names.slice(0,3).map(p=>p[0]+"–"+p[1]);
+    const mc=M.method_check,ic=M.influence_check,bc=M.batch_check;
+    const methodName=mc.method==="spearman"?"Rank (Spearman) correlation agrees":"Pearson correlation agrees";
+    const checks=[
+      checkLi(mc.ok,esc(methodName)+(mc.ok?"":" (signal collapses)")),
+      checkLi(M.imputation_check.ok,M.imputation_check.n_imputed?(M.imputation_check.ok?`Holds without the ${M.imputation_check.n_imputed} imputed value${M.imputation_check.n_imputed>1?"s":""}`:`Collapses without the ${M.imputation_check.n_imputed} imputed (not-detected) value${M.imputation_check.n_imputed>1?"s":""}`):"No imputed values involved"),
+      ic.ok===null?checkLi(null,esc(ic.reason||"Outlier check not assessable")):checkLi(ic.ok,ic.dropped.length?(ic.ok?`Survives removing ${ic.dropped.length} outlying sample${ic.dropped.length>1?"s":""}`:`Collapses without ${ic.dropped.length} outlying sample${ic.dropped.length>1?"s":""} (${ic.dropped.slice(0,3).map(esc).join(", ")}${ic.dropped.length>3?"…":""})`):"No outlying samples drive it"),
+      bc.ok===null?"":checkLi(bc.ok,`${bc.ok?"Holds":"Does not hold"} within each batch (${bc.levels.map(l=>esc(l.level)+" "+f2(l.value)).join(", ")})`),
+    ];
+    if((M.reaction_pairs||[]).length)checks.push(`<li><span class="ic ok">⚗</span><span>${M.reaction_pairs.length} of ${n} pairs are enzymatic reactions: ${M.reaction_pairs.slice(0,3).map(r=>esc(r.text)).join("; ")}${M.reaction_pairs.length>3?"…":""}</span></li>`);
+    const pq=Object.entries(M.pathway_q||{});if(pq.length)checks.push(`<li><span class="ic na">∑</span><span>Pathway-level test: ${pq.map(([k,v])=>esc(k)+" FDR q-value "+fq(v)).join("; ")}</span></li>`);
+    if(M.hidden_features.length)checks.push(`<li><span class="ic na">i</span><span>${M.hidden_features.length} of ${M.features.length} metabolites here show no significant level change (${M.hidden_features.slice(0,3).map(esc).join(", ")}${M.hidden_features.length>3?"…":""}), so fold-change analysis alone would miss them.</span></li>`);
+    return `<div class="panel card${state.activeMod===M.key?" active":""}" tabindex="0" role="button" aria-pressed="${state.activeMod===M.key}" data-key="${esc(M.key)}">
+      <div class="card-top"><span class="rank">H${M.rank}</span><span class="class-pill">${swatch(M["class"],16)}${clsInfo(M["class"]).label}</span><span class="verdict ${M.verdict}">${M.verdict==="robust"?"✓ Robust":M.verdict==="mixed"?"◐ Mixed evidence":M.verdict==="exploratory"?"○ Exploratory (small n)":"✕ Fragile"}</span></div>
+      <h3>${esc(same?M.pathway_a:M.pathway_a+" × "+M.pathway_b)}</h3>
+      <p>${esc(M.claim)}</p>
+      <p class="interp">${esc(M.interpretation)}</p>
+      ${M.stability==null?`<p class="fmt">Bootstrap stability and outlier checks need ≥ 5 samples per group.</p>`:`<div class="meter"><span>Bootstrap stability</span><span class="track"><span class="fill" style="width:${Math.round((M.stability||0)*100)}%"></span></span><span class="num">${Math.round((M.stability||0)*100)}%</span></div>`}
+      <ul class="checks">${checks.join("")}</ul>
+      <p class="fmt">Evidence: ${ex.map(esc).join(" · ")}${n>3?` · +${n-3} more`:""}</p>
+      <p class="next"><b>Next experiment:</b> ${esc(M.next_experiment)}</p>
+    </div>`}).join("");
+  el.querySelectorAll(".card").forEach(c=>{const act=()=>{const key=c.dataset.key;state.activeMod=state.activeMod===key?null:key;state.activePw=null;const M=cards.find(m=>m.key===key);if(state.activeMod&&M&&M.pairs.length)state.sel=findPair(M.pairs[0][0],M.pairs[0][1]);renderNet();renderDetail();renderCards();if(state.activeMod)$("net").scrollIntoView({behavior:"smooth",block:"center"})};c.onclick=act;c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act()}}});
+}
+
+// ---------- table ----------
+function renderTable(){
+  if(!$("tbl"))return;
+  if(!rew.length&&(D.top_pairs||[]).length)return renderTop();
+  const rows=rew.filter(p=>state.show[p.cls]);
+  const cols=[{k:"pair",l:"Pair"},{k:"pw",l:"Pathways"},{k:"cls",l:"Class"},{k:"rx",l:"Reaction"},{k:"rA",l:"r "+G[0],n:1},{k:"rB",l:"r "+G[1],n:1},{k:"dr",l:"Δr",n:1},{k:"p",l:"p-value",n:1},{k:"q",l:"FDR q-value",n:1}];
+  const val=(p,k)=>k==="pair"?F[p.i].name:k==="pw"?F[p.i].pathway:k==="cls"?p.cls:k==="dr"?-Math.abs(p.dr):k==="rx"?-(p.rx?3-p.rx:0):p[k];
+  const {k,dir}=state.sort;rows.sort((a,b)=>{const x=val(a,k),y=val(b,k);return (x<y?-1:x>y?1:0)*dir});
+  $("tbl").tHead.innerHTML="<tr>"+cols.map(c=>`<th class="${c.n?"n":""}" data-k="${c.k}" aria-sort="${state.sort.k===c.k?(state.sort.dir>0?"ascending":"descending"):"none"}">${esc(c.l)}${state.sort.k===c.k?(state.sort.dir>0?" ▲":" ▼"):""}</th>`).join("")+"</tr>";
+  const shown=rows.slice(0,300);
+  $("tbl").tBodies[0].innerHTML=shown.map(p=>`<tr tabindex="0" data-i="${p.i}" data-j="${p.j}"><td>${esc(F[p.i].name)} ↔ ${esc(F[p.j].name)}</td><td class="muted">${esc(F[p.i].pathway)}${F[p.i].pathway!==F[p.j].pathway?" × "+esc(F[p.j].pathway):""}</td><td>${swatch(p.cls,16)} ${clsInfo(p.cls).label}</td><td>${p.rx?`<span class="rx-tag" title="${esc(rxArrow(p))}">⚗ ${p.rx===1?"direct":"2-step"}</span>`:'<span class="muted">–</span>'}</td><td class="n">${fr(p.rA)}</td><td class="n">${fr(p.rB)}</td><td class="n">${f2(p.dr)}</td><td class="n">${fq(p.p)}</td><td class="n">${fq(p.q)}</td></tr>`).join("");
+  $("table-count").textContent=rows.length>300?`Showing 300 of ${rows.length}`:`${rows.length} pairs`;
+  $("tbl").tHead.querySelectorAll("th").forEach(th=>th.onclick=()=>{const kk=th.dataset.k;state.sort=state.sort.k===kk?{k:kk,dir:-state.sort.dir}:{k:kk,dir:1};renderTable()});
+  $("tbl").tBodies[0].querySelectorAll("tr").forEach(tr=>{const go=()=>{selectPair(+tr.dataset.i,+tr.dataset.j);$("net").scrollIntoView({behavior:"smooth",block:"center"})};tr.onclick=go;tr.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();go()}}});
+}
+
+function renderTop(){
+  const T=D.top_pairs;
+  const sec=$("tbl").closest("section");sec.querySelector("h2").textContent="Largest correlation changes (exploratory)";
+  $("tbl").tHead.innerHTML=`<tr><th>Pair</th><th>Pathways</th><th>Reaction</th><th class="n">r ${esc(G[0])}</th><th class="n">r ${esc(G[1])}</th><th class="n">Δr</th><th class="n">p-value</th><th class="n">FDR q-value</th></tr>`;
+  $("tbl").tBodies[0].innerHTML=T.map(p=>`<tr tabindex="0" data-i="${p.i}" data-j="${p.j}"><td>${esc(F[p.i].name)} ↔ ${esc(F[p.j].name)}</td><td class="muted">${esc(F[p.i].pathway)}${F[p.i].pathway!==F[p.j].pathway?" × "+esc(F[p.j].pathway):""}</td><td>${p.rx?`<span class="rx-tag" title="${esc(rxArrow(p))}">⚗ ${p.rx===1?"direct":"2-step"}</span>`:'<span class="muted">–</span>'}</td><td class="n">${fr(p.rA)}</td><td class="n">${fr(p.rB)}</td><td class="n">${f2(p.dr)}</td><td class="n">${fq(p.p)}</td><td class="n">${fq(p.q)}</td></tr>`).join("");
+  const perm=S.permutation;
+  $("table-count").textContent=`No pair passes ${D.cutoff_on==="p"?"p-value":"FDR q-value"} ≤ ${D.fdr}. The ${T.length} tested pairs with the largest change are listed for exploration only${perm&&perm.exact?`; with ${perm.n_permutations} possible label splits no p-value can be below ${fq(perm.p_floor)}`:""}.`;
+  $("tbl").tBodies[0].querySelectorAll("tr").forEach(tr=>{const go=()=>{const p=T.find(x=>x.i===+tr.dataset.i&&x.j===+tr.dataset.j);if(p){state.sel=p;renderNet();renderDetail()}};tr.onclick=go;tr.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();go()}}});
+}
+function renderPw(){
+  if(!$("ptbl"))return;
+  $("ptbl").tHead.innerHTML=`<tr><th>Pathway</th><th class="n">Measured</th><th class="n">Pairs</th><th>Direction</th><th class="n">Lost / gained / flipped</th><th class="n">Reaction pairs</th><th class="n">Statistic (mean z²)</th><th class="n">p-value</th><th class="n">FDR q-value</th></tr>`;
+  $("ptbl").tBodies[0].innerHTML=PW.map((w,k)=>`<tr tabindex="0" data-k="${k}" class="${state.activePw===k?"active":""}"><td title="${esc(w.top||"")}">${w.q<D.fdr?"<b>":""}${esc(w.name)}${w.q<D.fdr?"</b>":""}</td><td class="n">${w.n}</td><td class="n">${w.np}</td><td>${esc(w.dir)}</td><td class="n">${w.nl} / ${w.ng} / ${w.nf}</td><td class="n">${w.nrx}</td><td class="n">${(w.stat||0).toFixed(2)}</td><td class="n">${fq(w.p)}</td><td class="n">${fq(w.q)}</td></tr>`).join("");
+  $("ptbl").tBodies[0].querySelectorAll("tr").forEach(tr=>{const go=()=>{const k=+tr.dataset.k;state.activePw=state.activePw===k?null:k;state.activeMod=null;
+    if(state.activePw!==null){const set=new Set(PW[k].idx);const best=pairs.filter(p=>set.has(p.i)&&set.has(p.j)&&p.cls&&p.cls!=="intact").sort((a,b)=>Math.abs(b.dr)-Math.abs(a.dr))[0];if(best)state.sel=best}
+    renderNet();renderDetail();renderCards();renderPw();$("net").scrollIntoView({behavior:"smooth",block:"center"})};tr.onclick=go;tr.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();go()}}});
+}
+// ---------- figure export (SVG / PNG) ----------
+function svgMarkup(svg){
+  const clone=svg.cloneNode(true);const src=[svg,...svg.querySelectorAll("*")],dst=[clone,...clone.querySelectorAll("*")];
+  const props=["fill","stroke","stroke-width","stroke-dasharray","stroke-linecap","opacity","fill-opacity","font-size","font-family","font-weight"];
+  src.forEach((el,k)=>{const cs=getComputedStyle(el);props.forEach(pr=>{const v=cs.getPropertyValue(pr);if(v&&v!=="normal")dst[k].setAttribute(pr,v)});dst[k].removeAttribute("class")});
+  clone.querySelectorAll(".hit,[data-i]").forEach(e=>{if(e.getAttribute("stroke")==="rgba(0, 0, 0, 0)"||e.getAttribute("stroke")==="transparent")e.remove()});
+  const vb=(clone.getAttribute("viewBox")||"0 0 800 600").split(/\s+/).map(Number);
+  clone.setAttribute("xmlns","http://www.w3.org/2000/svg");clone.setAttribute("width",vb[2]);clone.setAttribute("height",vb[3]);
+  clone.removeAttribute("style");
+  const bg=document.createElementNS("http://www.w3.org/2000/svg","rect");bg.setAttribute("x",vb[0]);bg.setAttribute("y",vb[1]);bg.setAttribute("width",vb[2]);bg.setAttribute("height",vb[3]);bg.setAttribute("fill",css("--surface")||"#ffffff");
+  clone.insertBefore(bg,clone.firstChild);
+  return {text:'<?xml version="1.0" encoding="UTF-8"?>\n'+new XMLSerializer().serializeToString(clone),w:vb[2],h:vb[3]};
+}
+function saveBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
+// Minimal encoders so every format downloads straight from the view (no server round trip):
+// TIFF = uncompressed RGB, 300 dpi tag; PDF = one page holding the high-resolution JPEG render.
+function tiffBytes(img,w,h){
+  const n=12,ifd=8,bps=ifd+2+n*12+4,xr=bps+6,yr=xr+8,data=yr+8,len=data+w*h*3;
+  const buf=new ArrayBuffer(len),v=new DataView(buf),u=new Uint8Array(buf);
+  u[0]=0x49;u[1]=0x49;v.setUint16(2,42,true);v.setUint32(4,ifd,true);v.setUint16(ifd,n,true);
+  const E=[[256,4,1,w],[257,4,1,h],[258,3,3,bps],[259,3,1,1],[262,3,1,2],[273,4,1,data],[277,3,1,3],[278,4,1,h],[279,4,1,w*h*3],[282,5,1,xr],[283,5,1,yr],[296,3,1,2]];
+  E.forEach(([tag,type,count,val],k)=>{const o=ifd+2+k*12;v.setUint16(o,tag,true);v.setUint16(o+2,type,true);v.setUint32(o+4,count,true);
+    if(type===3&&count===1)v.setUint16(o+8,val,true);else v.setUint32(o+8,val,true)});
+  v.setUint32(ifd+2+n*12,0,true);[8,8,8].forEach((b,k)=>v.setUint16(bps+2*k,b,true));
+  [xr,yr].forEach(o=>{v.setUint32(o,300,true);v.setUint32(o+4,1,true)});
+  const px=img.data;let o=data;for(let k=0;k<px.length;k+=4){u[o++]=px[k];u[o++]=px[k+1];u[o++]=px[k+2]}
+  return new Blob([buf],{type:"image/tiff"});
+}
+function pdfBytes(jpeg,pw,ph,wpt,hpt){
+  const enc=new TextEncoder();const parts=[];let len=0;const offs=[];
+  const add=x=>{const b=typeof x==="string"?enc.encode(x):x;parts.push(b);len+=b.length};
+  const obj=(k,body)=>{offs[k]=len;add(`${k} 0 obj\n${body}\nendobj\n`)};
+  const W=wpt.toFixed(2),H=hpt.toFixed(2);const content=`q ${W} 0 0 ${H} 0 0 cm /Im0 Do Q`;
+  add("%PDF-1.4\n");
+  obj(1,"<< /Type /Catalog /Pages 2 0 R >>");obj(2,"<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+  obj(3,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`);
+  offs[4]=len;add(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${pw} /Height ${ph} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`);add(jpeg);add("\nendstream\nendobj\n");
+  obj(5,`<< /Length ${content.length} >>\nstream\n${content}\nendstream`);
+  const x=len;add(`xref\n0 6\n0000000000 65535 f \n${[1,2,3,4,5].map(k=>String(offs[k]).padStart(10,"0")+" 00000 n \n").join("")}trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${x}\n%%EOF\n`);
+  return new Blob(parts,{type:"application/pdf"});
+}
+function exportFig(which,fmt){
+  const svg=$(which==="net"?"net":"scatter");if(!svg)return;const m=svgMarkup(svg);
+  const base=which==="net"?"Rewiring_Network":("Correlation_"+(state.sel?(F[state.sel.i].name+"_vs_"+F[state.sel.j].name):"pair")).replace(/[^A-Za-z0-9_.-]+/g,"_");
+  if(fmt==="svg")return saveBlob(new Blob([m.text],{type:"image/svg+xml"}),base+".svg");
+  const img=new Image();const scale=Math.max(2,Math.round(2400/m.w));
+  img.onload=()=>{const c=document.createElement("canvas");c.width=Math.round(m.w*scale);c.height=Math.round(m.h*scale);const g=c.getContext("2d");
+    g.fillStyle="#ffffff";g.fillRect(0,0,c.width,c.height);g.scale(scale,scale);g.drawImage(img,0,0);
+    if(fmt==="png")return c.toBlob(b=>saveBlob(b,base+".png"),"image/png");
+    if(fmt==="jpeg")return c.toBlob(b=>saveBlob(b,base+".jpg"),"image/jpeg",0.95);
+    if(fmt==="tiff")return saveBlob(tiffBytes(g.getImageData(0,0,c.width,c.height),c.width,c.height),base+".tif");
+    if(fmt==="pdf")return c.toBlob(b=>b.arrayBuffer().then(ab=>saveBlob(pdfBytes(new Uint8Array(ab),c.width,c.height,m.w*0.75,m.h*0.75),base+".pdf")),"image/jpeg",0.95);
+  };
+  img.src="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(m.text)));
+}
+const DL_FMTS=[["svg","SVG"],["png","PNG"],["jpeg","JPEG"],["tiff","TIFF"],["pdf","PDF"]];
+const dlButtons=(which,label)=>`<span class="dl">${label} ${DL_FMTS.map(([f,l])=>`<button type="button" data-dl="${which}" data-fmt="${f}">${l}</button>`).join("")}</span>`;
+document.addEventListener("click",e=>{const b=e.target.closest("button[data-dl]");if(b)exportFig(b.dataset.dl,b.dataset.fmt)});
+function wireNetControls(){
+  const t=$("pwTop"),mt=$("pwMetric"),c=$("pwCut");if(!t)return;
+  t.value=String(NET.top);mt.value=NET.metric;
+  const cuts=[...c.options].map(o=>+o.value);c.value=String(cuts.reduce((b,v)=>Math.abs(v-NET.cutoff)<Math.abs(b-NET.cutoff)?v:b,cuts[0]));
+  const upd=()=>{NET.top=+t.value;NET.metric=mt.value;NET.cutoff=+c.value;state.activePw=null;L=layout();renderNet();renderPw()};
+  t.onchange=upd;mt.onchange=upd;c.onchange=upd;
+}
+wireNetControls();
+// web fonts change text widths: re-measure and re-fit the network once they have loaded
+try{document.fonts&&document.fonts.ready.then(()=>{renderNet()})}catch(e){}
+$("netDl").innerHTML=dlButtons("net","Download network");renderStats();renderChips();renderNet();renderDetail();renderCards();renderTable();renderPw();
+const rerender=()=>renderNet();
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",rerender)}catch(e){}
+new MutationObserver(rerender).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+window.__rewiringReady=true;
+})();
+</script>
+</body>
+</html>

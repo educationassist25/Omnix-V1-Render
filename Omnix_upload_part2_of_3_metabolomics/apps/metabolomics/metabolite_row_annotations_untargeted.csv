@@ -1,0 +1,301 @@
+Metabolite,HMDB_ID,Class,Method
+Glyceric acid,HMDB0000139,Metabolite,Untargeted Metabolomics
+Ethanolamine,HMDB0000149,Metabolite,Untargeted Metabolomics
+Enol-phenylpyruvate,HMDB0012225,Metabolite,Untargeted Metabolomics
+Tauroursodeoxycholic acid,HMDB0000874,Metabolite,Untargeted Metabolomics
+Uric acid,HMDB0000289,Metabolite,Untargeted Metabolomics
+Cobalamin,HMDB0002174,Metabolite,Untargeted Metabolomics
+Indolepyruvate,HMDB0060484,Metabolite,Untargeted Metabolomics
+Beta-Tyrosine,HMDB0003831,Metabolite,Untargeted Metabolomics
+Dihomo-gamma-linolenic acid,HMDB0002925,Metabolite,Untargeted Metabolomics
+Glycerol,HMDB0000131,Metabolite,Untargeted Metabolomics
+Nicotinamide riboside,HMDB0000855,Metabolite,Untargeted Metabolomics
+Allocholic acid,HMDB0000505,Metabolite,Untargeted Metabolomics
+N-Acetylhistidine,HMDB0032055,Metabolite,Untargeted Metabolomics
+Monoethylglycinexylidide,HMDB0060656,Metabolite,Untargeted Metabolomics
+Taurochenodesoxycholic acid,HMDB0000951,Metabolite,Untargeted Metabolomics
+Phenylacetylglycine,HMDB0000821,Metabolite,Untargeted Metabolomics
+"Ne,Ne dimethyllysine",HMDB0013287,Metabolite,Untargeted Metabolomics
+ADP,HMDB0001341,Metabolite,Untargeted Metabolomics
+Serine,HMDB0000187,Metabolite,Untargeted Metabolomics
+Carbamoyl-aspartate,HMDB0000828,Metabolite,Untargeted Metabolomics
+O-Phosphotyrosine,HMDB0006049,Metabolite,Untargeted Metabolomics
+Succinic acid semialdehyde,HMDB0001259,Metabolite,Untargeted Metabolomics
+Glutamine,HMDB0000641,Metabolite,Untargeted Metabolomics
+Orotidylic acid,HMDB0000218,Metabolite,Untargeted Metabolomics
+Glycyl-glycine,HMDB0011733,Metabolite,Untargeted Metabolomics
+N-alpha-Acetyl-L-citrulline,HMDB0000856,Metabolite,Untargeted Metabolomics
+Glutarylcarnitine,HMDB0013130,Metabolite,Untargeted Metabolomics
+Methylcitrate,HMDB0000379,Metabolite,Untargeted Metabolomics
+Homocysteine,HMDB0000165,Metabolite,Untargeted Metabolomics
+Pyridoxal,HMDB0001545,Metabolite,Untargeted Metabolomics
+Sedoheptulose 7-phosphate,HMDB0001068,Metabolite,Untargeted Metabolomics
+D-Phenylalanine,HMDB0250791,Metabolite,Untargeted Metabolomics
+D-Malic acid,HMDB0031518,Metabolite,Untargeted Metabolomics
+L-Formylkynurenine,HMDB0060485,Metabolite,Untargeted Metabolomics
+N-Formyl-L-aspartate,HMDB0060495,Metabolite,Untargeted Metabolomics
+L-Histidine,HMDB0000177,Metabolite,Untargeted Metabolomics
+L-Tryptophan,HMDB0000929,Metabolite,Untargeted Metabolomics
+Tauro-alpha-muricholic acid,HMDB0258742,Metabolite,Untargeted Metabolomics
+Creatine,HMDB0000064,Metabolite,Untargeted Metabolomics
+Ketoleucine,HMDB0000695,Metabolite,Untargeted Metabolomics
+Deoxyadenosine triphosphate,HMDB0001532,Metabolite,Untargeted Metabolomics
+D-Xylose,HMDB0000098,Metabolite,Untargeted Metabolomics
+DL-Acetylcarnitine,HMDB0240773,Metabolite,Untargeted Metabolomics
+Thymidine,HMDB0000273,Metabolite,Untargeted Metabolomics
+Serotonin,HMDB0000259,Metabolite,Untargeted Metabolomics
+Thymine,HMDB0000262,Metabolite,Untargeted Metabolomics
+Propionylcarnitine,HMDB0000824,Metabolite,Untargeted Metabolomics
+Cyclic GMP,HMDB0001314,Metabolite,Untargeted Metabolomics
+L-Glutamine,HMDB0000641,Metabolite,Untargeted Metabolomics
+Homomethionine,HMDB0030406,Metabolite,Untargeted Metabolomics
+Uridine 5'-diphosphate,HMDB0000295,Metabolite,Untargeted Metabolomics
+Selenocystine,HMDB0004122,Metabolite,Untargeted Metabolomics
+Methyl hexadecanoic acid,HMDB0061859,Metabolite,Untargeted Metabolomics
+Indolelactic acid,HMDB0000671,Metabolite,Untargeted Metabolomics
+L-Galactose,HMDB0033704,Metabolite,Untargeted Metabolomics
+N-Methylserotonin,HMDB0004369,Metabolite,Untargeted Metabolomics
+N-Acetyl-D-cysteine,HMDB0255048,Metabolite,Untargeted Metabolomics
+D-Glutamic acid,HMDB0003339,Metabolite,Untargeted Metabolomics
+D-Fructose,HMDB0000660,Metabolite,Untargeted Metabolomics
+FAPy-adenine,HMDB0004816,Metabolite,Untargeted Metabolomics
+Citrulline,HMDB0000904,Metabolite,Untargeted Metabolomics
+formate,HMDB0304356,Metabolite,Untargeted Metabolomics
+Butyric acid,HMDB0000039,Metabolite,Untargeted Metabolomics
+Spermidine,HMDB0001257,Metabolite,Untargeted Metabolomics
+D-Lysine,HMDB0003405,Metabolite,Untargeted Metabolomics
+Putrescine,HMDB0001414,Metabolite,Untargeted Metabolomics
+Methylisocitric acid,HMDB0006471,Metabolite,Untargeted Metabolomics
+N-Methylputrescine,HMDB0003661,Metabolite,Untargeted Metabolomics
+"2,3-Bisphosphoglyceric acid",HMDB0001294,Metabolite,Untargeted Metabolomics
+N-Oleoyldopamine,HMDB0255218,Metabolite,Untargeted Metabolomics
+N-Methyltryptamine,HMDB0004370,Metabolite,Untargeted Metabolomics
+Hydroxocobalamin,HMDB0002308,Metabolite,Untargeted Metabolomics
+L-Ornithine,HMDB0000214,Metabolite,Untargeted Metabolomics
+Riboflavin reduced,HMDB0001557,Metabolite,Untargeted Metabolomics
+beta-Alanyl-L-lysine,HMDB0060442,Metabolite,Untargeted Metabolomics
+D-Asparagine,HMDB0033780,Metabolite,Untargeted Metabolomics
+Thiocysteine,HMDB0003585,Metabolite,Untargeted Metabolomics
+GDP-alpha-D-glucose,HMDB0304367,Metabolite,Untargeted Metabolomics
+Galloyl glucose,HMDB0301708,Metabolite,Untargeted Metabolomics
+L-Leucine,HMDB0000687,Metabolite,Untargeted Metabolomics
+CDP-ethanolamine,HMDB0001564,Metabolite,Untargeted Metabolomics
+N-Carbamoylsarcosine,HMDB0012265,Metabolite,Untargeted Metabolomics
+Glycocholic acid,HMDB0000138,Metabolite,Untargeted Metabolomics
+Allysine,HMDB0001263,Metabolite,Untargeted Metabolomics
+Uridine 5'-monophosphate,HMDB0000288,Metabolite,Untargeted Metabolomics
+S-Adenosylhomocysteine,HMDB0000939,Metabolite,Untargeted Metabolomics
+Adenylosuccinate,HMDB0059653,Metabolite,Untargeted Metabolomics
+Lithocholic acid,HMDB0000761,Metabolite,Untargeted Metabolomics
+Tiglylcarnitine,HMDB0002366,Metabolite,Untargeted Metabolomics
+Alanylalanine,HMDB0028680,Metabolite,Untargeted Metabolomics
+Sulfolithocholylglycine,HMDB0002639,Metabolite,Untargeted Metabolomics
+L-Kynurenine,HMDB0000183,Metabolite,Untargeted Metabolomics
+Ascorbic acid,HMDB0000044,Metabolite,Untargeted Metabolomics
+Allochenodeoxycholic acid,HMDB0000514,Metabolite,Untargeted Metabolomics
+Isonicotinylglycine,HMDB0041912,Metabolite,Untargeted Metabolomics
+Glutaric acid,HMDB0000661,Metabolite,Untargeted Metabolomics
+Cholic acid,HMDB0000619,Metabolite,Untargeted Metabolomics
+"N,N-dihydroxy-L-tyrosine",HMDB0304420,Metabolite,Untargeted Metabolomics
+Adenosine diphosphate ribose,HMDB0001178,Metabolite,Untargeted Metabolomics
+Tetrahydrofolic acid,HMDB0001846,Metabolite,Untargeted Metabolomics
+D-Ribose,HMDB0000283,Metabolite,Untargeted Metabolomics
+N-Acetyl-beta-alanine,HMDB0061880,Metabolite,Untargeted Metabolomics
+L-Homocystine,HMDB0000676,Metabolite,Untargeted Metabolomics
+Undecanoic acid,HMDB0000947,Metabolite,Untargeted Metabolomics
+Indoleacetic acid,HMDB0000197,Metabolite,Untargeted Metabolomics
+Fructose 6-phosphate,HMDB0000124,Metabolite,Untargeted Metabolomics
+ADP-glucose,HMDB0006557,Metabolite,Untargeted Metabolomics
+Palmitoleic acid,HMDB0003229,Metabolite,Untargeted Metabolomics
+Guanosine monophosphate,HMDB0001397,Metabolite,Untargeted Metabolomics
+Dihydroxyfumaric acid,HMDB0002050,Metabolite,Untargeted Metabolomics
+Inosinic acid,HMDB0000175,Metabolite,Untargeted Metabolomics
+Sphingosine,HMDB0000252,Metabolite,Untargeted Metabolomics
+3-Hydroxybutyric acid,HMDB0000357,Metabolite,Untargeted Metabolomics
+Mesoxalic acid,HMDB0031522,Metabolite,Untargeted Metabolomics
+Glutamic acid-betaxanthin,HMDB0304683,Metabolite,Untargeted Metabolomics
+Indoleacetaldehyde,HMDB0001190,Metabolite,Untargeted Metabolomics
+Oxalic acid,HMDB0002329,Metabolite,Untargeted Metabolomics
+gamma-Butyrobetaine,HMDB0001161,Metabolite,Untargeted Metabolomics
+L-Histidine trimethylbetaine,HMDB0029422,Metabolite,Untargeted Metabolomics
+Indole,HMDB0000738,Metabolite,Untargeted Metabolomics
+Phosphorylcholine,HMDB0000284,Metabolite,Untargeted Metabolomics
+D-Pantothenoyl-L-cysteine,HMDB0006834,Metabolite,Untargeted Metabolomics
+Metyrosine,HMDB0014903,Metabolite,Untargeted Metabolomics
+Dihomo-alpha-linolenic acid,HMDB0060039,Metabolite,Untargeted Metabolomics
+Citronellyl formate,HMDB0033371,Metabolite,Untargeted Metabolomics
+Methylselenopyruvate,HMDB0060490,Metabolite,Untargeted Metabolomics
+D-Glucose,HMDB0000122,Metabolite,Untargeted Metabolomics
+Arachidonic acid,HMDB0001043,Metabolite,Untargeted Metabolomics
+Isocitric acid,HMDB0000193,Metabolite,Untargeted Metabolomics
+Cytidine monophosphate,HMDB0000095,Metabolite,Untargeted Metabolomics
+Selenohomocysteine,HMDB0004119,Metabolite,Untargeted Metabolomics
+muco-Inositol,HMDB0062138,Metabolite,Untargeted Metabolomics
+L-Alanine,HMDB0000161,Metabolite,Untargeted Metabolomics
+Oleic acid,HMDB0000207,Metabolite,Untargeted Metabolomics
+UDP-alpha-D-galactose,HMDB0304527,Metabolite,Untargeted Metabolomics
+L-Targinine,HMDB0029416,Metabolite,Untargeted Metabolomics
+CDP-choline,HMDB0001413,Metabolite,Untargeted Metabolomics
+Deoxyadenosine monophosphate,HMDB0000905,Metabolite,Untargeted Metabolomics
+Nicotinuric acid,HMDB0003269,Metabolite,Untargeted Metabolomics
+Dihydrouracil,HMDB0000076,Metabolite,Untargeted Metabolomics
+B-OH-butyrate,HMDB0000011,Metabolite,Untargeted Metabolomics
+betaine aldehyde hydrate,HMDB0304272,Metabolite,Untargeted Metabolomics
+ADP-alpha-D-glucose,HMDB0304259,Metabolite,Untargeted Metabolomics
+Hyodeoxycholic acid,HMDB0000733,Metabolite,Untargeted Metabolomics
+Ureidopropionic acid,HMDB0000026,Metabolite,Untargeted Metabolomics
+Se-Adenosylselenomethionine,HMDB0011118,Metabolite,Untargeted Metabolomics
+N-Formyl-L-glutamic acid,HMDB0003470,Metabolite,Untargeted Metabolomics
+Sarcosine,HMDB0000271,Metabolite,Untargeted Metabolomics
+Spermine,HMDB0001256,Metabolite,Untargeted Metabolomics
+alpha-Methyl-m-tyrosine,HMDB0248232,Metabolite,Untargeted Metabolomics
+alpha-D-Glucose,HMDB0003345,Metabolite,Untargeted Metabolomics
+Orotic acid,HMDB0000226,Metabolite,Untargeted Metabolomics
+beta-Alanyl-L-arginine,HMDB0060441,Metabolite,Untargeted Metabolomics
+Guanosine diphosphate,HMDB0001201,Metabolite,Untargeted Metabolomics
+Arsenobetaine,HMDB0033206,Metabolite,Untargeted Metabolomics
+Hexanoylcarnitine,HMDB0000756,Metabolite,Untargeted Metabolomics
+Biotin,HMDB0000030,Metabolite,Untargeted Metabolomics
+DL-Asparagine,HMDB0251512,Metabolite,Untargeted Metabolomics
+Histidinyl-Leucine,HMDB0253179,Metabolite,Untargeted Metabolomics
+N-Formyl-L-methionine,HMDB0001015,Metabolite,Untargeted Metabolomics
+Lithocholyltaurine,HMDB0000722,Metabolite,Untargeted Metabolomics
+3-Hydroxybutyrylcarnitine,HMDB0013127,Metabolite,Untargeted Metabolomics
+O-Phosphoethanolamine,HMDB0000224,Metabolite,Untargeted Metabolomics
+Deoxycholic acid,HMDB0000626,Metabolite,Untargeted Metabolomics
+S-Carboxymethyl-L-cysteine,HMDB0029415,Metabolite,Untargeted Metabolomics
+Valerylcarnitine,HMDB0013128,Metabolite,Untargeted Metabolomics
+L-Carnitine,HMDB0000062,Metabolite,Untargeted Metabolomics
+Cysteineglutathione disulfide,HMDB0000656,Metabolite,Untargeted Metabolomics
+Cyclohexaneundecanoic acid,HMDB0030997,Metabolite,Untargeted Metabolomics
+Glycerophosphocholine,HMDB0000086,Metabolite,Untargeted Metabolomics
+2-Phosphoglyceric acid,HMDB0000362,Metabolite,Untargeted Metabolomics
+Malic acid,HMDB0000156,Metabolite,Untargeted Metabolomics
+Tauroursocholic acid,HMDB0000889,Metabolite,Untargeted Metabolomics
+Anserine,HMDB0000194,Metabolite,Untargeted Metabolomics
+Phosphoserine,HMDB0000272,Metabolite,Untargeted Metabolomics
+N-hydroxyl-tryptamine,HMDB0255154,Metabolite,Untargeted Metabolomics
+Deoxycytidine,HMDB0000014,Metabolite,Untargeted Metabolomics
+D-Alanine,HMDB0001310,Metabolite,Untargeted Metabolomics
+epsilon-Tocopherol,HMDB0030554,Metabolite,Untargeted Metabolomics
+gamma-Tocopherol,HMDB0001492,Metabolite,Untargeted Metabolomics
+Chenodeoxyglycocholic acid,HMDB0006898,Metabolite,Untargeted Metabolomics
+Diadenosine hexaphosphate,HMDB0001282,Metabolite,Untargeted Metabolomics
+Salicyluric acid,HMDB0000840,Metabolite,Untargeted Metabolomics
+Docosahexaenoic acid,HMDB0002183,Metabolite,Untargeted Metabolomics
+GDP-glucose,HMDB0003351,Metabolite,Untargeted Metabolomics
+DL-Cysteine,HMDB0251515,Metabolite,Untargeted Metabolomics
+Phenylpyruvic acid,HMDB0000205,Metabolite,Untargeted Metabolomics
+Leucyl-leucine,HMDB0254039,Metabolite,Untargeted Metabolomics
+Formic acid,HMDB0000142,Metabolite,Untargeted Metabolomics
+Selenomethionine se-oxide,HMDB0060257,Metabolite,Untargeted Metabolomics
+gamma-Linolenic acid,HMDB0003073,Metabolite,Untargeted Metabolomics
+N-Acetylserotonin,HMDB0001238,Metabolite,Untargeted Metabolomics
+D-Kynurenine,HMDB0250769,Metabolite,Untargeted Metabolomics
+glutamine-betaxanthin,HMDB0304684,Metabolite,Untargeted Metabolomics
+P-enolpyruvate,HMDB0000263,Metabolite,Untargeted Metabolomics
+Iminoaspartic acid,HMDB0001131,Metabolite,Untargeted Metabolomics
+Acetylcysteine,HMDB0001890,Metabolite,Untargeted Metabolomics
+L-alpha-Aminobutyric acid,HMDB0000452,Metabolite,Untargeted Metabolomics
+Phenylacetylglutamine,HMDB0006344,Metabolite,Untargeted Metabolomics
+D-2-Hydroxyglutaric acid,HMDB0000606,Metabolite,Untargeted Metabolomics
+Dibutyl succinate,HMDB0251173,Metabolite,Untargeted Metabolomics
+Eicosapentaenoic acid,HMDB0001999,Metabolite,Untargeted Metabolomics
+Isobutyric acid,HMDB0001873,Metabolite,Untargeted Metabolomics
+Farnesylcysteine,HMDB0011627,Metabolite,Untargeted Metabolomics
+Hydroxykynurenine,HMDB0000732,Metabolite,Untargeted Metabolomics
+Mannose 6-phosphate,HMDB0001078,Metabolite,Untargeted Metabolomics
+D-Histidine,HMDB0250763,Metabolite,Untargeted Metabolomics
+Cyanocobalamin,HMDB0000607,Metabolite,Untargeted Metabolomics
+Guanine,HMDB0000132,Metabolite,Untargeted Metabolomics
+Palmitoylcarnitine,HMDB0000222,Metabolite,Untargeted Metabolomics
+D-chiro-Inositol,HMDB0240209,Metabolite,Untargeted Metabolomics
+Cytidine triphosphate,HMDB0000082,Metabolite,Untargeted Metabolomics
+Oxoadipic acid,HMDB0000225,Metabolite,Untargeted Metabolomics
+"Fructose 2,6-bisphosphate",HMDB0001047,Metabolite,Untargeted Metabolomics
+L-Lysine,HMDB0000182,Metabolite,Untargeted Metabolomics
+Deoxyuridine,HMDB0000012,Metabolite,Untargeted Metabolomics
+N-Acetylleucine,HMDB0011756,Metabolite,Untargeted Metabolomics
+UDP-alpha-D-xylose,HMDB0304529,Metabolite,Untargeted Metabolomics
+Guanosine,HMDB0000133,Metabolite,Untargeted Metabolomics
+Ethyl isovalerate,HMDB0030028,Metabolite,Untargeted Metabolomics
+Acetoacetic acid,HMDB0000060,Metabolite,Untargeted Metabolomics
+Leucine-betaxanthin,HMDB0304697,Metabolite,Untargeted Metabolomics
+acetoacetate,HMDB0304256,Metabolite,Untargeted Metabolomics
+Oxalosuccinic acid,HMDB0003974,Metabolite,Untargeted Metabolomics
+D-Arginine,HMDB0003416,Metabolite,Untargeted Metabolomics
+Cystine,HMDB0250712,Metabolite,Untargeted Metabolomics
+Aspartate,HMDB0000191,Metabolite,Untargeted Metabolomics
+Choline,HMDB0000097,Metabolite,Untargeted Metabolomics
+Ursocholic acid,HMDB0000917,Metabolite,Untargeted Metabolomics
+Taurocholic acid,HMDB0000036,Metabolite,Untargeted Metabolomics
+Melatonin,HMDB0001389,Metabolite,Untargeted Metabolomics
+DL-Glutamate,HMDB0060475,Metabolite,Untargeted Metabolomics
+Creatinine,HMDB0000562,Metabolite,Untargeted Metabolomics
+Fructosyl-lysine,HMDB0252495,Metabolite,Untargeted Metabolomics
+Octanoylcarnitine,HMDB0000791,Metabolite,Untargeted Metabolomics
+Indoleacrylic acid,HMDB0000734,Metabolite,Untargeted Metabolomics
+Phosphocreatine,HMDB0001511,Metabolite,Untargeted Metabolomics
+Fumaric acid,HMDB0000134,Metabolite,Untargeted Metabolomics
+L-Homoserine,HMDB0000719,Metabolite,Untargeted Metabolomics
+Taurallocholic acid,HMDB0000922,Metabolite,Untargeted Metabolomics
+Dimethylglycine,HMDB0000092,Metabolite,Untargeted Metabolomics
+Tryptamine,HMDB0000303,Metabolite,Untargeted Metabolomics
+Asymmetric dimethylarginine,HMDB0001539,Metabolite,Untargeted Metabolomics
+N-Ethylglycine,HMDB0041945,Metabolite,Untargeted Metabolomics
+L-Aspartate-semialdehyde,HMDB0012249,Metabolite,Untargeted Metabolomics
+Galactose 1-phosphate,HMDB0000645,Metabolite,Untargeted Metabolomics
+myo-Inositol hexakisphosphate,HMDB0003502,Metabolite,Untargeted Metabolomics
+valine,HMDB0000883,Metabolite,Untargeted Metabolomics
+Deoxyribose,HMDB0003224,Metabolite,Untargeted Metabolomics
+Thiamine triphosphate,HMDB0001512,Metabolite,Untargeted Metabolomics
+Guanidinosuccinic acid,HMDB0003157,Metabolite,Untargeted Metabolomics
+Leucylleucine,HMDB0028933,Metabolite,Untargeted Metabolomics
+Dihydroxyacetone phosphate,HMDB0001473,Metabolite,Untargeted Metabolomics
+Thiamine,HMDB0000235,Metabolite,Untargeted Metabolomics
+L-Citrulline,HMDB0000904,Metabolite,Untargeted Metabolomics
+D-threo-isocitrate,HMDB0304324,Metabolite,Untargeted Metabolomics
+oxalosuccinate,HMDB0304444,Metabolite,Untargeted Metabolomics
+Myristoleic acid,HMDB0002000,Metabolite,Untargeted Metabolomics
+Deoxyuridine triphosphate,HMDB0001191,Metabolite,Untargeted Metabolomics
+D-Cysteine,HMDB0003417,Metabolite,Untargeted Metabolomics
+Palmitic acid,HMDB0000220,Metabolite,Untargeted Metabolomics
+S-Prenyl-L-cysteine,HMDB0012286,Metabolite,Untargeted Metabolomics
+Malonylcarnitine,HMDB0002095,Metabolite,Untargeted Metabolomics
+L-Tyrosine,HMDB0000158,Metabolite,Untargeted Metabolomics
+L-Acetylcarnitine,HMDB0000201,Metabolite,Untargeted Metabolomics
+Beta-Alanine,HMDB0000056,Metabolite,Untargeted Metabolomics
+Cytosine,HMDB0000630,Metabolite,Untargeted Metabolomics
+3-Phosphoglyceric acid,HMDB0000807,Metabolite,Untargeted Metabolomics
+N-Acetyl-L-phenylalanine,HMDB0000512,Metabolite,Untargeted Metabolomics
+Pretyrosine,HMDB0304809,Metabolite,Untargeted Metabolomics
+scyllo-Inositol,HMDB0000160,Metabolite,Untargeted Metabolomics
+D-Leucine,HMDB0013773,Metabolite,Untargeted Metabolomics
+L-Isoleucine,HMDB0000172,Metabolite,Untargeted Metabolomics
+Adenosine tetraphosphate,HMDB0001364,Metabolite,Untargeted Metabolomics
+Arginino-succinate,HMDB0000052,Metabolite,Untargeted Metabolomics
+L-Asparagine,HMDB0000168,Metabolite,Untargeted Metabolomics
+FAD,HMDB0001248,Metabolite,Untargeted Metabolomics
+D-Glucuronic acid,HMDB0000127,Metabolite,Untargeted Metabolomics
+Alanine betaine,HMDB0240479,Metabolite,Untargeted Metabolomics
+Sphinganine,HMDB0000269,Metabolite,Untargeted Metabolomics
+alpha-Tocopherol,HMDB0001893,Metabolite,Untargeted Metabolomics
+Maleylacetoacetic acid,HMDB0002052,Metabolite,Untargeted Metabolomics
+Homocitric acid,HMDB0003518,Metabolite,Untargeted Metabolomics
+Pentadecanoic acid,HMDB0000826,Metabolite,Untargeted Metabolomics
+L-Aspartic acid,HMDB0000191,Metabolite,Untargeted Metabolomics
+Deoxyadenosine,HMDB0000101,Metabolite,Untargeted Metabolomics
+Acetylcholine,HMDB0000895,Metabolite,Untargeted Metabolomics
+Succinate,HMDB0000254,Metabolite,Untargeted Metabolomics
+Ribose 5-phosphate,HMDB0001548,Metabolite,Untargeted Metabolomics
+O-Succinyl-L-homoserine,HMDB0255868,Metabolite,Untargeted Metabolomics
+Pseudouridine,HMDB0000767,Metabolite,Untargeted Metabolomics
+D-Alanyl-D-alanine,HMDB0003459,Metabolite,Untargeted Metabolomics
+N-Carbamoylputrescine,HMDB0033458,Metabolite,Untargeted Metabolomics
+Adenosine triphosphate,HMDB0000538,Metabolite,Untargeted Metabolomics
+Methionine sulfoximine,HMDB0029430,Metabolite,Untargeted Metabolomics
+Galactosylhydroxylysine,HMDB0000600,Metabolite,Untargeted Metabolomics
+Isopyridoxal,HMDB0004290,Metabolite,Untargeted Metabolomics
+alpha-Linolenic acid,HMDB0001388,Metabolite,Untargeted Metabolomics
+"Fructose 1,6-bisphosphate",HMDB0001058,Metabolite,Untargeted Metabolomics
+N-Methyl-D-aspartic acid,HMDB0002393,Metabolite,Untargeted Metabolomics
