@@ -1,0 +1,47 @@
+Sample,Group,IsQC,Batch,Diagnosis,Age,Gender,Treatment,Ethnicity,Body Weight
+HealthyControl_1,Healthy Control,False,1,Healthy Control,46,Female,Untreated,Caucasian,56.3
+HealthyControl_2,Healthy Control,False,1,Healthy Control,26,Female,Untreated,Caucasian,78.3
+HealthyControl_3,Healthy Control,False,1,Healthy Control,42,Male,Untreated,Caucasian,75.7
+HealthyControl_4,Healthy Control,False,1,Healthy Control,32,Female,Untreated,Caucasian,85.8
+HealthyControl_5,Healthy Control,False,1,Healthy Control,38,Female,Untreated,Other,62.8
+HealthyControl_6,Healthy Control,False,2,Healthy Control,27,Female,Untreated,Caucasian,78.8
+HealthyControl_7,Healthy Control,False,2,Healthy Control,26,Male,Untreated,Asian,60.5
+HealthyControl_8,Healthy Control,False,2,Healthy Control,39,Female,Untreated,Asian,65.0
+HealthyControl_9,Healthy Control,False,2,Healthy Control,36,Female,Untreated,Hispanic/Latino,71.3
+HealthyControl_10,Healthy Control,False,2,Healthy Control,38,Female,Untreated,Caucasian,70.7
+Prediabetic_1,Prediabetic,False,1,Prediabetic,62,Female,Diet & Exercise,Caucasian,102.6
+Prediabetic_2,Prediabetic,False,1,Prediabetic,49,Female,Diet & Exercise,Hispanic/Latino,62.9
+Prediabetic_3,Prediabetic,False,1,Prediabetic,57,Female,Untreated,African American,110.3
+Prediabetic_4,Prediabetic,False,1,Prediabetic,51,Female,Diet & Exercise,Caucasian,97.2
+Prediabetic_5,Prediabetic,False,1,Prediabetic,50,Male,Untreated,Hispanic/Latino,103.3
+Prediabetic_6,Prediabetic,False,2,Prediabetic,58,Male,Untreated,Hispanic/Latino,95.3
+Prediabetic_7,Prediabetic,False,2,Prediabetic,51,Male,Untreated,Asian,80.5
+Prediabetic_8,Prediabetic,False,2,Prediabetic,47,Male,Diet & Exercise,Hispanic/Latino,78.5
+Prediabetic_9,Prediabetic,False,2,Prediabetic,59,Male,Untreated,Caucasian,78.2
+Prediabetic_10,Prediabetic,False,2,Prediabetic,49,Female,Diet & Exercise,Caucasian,94.5
+Type2Diabetes_1,Type 2 Diabetes,False,1,Type 2 Diabetes,50,Male,Diet & Exercise,Caucasian,86.5
+Type2Diabetes_2,Type 2 Diabetes,False,1,Type 2 Diabetes,58,Female,Metformin,Caucasian,91.4
+Type2Diabetes_3,Type 2 Diabetes,False,1,Type 2 Diabetes,62,Female,Metformin,Caucasian,100.3
+Type2Diabetes_4,Type 2 Diabetes,False,1,Type 2 Diabetes,51,Male,Insulin,Caucasian,89.9
+Type2Diabetes_5,Type 2 Diabetes,False,1,Type 2 Diabetes,56,Female,Diet & Exercise,Hispanic/Latino,94.7
+Type2Diabetes_6,Type 2 Diabetes,False,2,Type 2 Diabetes,70,Female,Metformin,Caucasian,79.5
+Type2Diabetes_7,Type 2 Diabetes,False,2,Type 2 Diabetes,55,Male,Insulin,Hispanic/Latino,85.7
+Type2Diabetes_8,Type 2 Diabetes,False,2,Type 2 Diabetes,48,Male,Metformin,Hispanic/Latino,89.4
+Type2Diabetes_9,Type 2 Diabetes,False,2,Type 2 Diabetes,53,Female,Diet & Exercise,Caucasian,84.1
+Type2Diabetes_10,Type 2 Diabetes,False,2,Type 2 Diabetes,40,Female,Insulin,Asian,91.6
+MetabolicSyndrome_1,Metabolic Syndrome,False,1,Metabolic Syndrome,50,Male,Metformin,Caucasian,68.9
+MetabolicSyndrome_2,Metabolic Syndrome,False,1,Metabolic Syndrome,42,Male,Metformin,Caucasian,80.7
+MetabolicSyndrome_3,Metabolic Syndrome,False,1,Metabolic Syndrome,50,Female,Diet & Exercise,Hispanic/Latino,96.5
+MetabolicSyndrome_4,Metabolic Syndrome,False,1,Metabolic Syndrome,45,Female,Diet & Exercise,Caucasian,80.8
+MetabolicSyndrome_5,Metabolic Syndrome,False,1,Metabolic Syndrome,48,Male,Diet & Exercise,Caucasian,93.3
+MetabolicSyndrome_6,Metabolic Syndrome,False,2,Metabolic Syndrome,57,Male,Diet & Exercise,Caucasian,108.7
+MetabolicSyndrome_7,Metabolic Syndrome,False,2,Metabolic Syndrome,36,Male,Diet & Exercise,African American,91.4
+MetabolicSyndrome_8,Metabolic Syndrome,False,2,Metabolic Syndrome,44,Female,Diet & Exercise,Caucasian,72.0
+MetabolicSyndrome_9,Metabolic Syndrome,False,2,Metabolic Syndrome,56,Male,Metformin,Asian,97.1
+MetabolicSyndrome_10,Metabolic Syndrome,False,2,Metabolic Syndrome,48,Male,Metformin,Asian,90.7
+QC_1,QC,True,1,QC,47,Pooled,N/A (pooled QC),Pooled,84.5
+QC_2,QC,True,1,QC,47,Pooled,N/A (pooled QC),Pooled,84.5
+QC_3,QC,True,1,QC,47,Pooled,N/A (pooled QC),Pooled,84.5
+QC_4,QC,True,2,QC,47,Pooled,N/A (pooled QC),Pooled,84.5
+QC_5,QC,True,2,QC,47,Pooled,N/A (pooled QC),Pooled,84.5
+QC_6,QC,True,2,QC,47,Pooled,N/A (pooled QC),Pooled,84.5
