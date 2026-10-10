@@ -1,0 +1,12 @@
+streamlit
+pandas
+numpy
+scipy
+scikit-learn
+statsmodels
+matplotlib
+seaborn
+openpyxl
+adjustText
+requests
+pydeseq2>=0.4.0
