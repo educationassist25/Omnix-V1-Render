@@ -1,0 +1,2179 @@
+Gene,Pathway
+INSR,Insulin Signaling
+IRS1,Insulin Signaling
+IRS2,Insulin Signaling
+PIK3CA,Insulin Signaling
+PIK3R1,Insulin Signaling
+AKT1,Insulin Signaling
+AKT2,Insulin Signaling
+PDPK1,Insulin Signaling
+FOXO1,Insulin Signaling
+FOXO3,Insulin Signaling
+GSK3B,Insulin Signaling
+PPP1R3A,Insulin Signaling
+SLC2A4,Insulin Signaling
+SLC2A1,Insulin Signaling
+PRKCZ,Insulin Signaling
+SOS1,Insulin Signaling
+GRB2,Insulin Signaling
+RAF1,Insulin Signaling
+MAPK1,Insulin Signaling
+MAPK3,Insulin Signaling
+HK1,Glycolysis
+HK2,Glycolysis
+GPI,Glycolysis
+PFKL,Glycolysis
+PFKM,Glycolysis
+ALDOA,Glycolysis
+TPI1,Glycolysis
+GAPDH,Glycolysis
+PGK1,Glycolysis
+PGAM1,Glycolysis
+ENO1,Glycolysis
+PKM,Glycolysis
+LDHA,Glycolysis
+LDHB,Glycolysis
+PDK1,Glycolysis
+PDK4,Glycolysis
+PCK1,Glycolysis
+PCK2,Glycolysis
+G6PC,Glycolysis
+FBP1,Glycolysis
+NDUFA1,Oxidative Phosphorylation
+NDUFA9,Oxidative Phosphorylation
+NDUFB3,Oxidative Phosphorylation
+NDUFS1,Oxidative Phosphorylation
+SDHA,Oxidative Phosphorylation
+SDHB,Oxidative Phosphorylation
+UQCRC1,Oxidative Phosphorylation
+UQCRC2,Oxidative Phosphorylation
+CYC1,Oxidative Phosphorylation
+COX4I1,Oxidative Phosphorylation
+COX5A,Oxidative Phosphorylation
+COX6A1,Oxidative Phosphorylation
+ATP5F1A,Oxidative Phosphorylation
+ATP5F1B,Oxidative Phosphorylation
+ATP5MC1,Oxidative Phosphorylation
+PPARGC1A,Oxidative Phosphorylation
+NRF1,Oxidative Phosphorylation
+TFAM,Oxidative Phosphorylation
+CPT1A,Oxidative Phosphorylation
+CPT2,Oxidative Phosphorylation
+PPARG,Adipogenesis
+CEBPA,Adipogenesis
+CEBPB,Adipogenesis
+FABP4,Adipogenesis
+ADIPOQ,Adipogenesis
+LEP,Adipogenesis
+LEPR,Adipogenesis
+PLIN1,Adipogenesis
+LIPE,Adipogenesis
+FASN,Adipogenesis
+SCD,Adipogenesis
+SREBF1,Adipogenesis
+ACACA,Adipogenesis
+GLUT4,Adipogenesis
+UCP1,Adipogenesis
+RETN,Adipogenesis
+NAMPT,Adipogenesis
+CD36,Adipogenesis
+LPL,Adipogenesis
+IL6,Inflammatory Response
+IL1B,Inflammatory Response
+TNF,Inflammatory Response
+NFKB1,Inflammatory Response
+NFKB2,Inflammatory Response
+RELA,Inflammatory Response
+NLRP3,Inflammatory Response
+CCL2,Inflammatory Response
+CCL5,Inflammatory Response
+CXCL8,Inflammatory Response
+CXCL10,Inflammatory Response
+TLR4,Inflammatory Response
+TLR2,Inflammatory Response
+MYD88,Inflammatory Response
+IRAK1,Inflammatory Response
+PTGS2,Inflammatory Response
+ICAM1,Inflammatory Response
+VCAM1,Inflammatory Response
+SELE,Inflammatory Response
+CRP,Inflammatory Response
+TNFAIP3,TNFa Signaling via NFkB
+NFKBIA,TNFa Signaling via NFkB
+RELB,TNFa Signaling via NFkB
+TRAF1,TNFa Signaling via NFkB
+BIRC3,TNFa Signaling via NFkB
+CXCL1,TNFa Signaling via NFkB
+CXCL2,TNFa Signaling via NFkB
+CXCL3,TNFa Signaling via NFkB
+CCL20,TNFa Signaling via NFkB
+IL1A,TNFa Signaling via NFkB
+SOD2,TNFa Signaling via NFkB
+IER3,TNFa Signaling via NFkB
+JUNB,TNFa Signaling via NFkB
+FOS,TNFa Signaling via NFkB
+EGR1,TNFa Signaling via NFkB
+SOCS3,TNFa Signaling via NFkB
+BCL3,TNFa Signaling via NFkB
+STAT1,Interferon-gamma Response
+IRF1,Interferon-gamma Response
+IRF7,Interferon-gamma Response
+IRF9,Interferon-gamma Response
+JAK2,Interferon-gamma Response
+IFNGR1,Interferon-gamma Response
+IFNGR2,Interferon-gamma Response
+GBP1,Interferon-gamma Response
+GBP2,Interferon-gamma Response
+CXCL9,Interferon-gamma Response
+CXCL11,Interferon-gamma Response
+HLA-A,Interferon-gamma Response
+HLA-B,Interferon-gamma Response
+HLA-DRA,Interferon-gamma Response
+B2M,Interferon-gamma Response
+PSMB9,Interferon-gamma Response
+TAP1,Interferon-gamma Response
+SOCS1,Interferon-gamma Response
+CD3D,Adaptive Immune Response
+CD3E,Adaptive Immune Response
+CD4,Adaptive Immune Response
+CD8A,Adaptive Immune Response
+CD19,Adaptive Immune Response
+CD28,Adaptive Immune Response
+CD40,Adaptive Immune Response
+CD40LG,Adaptive Immune Response
+IL2,Adaptive Immune Response
+IL2RA,Adaptive Immune Response
+IL4,Adaptive Immune Response
+IL10,Adaptive Immune Response
+FOXP3,Adaptive Immune Response
+IKZF1,Adaptive Immune Response
+LCK,Adaptive Immune Response
+ZAP70,Adaptive Immune Response
+PTPRC,Adaptive Immune Response
+MS4A1,Adaptive Immune Response
+CD79A,Adaptive Immune Response
+CD79B,Adaptive Immune Response
+CASP3,Apoptosis
+CASP7,Apoptosis
+CASP8,Apoptosis
+CASP9,Apoptosis
+BAX,Apoptosis
+BAK1,Apoptosis
+BCL2,Apoptosis
+BCL2L1,Apoptosis
+BID,Apoptosis
+FAS,Apoptosis
+FASLG,Apoptosis
+TNFRSF10A,Apoptosis
+TNFRSF10B,Apoptosis
+CYCS,Apoptosis
+APAF1,Apoptosis
+TP53,Apoptosis
+BBC3,Apoptosis
+PMAIP1,Apoptosis
+XIAP,Apoptosis
+DIABLO,Apoptosis
+CCND1,Cell Cycle
+CCNE1,Cell Cycle
+CCNB1,Cell Cycle
+CCNA2,Cell Cycle
+CDK1,Cell Cycle
+CDK2,Cell Cycle
+CDK4,Cell Cycle
+CDK6,Cell Cycle
+CDKN1A,Cell Cycle
+CDKN1B,Cell Cycle
+CDKN2A,Cell Cycle
+RB1,Cell Cycle
+E2F1,Cell Cycle
+MKI67,Cell Cycle
+PCNA,Cell Cycle
+MCM2,Cell Cycle
+MCM5,Cell Cycle
+TOP2A,Cell Cycle
+AURKA,Cell Cycle
+PLK1,Cell Cycle
+ACOX1,Fatty Acid Metabolism
+ACADVL,Fatty Acid Metabolism
+ACADM,Fatty Acid Metabolism
+HADHA,Fatty Acid Metabolism
+HADHB,Fatty Acid Metabolism
+CPT1B,Fatty Acid Metabolism
+ACACB,Fatty Acid Metabolism
+ELOVL6,Fatty Acid Metabolism
+PPARA,Fatty Acid Metabolism
+PPARD,Fatty Acid Metabolism
+FABP1,Fatty Acid Metabolism
+FABP3,Fatty Acid Metabolism
+SLC27A1,Fatty Acid Metabolism
+SLC27A2,Fatty Acid Metabolism
+ACSL1,Fatty Acid Metabolism
+C1QA,Complement
+C1QB,Complement
+C1QC,Complement
+C3,Complement
+C3AR1,Complement
+C5AR1,Complement
+CFB,Complement
+CFD,Complement
+CFH,Complement
+CFI,Complement
+SERPING1,Complement
+CD55,Complement
+CD46,Complement
+CD59,Complement
+MASP1,Complement
+MASP2,Complement
+MBL2,Complement
+ITGAM,Complement
+ITGB2,Complement
+VSIG4,Complement
+CYP1A1,Xenobiotic Metabolism
+CYP1A2,Xenobiotic Metabolism
+CYP2E1,Xenobiotic Metabolism
+CYP3A4,Xenobiotic Metabolism
+CYP2C9,Xenobiotic Metabolism
+GSTA1,Xenobiotic Metabolism
+GSTM1,Xenobiotic Metabolism
+GSTP1,Xenobiotic Metabolism
+UGT1A1,Xenobiotic Metabolism
+UGT2B7,Xenobiotic Metabolism
+NQO1,Xenobiotic Metabolism
+ABCB1,Xenobiotic Metabolism
+ABCC2,Xenobiotic Metabolism
+SLC22A1,Xenobiotic Metabolism
+ALDH1A1,Xenobiotic Metabolism
+ALDH3A1,Xenobiotic Metabolism
+AOX1,Xenobiotic Metabolism
+SULT1A1,Xenobiotic Metabolism
+EPHX1,Xenobiotic Metabolism
+NAT2,Xenobiotic Metabolism
+MTOR,mTORC1 Signaling
+RPTOR,mTORC1 Signaling
+RPS6KB1,mTORC1 Signaling
+EIF4EBP1,mTORC1 Signaling
+RPS6,mTORC1 Signaling
+TSC1,mTORC1 Signaling
+TSC2,mTORC1 Signaling
+RHEB,mTORC1 Signaling
+PRKAA1,mTORC1 Signaling
+PRKAA2,mTORC1 Signaling
+DDIT4,mTORC1 Signaling
+SLC7A5,mTORC1 Signaling
+SLC3A2,mTORC1 Signaling
+HIF1A,mTORC1 Signaling
+VEGFA,mTORC1 Signaling
+IGF1,mTORC1 Signaling
+IGF1R,mTORC1 Signaling
+EPAS1,Hypoxia
+VEGFB,Hypoxia
+CA9,Hypoxia
+BNIP3,Hypoxia
+NDRG1,Hypoxia
+ADM,Hypoxia
+ANGPTL4,Hypoxia
+PFKFB3,Hypoxia
+EGLN1,Hypoxia
+EGLN3,Hypoxia
+VHL,Hypoxia
+ARNT,Hypoxia
+GENE00001,Background / unannotated
+GENE00002,Background / unannotated
+GENE00003,Background / unannotated
+GENE00004,Background / unannotated
+GENE00005,Background / unannotated
+GENE00006,Background / unannotated
+GENE00007,Background / unannotated
+GENE00008,Background / unannotated
+GENE00009,Background / unannotated
+GENE00010,Background / unannotated
+GENE00011,Background / unannotated
+GENE00012,Background / unannotated
+GENE00013,Background / unannotated
+GENE00014,Background / unannotated
+GENE00015,Background / unannotated
+GENE00016,Background / unannotated
+GENE00017,Background / unannotated
+GENE00018,Background / unannotated
+GENE00019,Background / unannotated
+GENE00020,Background / unannotated
+GENE00021,Background / unannotated
+GENE00022,Background / unannotated
+GENE00023,Background / unannotated
+GENE00024,Background / unannotated
+GENE00025,Background / unannotated
+GENE00026,Background / unannotated
+GENE00027,Background / unannotated
+GENE00028,Background / unannotated
+GENE00029,Background / unannotated
+GENE00030,Background / unannotated
+GENE00031,Background / unannotated
+GENE00032,Background / unannotated
+GENE00033,Background / unannotated
+GENE00034,Background / unannotated
+GENE00035,Background / unannotated
+GENE00036,Background / unannotated
+GENE00037,Background / unannotated
+GENE00038,Background / unannotated
+GENE00039,Background / unannotated
+GENE00040,Background / unannotated
+GENE00041,Background / unannotated
+GENE00042,Background / unannotated
+GENE00043,Background / unannotated
+GENE00044,Background / unannotated
+GENE00045,Background / unannotated
+GENE00046,Background / unannotated
+GENE00047,Background / unannotated
+GENE00048,Background / unannotated
+GENE00049,Background / unannotated
+GENE00050,Background / unannotated
+GENE00051,Background / unannotated
+GENE00052,Background / unannotated
+GENE00053,Background / unannotated
+GENE00054,Background / unannotated
+GENE00055,Background / unannotated
+GENE00056,Background / unannotated
+GENE00057,Background / unannotated
+GENE00058,Background / unannotated
+GENE00059,Background / unannotated
+GENE00060,Background / unannotated
+GENE00061,Background / unannotated
+GENE00062,Background / unannotated
+GENE00063,Background / unannotated
+GENE00064,Background / unannotated
+GENE00065,Background / unannotated
+GENE00066,Background / unannotated
+GENE00067,Background / unannotated
+GENE00068,Background / unannotated
+GENE00069,Background / unannotated
+GENE00070,Background / unannotated
+GENE00071,Background / unannotated
+GENE00072,Background / unannotated
+GENE00073,Background / unannotated
+GENE00074,Background / unannotated
+GENE00075,Background / unannotated
+GENE00076,Background / unannotated
+GENE00077,Background / unannotated
+GENE00078,Background / unannotated
+GENE00079,Background / unannotated
+GENE00080,Background / unannotated
+GENE00081,Background / unannotated
+GENE00082,Background / unannotated
+GENE00083,Background / unannotated
+GENE00084,Background / unannotated
+GENE00085,Background / unannotated
+GENE00086,Background / unannotated
+GENE00087,Background / unannotated
+GENE00088,Background / unannotated
+GENE00089,Background / unannotated
+GENE00090,Background / unannotated
+GENE00091,Background / unannotated
+GENE00092,Background / unannotated
+GENE00093,Background / unannotated
+GENE00094,Background / unannotated
+GENE00095,Background / unannotated
+GENE00096,Background / unannotated
+GENE00097,Background / unannotated
+GENE00098,Background / unannotated
+GENE00099,Background / unannotated
+GENE00100,Background / unannotated
+GENE00101,Background / unannotated
+GENE00102,Background / unannotated
+GENE00103,Background / unannotated
+GENE00104,Background / unannotated
+GENE00105,Background / unannotated
+GENE00106,Background / unannotated
+GENE00107,Background / unannotated
+GENE00108,Background / unannotated
+GENE00109,Background / unannotated
+GENE00110,Background / unannotated
+GENE00111,Background / unannotated
+GENE00112,Background / unannotated
+GENE00113,Background / unannotated
+GENE00114,Background / unannotated
+GENE00115,Background / unannotated
+GENE00116,Background / unannotated
+GENE00117,Background / unannotated
+GENE00118,Background / unannotated
+GENE00119,Background / unannotated
+GENE00120,Background / unannotated
+GENE00121,Background / unannotated
+GENE00122,Background / unannotated
+GENE00123,Background / unannotated
+GENE00124,Background / unannotated
+GENE00125,Background / unannotated
+GENE00126,Background / unannotated
+GENE00127,Background / unannotated
+GENE00128,Background / unannotated
+GENE00129,Background / unannotated
+GENE00130,Background / unannotated
+GENE00131,Background / unannotated
+GENE00132,Background / unannotated
+GENE00133,Background / unannotated
+GENE00134,Background / unannotated
+GENE00135,Background / unannotated
+GENE00136,Background / unannotated
+GENE00137,Background / unannotated
+GENE00138,Background / unannotated
+GENE00139,Background / unannotated
+GENE00140,Background / unannotated
+GENE00141,Background / unannotated
+GENE00142,Background / unannotated
+GENE00143,Background / unannotated
+GENE00144,Background / unannotated
+GENE00145,Background / unannotated
+GENE00146,Background / unannotated
+GENE00147,Background / unannotated
+GENE00148,Background / unannotated
+GENE00149,Background / unannotated
+GENE00150,Background / unannotated
+GENE00151,Background / unannotated
+GENE00152,Background / unannotated
+GENE00153,Background / unannotated
+GENE00154,Background / unannotated
+GENE00155,Background / unannotated
+GENE00156,Background / unannotated
+GENE00157,Background / unannotated
+GENE00158,Background / unannotated
+GENE00159,Background / unannotated
+GENE00160,Background / unannotated
+GENE00161,Background / unannotated
+GENE00162,Background / unannotated
+GENE00163,Background / unannotated
+GENE00164,Background / unannotated
+GENE00165,Background / unannotated
+GENE00166,Background / unannotated
+GENE00167,Background / unannotated
+GENE00168,Background / unannotated
+GENE00169,Background / unannotated
+GENE00170,Background / unannotated
+GENE00171,Background / unannotated
+GENE00172,Background / unannotated
+GENE00173,Background / unannotated
+GENE00174,Background / unannotated
+GENE00175,Background / unannotated
+GENE00176,Background / unannotated
+GENE00177,Background / unannotated
+GENE00178,Background / unannotated
+GENE00179,Background / unannotated
+GENE00180,Background / unannotated
+GENE00181,Background / unannotated
+GENE00182,Background / unannotated
+GENE00183,Background / unannotated
+GENE00184,Background / unannotated
+GENE00185,Background / unannotated
+GENE00186,Background / unannotated
+GENE00187,Background / unannotated
+GENE00188,Background / unannotated
+GENE00189,Background / unannotated
+GENE00190,Background / unannotated
+GENE00191,Background / unannotated
+GENE00192,Background / unannotated
+GENE00193,Background / unannotated
+GENE00194,Background / unannotated
+GENE00195,Background / unannotated
+GENE00196,Background / unannotated
+GENE00197,Background / unannotated
+GENE00198,Background / unannotated
+GENE00199,Background / unannotated
+GENE00200,Background / unannotated
+GENE00201,Background / unannotated
+GENE00202,Background / unannotated
+GENE00203,Background / unannotated
+GENE00204,Background / unannotated
+GENE00205,Background / unannotated
+GENE00206,Background / unannotated
+GENE00207,Background / unannotated
+GENE00208,Background / unannotated
+GENE00209,Background / unannotated
+GENE00210,Background / unannotated
+GENE00211,Background / unannotated
+GENE00212,Background / unannotated
+GENE00213,Background / unannotated
+GENE00214,Background / unannotated
+GENE00215,Background / unannotated
+GENE00216,Background / unannotated
+GENE00217,Background / unannotated
+GENE00218,Background / unannotated
+GENE00219,Background / unannotated
+GENE00220,Background / unannotated
+GENE00221,Background / unannotated
+GENE00222,Background / unannotated
+GENE00223,Background / unannotated
+GENE00224,Background / unannotated
+GENE00225,Background / unannotated
+GENE00226,Background / unannotated
+GENE00227,Background / unannotated
+GENE00228,Background / unannotated
+GENE00229,Background / unannotated
+GENE00230,Background / unannotated
+GENE00231,Background / unannotated
+GENE00232,Background / unannotated
+GENE00233,Background / unannotated
+GENE00234,Background / unannotated
+GENE00235,Background / unannotated
+GENE00236,Background / unannotated
+GENE00237,Background / unannotated
+GENE00238,Background / unannotated
+GENE00239,Background / unannotated
+GENE00240,Background / unannotated
+GENE00241,Background / unannotated
+GENE00242,Background / unannotated
+GENE00243,Background / unannotated
+GENE00244,Background / unannotated
+GENE00245,Background / unannotated
+GENE00246,Background / unannotated
+GENE00247,Background / unannotated
+GENE00248,Background / unannotated
+GENE00249,Background / unannotated
+GENE00250,Background / unannotated
+GENE00251,Background / unannotated
+GENE00252,Background / unannotated
+GENE00253,Background / unannotated
+GENE00254,Background / unannotated
+GENE00255,Background / unannotated
+GENE00256,Background / unannotated
+GENE00257,Background / unannotated
+GENE00258,Background / unannotated
+GENE00259,Background / unannotated
+GENE00260,Background / unannotated
+GENE00261,Background / unannotated
+GENE00262,Background / unannotated
+GENE00263,Background / unannotated
+GENE00264,Background / unannotated
+GENE00265,Background / unannotated
+GENE00266,Background / unannotated
+GENE00267,Background / unannotated
+GENE00268,Background / unannotated
+GENE00269,Background / unannotated
+GENE00270,Background / unannotated
+GENE00271,Background / unannotated
+GENE00272,Background / unannotated
+GENE00273,Background / unannotated
+GENE00274,Background / unannotated
+GENE00275,Background / unannotated
+GENE00276,Background / unannotated
+GENE00277,Background / unannotated
+GENE00278,Background / unannotated
+GENE00279,Background / unannotated
+GENE00280,Background / unannotated
+GENE00281,Background / unannotated
+GENE00282,Background / unannotated
+GENE00283,Background / unannotated
+GENE00284,Background / unannotated
+GENE00285,Background / unannotated
+GENE00286,Background / unannotated
+GENE00287,Background / unannotated
+GENE00288,Background / unannotated
+GENE00289,Background / unannotated
+GENE00290,Background / unannotated
+GENE00291,Background / unannotated
+GENE00292,Background / unannotated
+GENE00293,Background / unannotated
+GENE00294,Background / unannotated
+GENE00295,Background / unannotated
+GENE00296,Background / unannotated
+GENE00297,Background / unannotated
+GENE00298,Background / unannotated
+GENE00299,Background / unannotated
+GENE00300,Background / unannotated
+GENE00301,Background / unannotated
+GENE00302,Background / unannotated
+GENE00303,Background / unannotated
+GENE00304,Background / unannotated
+GENE00305,Background / unannotated
+GENE00306,Background / unannotated
+GENE00307,Background / unannotated
+GENE00308,Background / unannotated
+GENE00309,Background / unannotated
+GENE00310,Background / unannotated
+GENE00311,Background / unannotated
+GENE00312,Background / unannotated
+GENE00313,Background / unannotated
+GENE00314,Background / unannotated
+GENE00315,Background / unannotated
+GENE00316,Background / unannotated
+GENE00317,Background / unannotated
+GENE00318,Background / unannotated
+GENE00319,Background / unannotated
+GENE00320,Background / unannotated
+GENE00321,Background / unannotated
+GENE00322,Background / unannotated
+GENE00323,Background / unannotated
+GENE00324,Background / unannotated
+GENE00325,Background / unannotated
+GENE00326,Background / unannotated
+GENE00327,Background / unannotated
+GENE00328,Background / unannotated
+GENE00329,Background / unannotated
+GENE00330,Background / unannotated
+GENE00331,Background / unannotated
+GENE00332,Background / unannotated
+GENE00333,Background / unannotated
+GENE00334,Background / unannotated
+GENE00335,Background / unannotated
+GENE00336,Background / unannotated
+GENE00337,Background / unannotated
+GENE00338,Background / unannotated
+GENE00339,Background / unannotated
+GENE00340,Background / unannotated
+GENE00341,Background / unannotated
+GENE00342,Background / unannotated
+GENE00343,Background / unannotated
+GENE00344,Background / unannotated
+GENE00345,Background / unannotated
+GENE00346,Background / unannotated
+GENE00347,Background / unannotated
+GENE00348,Background / unannotated
+GENE00349,Background / unannotated
+GENE00350,Background / unannotated
+GENE00351,Background / unannotated
+GENE00352,Background / unannotated
+GENE00353,Background / unannotated
+GENE00354,Background / unannotated
+GENE00355,Background / unannotated
+GENE00356,Background / unannotated
+GENE00357,Background / unannotated
+GENE00358,Background / unannotated
+GENE00359,Background / unannotated
+GENE00360,Background / unannotated
+GENE00361,Background / unannotated
+GENE00362,Background / unannotated
+GENE00363,Background / unannotated
+GENE00364,Background / unannotated
+GENE00365,Background / unannotated
+GENE00366,Background / unannotated
+GENE00367,Background / unannotated
+GENE00368,Background / unannotated
+GENE00369,Background / unannotated
+GENE00370,Background / unannotated
+GENE00371,Background / unannotated
+GENE00372,Background / unannotated
+GENE00373,Background / unannotated
+GENE00374,Background / unannotated
+GENE00375,Background / unannotated
+GENE00376,Background / unannotated
+GENE00377,Background / unannotated
+GENE00378,Background / unannotated
+GENE00379,Background / unannotated
+GENE00380,Background / unannotated
+GENE00381,Background / unannotated
+GENE00382,Background / unannotated
+GENE00383,Background / unannotated
+GENE00384,Background / unannotated
+GENE00385,Background / unannotated
+GENE00386,Background / unannotated
+GENE00387,Background / unannotated
+GENE00388,Background / unannotated
+GENE00389,Background / unannotated
+GENE00390,Background / unannotated
+GENE00391,Background / unannotated
+GENE00392,Background / unannotated
+GENE00393,Background / unannotated
+GENE00394,Background / unannotated
+GENE00395,Background / unannotated
+GENE00396,Background / unannotated
+GENE00397,Background / unannotated
+GENE00398,Background / unannotated
+GENE00399,Background / unannotated
+GENE00400,Background / unannotated
+GENE00401,Background / unannotated
+GENE00402,Background / unannotated
+GENE00403,Background / unannotated
+GENE00404,Background / unannotated
+GENE00405,Background / unannotated
+GENE00406,Background / unannotated
+GENE00407,Background / unannotated
+GENE00408,Background / unannotated
+GENE00409,Background / unannotated
+GENE00410,Background / unannotated
+GENE00411,Background / unannotated
+GENE00412,Background / unannotated
+GENE00413,Background / unannotated
+GENE00414,Background / unannotated
+GENE00415,Background / unannotated
+GENE00416,Background / unannotated
+GENE00417,Background / unannotated
+GENE00418,Background / unannotated
+GENE00419,Background / unannotated
+GENE00420,Background / unannotated
+GENE00421,Background / unannotated
+GENE00422,Background / unannotated
+GENE00423,Background / unannotated
+GENE00424,Background / unannotated
+GENE00425,Background / unannotated
+GENE00426,Background / unannotated
+GENE00427,Background / unannotated
+GENE00428,Background / unannotated
+GENE00429,Background / unannotated
+GENE00430,Background / unannotated
+GENE00431,Background / unannotated
+GENE00432,Background / unannotated
+GENE00433,Background / unannotated
+GENE00434,Background / unannotated
+GENE00435,Background / unannotated
+GENE00436,Background / unannotated
+GENE00437,Background / unannotated
+GENE00438,Background / unannotated
+GENE00439,Background / unannotated
+GENE00440,Background / unannotated
+GENE00441,Background / unannotated
+GENE00442,Background / unannotated
+GENE00443,Background / unannotated
+GENE00444,Background / unannotated
+GENE00445,Background / unannotated
+GENE00446,Background / unannotated
+GENE00447,Background / unannotated
+GENE00448,Background / unannotated
+GENE00449,Background / unannotated
+GENE00450,Background / unannotated
+GENE00451,Background / unannotated
+GENE00452,Background / unannotated
+GENE00453,Background / unannotated
+GENE00454,Background / unannotated
+GENE00455,Background / unannotated
+GENE00456,Background / unannotated
+GENE00457,Background / unannotated
+GENE00458,Background / unannotated
+GENE00459,Background / unannotated
+GENE00460,Background / unannotated
+GENE00461,Background / unannotated
+GENE00462,Background / unannotated
+GENE00463,Background / unannotated
+GENE00464,Background / unannotated
+GENE00465,Background / unannotated
+GENE00466,Background / unannotated
+GENE00467,Background / unannotated
+GENE00468,Background / unannotated
+GENE00469,Background / unannotated
+GENE00470,Background / unannotated
+GENE00471,Background / unannotated
+GENE00472,Background / unannotated
+GENE00473,Background / unannotated
+GENE00474,Background / unannotated
+GENE00475,Background / unannotated
+GENE00476,Background / unannotated
+GENE00477,Background / unannotated
+GENE00478,Background / unannotated
+GENE00479,Background / unannotated
+GENE00480,Background / unannotated
+GENE00481,Background / unannotated
+GENE00482,Background / unannotated
+GENE00483,Background / unannotated
+GENE00484,Background / unannotated
+GENE00485,Background / unannotated
+GENE00486,Background / unannotated
+GENE00487,Background / unannotated
+GENE00488,Background / unannotated
+GENE00489,Background / unannotated
+GENE00490,Background / unannotated
+GENE00491,Background / unannotated
+GENE00492,Background / unannotated
+GENE00493,Background / unannotated
+GENE00494,Background / unannotated
+GENE00495,Background / unannotated
+GENE00496,Background / unannotated
+GENE00497,Background / unannotated
+GENE00498,Background / unannotated
+GENE00499,Background / unannotated
+GENE00500,Background / unannotated
+GENE00501,Background / unannotated
+GENE00502,Background / unannotated
+GENE00503,Background / unannotated
+GENE00504,Background / unannotated
+GENE00505,Background / unannotated
+GENE00506,Background / unannotated
+GENE00507,Background / unannotated
+GENE00508,Background / unannotated
+GENE00509,Background / unannotated
+GENE00510,Background / unannotated
+GENE00511,Background / unannotated
+GENE00512,Background / unannotated
+GENE00513,Background / unannotated
+GENE00514,Background / unannotated
+GENE00515,Background / unannotated
+GENE00516,Background / unannotated
+GENE00517,Background / unannotated
+GENE00518,Background / unannotated
+GENE00519,Background / unannotated
+GENE00520,Background / unannotated
+GENE00521,Background / unannotated
+GENE00522,Background / unannotated
+GENE00523,Background / unannotated
+GENE00524,Background / unannotated
+GENE00525,Background / unannotated
+GENE00526,Background / unannotated
+GENE00527,Background / unannotated
+GENE00528,Background / unannotated
+GENE00529,Background / unannotated
+GENE00530,Background / unannotated
+GENE00531,Background / unannotated
+GENE00532,Background / unannotated
+GENE00533,Background / unannotated
+GENE00534,Background / unannotated
+GENE00535,Background / unannotated
+GENE00536,Background / unannotated
+GENE00537,Background / unannotated
+GENE00538,Background / unannotated
+GENE00539,Background / unannotated
+GENE00540,Background / unannotated
+GENE00541,Background / unannotated
+GENE00542,Background / unannotated
+GENE00543,Background / unannotated
+GENE00544,Background / unannotated
+GENE00545,Background / unannotated
+GENE00546,Background / unannotated
+GENE00547,Background / unannotated
+GENE00548,Background / unannotated
+GENE00549,Background / unannotated
+GENE00550,Background / unannotated
+GENE00551,Background / unannotated
+GENE00552,Background / unannotated
+GENE00553,Background / unannotated
+GENE00554,Background / unannotated
+GENE00555,Background / unannotated
+GENE00556,Background / unannotated
+GENE00557,Background / unannotated
+GENE00558,Background / unannotated
+GENE00559,Background / unannotated
+GENE00560,Background / unannotated
+GENE00561,Background / unannotated
+GENE00562,Background / unannotated
+GENE00563,Background / unannotated
+GENE00564,Background / unannotated
+GENE00565,Background / unannotated
+GENE00566,Background / unannotated
+GENE00567,Background / unannotated
+GENE00568,Background / unannotated
+GENE00569,Background / unannotated
+GENE00570,Background / unannotated
+GENE00571,Background / unannotated
+GENE00572,Background / unannotated
+GENE00573,Background / unannotated
+GENE00574,Background / unannotated
+GENE00575,Background / unannotated
+GENE00576,Background / unannotated
+GENE00577,Background / unannotated
+GENE00578,Background / unannotated
+GENE00579,Background / unannotated
+GENE00580,Background / unannotated
+GENE00581,Background / unannotated
+GENE00582,Background / unannotated
+GENE00583,Background / unannotated
+GENE00584,Background / unannotated
+GENE00585,Background / unannotated
+GENE00586,Background / unannotated
+GENE00587,Background / unannotated
+GENE00588,Background / unannotated
+GENE00589,Background / unannotated
+GENE00590,Background / unannotated
+GENE00591,Background / unannotated
+GENE00592,Background / unannotated
+GENE00593,Background / unannotated
+GENE00594,Background / unannotated
+GENE00595,Background / unannotated
+GENE00596,Background / unannotated
+GENE00597,Background / unannotated
+GENE00598,Background / unannotated
+GENE00599,Background / unannotated
+GENE00600,Background / unannotated
+GENE00601,Background / unannotated
+GENE00602,Background / unannotated
+GENE00603,Background / unannotated
+GENE00604,Background / unannotated
+GENE00605,Background / unannotated
+GENE00606,Background / unannotated
+GENE00607,Background / unannotated
+GENE00608,Background / unannotated
+GENE00609,Background / unannotated
+GENE00610,Background / unannotated
+GENE00611,Background / unannotated
+GENE00612,Background / unannotated
+GENE00613,Background / unannotated
+GENE00614,Background / unannotated
+GENE00615,Background / unannotated
+GENE00616,Background / unannotated
+GENE00617,Background / unannotated
+GENE00618,Background / unannotated
+GENE00619,Background / unannotated
+GENE00620,Background / unannotated
+GENE00621,Background / unannotated
+GENE00622,Background / unannotated
+GENE00623,Background / unannotated
+GENE00624,Background / unannotated
+GENE00625,Background / unannotated
+GENE00626,Background / unannotated
+GENE00627,Background / unannotated
+GENE00628,Background / unannotated
+GENE00629,Background / unannotated
+GENE00630,Background / unannotated
+GENE00631,Background / unannotated
+GENE00632,Background / unannotated
+GENE00633,Background / unannotated
+GENE00634,Background / unannotated
+GENE00635,Background / unannotated
+GENE00636,Background / unannotated
+GENE00637,Background / unannotated
+GENE00638,Background / unannotated
+GENE00639,Background / unannotated
+GENE00640,Background / unannotated
+GENE00641,Background / unannotated
+GENE00642,Background / unannotated
+GENE00643,Background / unannotated
+GENE00644,Background / unannotated
+GENE00645,Background / unannotated
+GENE00646,Background / unannotated
+GENE00647,Background / unannotated
+GENE00648,Background / unannotated
+GENE00649,Background / unannotated
+GENE00650,Background / unannotated
+GENE00651,Background / unannotated
+GENE00652,Background / unannotated
+GENE00653,Background / unannotated
+GENE00654,Background / unannotated
+GENE00655,Background / unannotated
+GENE00656,Background / unannotated
+GENE00657,Background / unannotated
+GENE00658,Background / unannotated
+GENE00659,Background / unannotated
+GENE00660,Background / unannotated
+GENE00661,Background / unannotated
+GENE00662,Background / unannotated
+GENE00663,Background / unannotated
+GENE00664,Background / unannotated
+GENE00665,Background / unannotated
+GENE00666,Background / unannotated
+GENE00667,Background / unannotated
+GENE00668,Background / unannotated
+GENE00669,Background / unannotated
+GENE00670,Background / unannotated
+GENE00671,Background / unannotated
+GENE00672,Background / unannotated
+GENE00673,Background / unannotated
+GENE00674,Background / unannotated
+GENE00675,Background / unannotated
+GENE00676,Background / unannotated
+GENE00677,Background / unannotated
+GENE00678,Background / unannotated
+GENE00679,Background / unannotated
+GENE00680,Background / unannotated
+GENE00681,Background / unannotated
+GENE00682,Background / unannotated
+GENE00683,Background / unannotated
+GENE00684,Background / unannotated
+GENE00685,Background / unannotated
+GENE00686,Background / unannotated
+GENE00687,Background / unannotated
+GENE00688,Background / unannotated
+GENE00689,Background / unannotated
+GENE00690,Background / unannotated
+GENE00691,Background / unannotated
+GENE00692,Background / unannotated
+GENE00693,Background / unannotated
+GENE00694,Background / unannotated
+GENE00695,Background / unannotated
+GENE00696,Background / unannotated
+GENE00697,Background / unannotated
+GENE00698,Background / unannotated
+GENE00699,Background / unannotated
+GENE00700,Background / unannotated
+GENE00701,Background / unannotated
+GENE00702,Background / unannotated
+GENE00703,Background / unannotated
+GENE00704,Background / unannotated
+GENE00705,Background / unannotated
+GENE00706,Background / unannotated
+GENE00707,Background / unannotated
+GENE00708,Background / unannotated
+GENE00709,Background / unannotated
+GENE00710,Background / unannotated
+GENE00711,Background / unannotated
+GENE00712,Background / unannotated
+GENE00713,Background / unannotated
+GENE00714,Background / unannotated
+GENE00715,Background / unannotated
+GENE00716,Background / unannotated
+GENE00717,Background / unannotated
+GENE00718,Background / unannotated
+GENE00719,Background / unannotated
+GENE00720,Background / unannotated
+GENE00721,Background / unannotated
+GENE00722,Background / unannotated
+GENE00723,Background / unannotated
+GENE00724,Background / unannotated
+GENE00725,Background / unannotated
+GENE00726,Background / unannotated
+GENE00727,Background / unannotated
+GENE00728,Background / unannotated
+GENE00729,Background / unannotated
+GENE00730,Background / unannotated
+GENE00731,Background / unannotated
+GENE00732,Background / unannotated
+GENE00733,Background / unannotated
+GENE00734,Background / unannotated
+GENE00735,Background / unannotated
+GENE00736,Background / unannotated
+GENE00737,Background / unannotated
+GENE00738,Background / unannotated
+GENE00739,Background / unannotated
+GENE00740,Background / unannotated
+GENE00741,Background / unannotated
+GENE00742,Background / unannotated
+GENE00743,Background / unannotated
+GENE00744,Background / unannotated
+GENE00745,Background / unannotated
+GENE00746,Background / unannotated
+GENE00747,Background / unannotated
+GENE00748,Background / unannotated
+GENE00749,Background / unannotated
+GENE00750,Background / unannotated
+GENE00751,Background / unannotated
+GENE00752,Background / unannotated
+GENE00753,Background / unannotated
+GENE00754,Background / unannotated
+GENE00755,Background / unannotated
+GENE00756,Background / unannotated
+GENE00757,Background / unannotated
+GENE00758,Background / unannotated
+GENE00759,Background / unannotated
+GENE00760,Background / unannotated
+GENE00761,Background / unannotated
+GENE00762,Background / unannotated
+GENE00763,Background / unannotated
+GENE00764,Background / unannotated
+GENE00765,Background / unannotated
+GENE00766,Background / unannotated
+GENE00767,Background / unannotated
+GENE00768,Background / unannotated
+GENE00769,Background / unannotated
+GENE00770,Background / unannotated
+GENE00771,Background / unannotated
+GENE00772,Background / unannotated
+GENE00773,Background / unannotated
+GENE00774,Background / unannotated
+GENE00775,Background / unannotated
+GENE00776,Background / unannotated
+GENE00777,Background / unannotated
+GENE00778,Background / unannotated
+GENE00779,Background / unannotated
+GENE00780,Background / unannotated
+GENE00781,Background / unannotated
+GENE00782,Background / unannotated
+GENE00783,Background / unannotated
+GENE00784,Background / unannotated
+GENE00785,Background / unannotated
+GENE00786,Background / unannotated
+GENE00787,Background / unannotated
+GENE00788,Background / unannotated
+GENE00789,Background / unannotated
+GENE00790,Background / unannotated
+GENE00791,Background / unannotated
+GENE00792,Background / unannotated
+GENE00793,Background / unannotated
+GENE00794,Background / unannotated
+GENE00795,Background / unannotated
+GENE00796,Background / unannotated
+GENE00797,Background / unannotated
+GENE00798,Background / unannotated
+GENE00799,Background / unannotated
+GENE00800,Background / unannotated
+GENE00801,Background / unannotated
+GENE00802,Background / unannotated
+GENE00803,Background / unannotated
+GENE00804,Background / unannotated
+GENE00805,Background / unannotated
+GENE00806,Background / unannotated
+GENE00807,Background / unannotated
+GENE00808,Background / unannotated
+GENE00809,Background / unannotated
+GENE00810,Background / unannotated
+GENE00811,Background / unannotated
+GENE00812,Background / unannotated
+GENE00813,Background / unannotated
+GENE00814,Background / unannotated
+GENE00815,Background / unannotated
+GENE00816,Background / unannotated
+GENE00817,Background / unannotated
+GENE00818,Background / unannotated
+GENE00819,Background / unannotated
+GENE00820,Background / unannotated
+GENE00821,Background / unannotated
+GENE00822,Background / unannotated
+GENE00823,Background / unannotated
+GENE00824,Background / unannotated
+GENE00825,Background / unannotated
+GENE00826,Background / unannotated
+GENE00827,Background / unannotated
+GENE00828,Background / unannotated
+GENE00829,Background / unannotated
+GENE00830,Background / unannotated
+GENE00831,Background / unannotated
+GENE00832,Background / unannotated
+GENE00833,Background / unannotated
+GENE00834,Background / unannotated
+GENE00835,Background / unannotated
+GENE00836,Background / unannotated
+GENE00837,Background / unannotated
+GENE00838,Background / unannotated
+GENE00839,Background / unannotated
+GENE00840,Background / unannotated
+GENE00841,Background / unannotated
+GENE00842,Background / unannotated
+GENE00843,Background / unannotated
+GENE00844,Background / unannotated
+GENE00845,Background / unannotated
+GENE00846,Background / unannotated
+GENE00847,Background / unannotated
+GENE00848,Background / unannotated
+GENE00849,Background / unannotated
+GENE00850,Background / unannotated
+GENE00851,Background / unannotated
+GENE00852,Background / unannotated
+GENE00853,Background / unannotated
+GENE00854,Background / unannotated
+GENE00855,Background / unannotated
+GENE00856,Background / unannotated
+GENE00857,Background / unannotated
+GENE00858,Background / unannotated
+GENE00859,Background / unannotated
+GENE00860,Background / unannotated
+GENE00861,Background / unannotated
+GENE00862,Background / unannotated
+GENE00863,Background / unannotated
+GENE00864,Background / unannotated
+GENE00865,Background / unannotated
+GENE00866,Background / unannotated
+GENE00867,Background / unannotated
+GENE00868,Background / unannotated
+GENE00869,Background / unannotated
+GENE00870,Background / unannotated
+GENE00871,Background / unannotated
+GENE00872,Background / unannotated
+GENE00873,Background / unannotated
+GENE00874,Background / unannotated
+GENE00875,Background / unannotated
+GENE00876,Background / unannotated
+GENE00877,Background / unannotated
+GENE00878,Background / unannotated
+GENE00879,Background / unannotated
+GENE00880,Background / unannotated
+GENE00881,Background / unannotated
+GENE00882,Background / unannotated
+GENE00883,Background / unannotated
+GENE00884,Background / unannotated
+GENE00885,Background / unannotated
+GENE00886,Background / unannotated
+GENE00887,Background / unannotated
+GENE00888,Background / unannotated
+GENE00889,Background / unannotated
+GENE00890,Background / unannotated
+GENE00891,Background / unannotated
+GENE00892,Background / unannotated
+GENE00893,Background / unannotated
+GENE00894,Background / unannotated
+GENE00895,Background / unannotated
+GENE00896,Background / unannotated
+GENE00897,Background / unannotated
+GENE00898,Background / unannotated
+GENE00899,Background / unannotated
+GENE00900,Background / unannotated
+GENE00901,Background / unannotated
+GENE00902,Background / unannotated
+GENE00903,Background / unannotated
+GENE00904,Background / unannotated
+GENE00905,Background / unannotated
+GENE00906,Background / unannotated
+GENE00907,Background / unannotated
+GENE00908,Background / unannotated
+GENE00909,Background / unannotated
+GENE00910,Background / unannotated
+GENE00911,Background / unannotated
+GENE00912,Background / unannotated
+GENE00913,Background / unannotated
+GENE00914,Background / unannotated
+GENE00915,Background / unannotated
+GENE00916,Background / unannotated
+GENE00917,Background / unannotated
+GENE00918,Background / unannotated
+GENE00919,Background / unannotated
+GENE00920,Background / unannotated
+GENE00921,Background / unannotated
+GENE00922,Background / unannotated
+GENE00923,Background / unannotated
+GENE00924,Background / unannotated
+GENE00925,Background / unannotated
+GENE00926,Background / unannotated
+GENE00927,Background / unannotated
+GENE00928,Background / unannotated
+GENE00929,Background / unannotated
+GENE00930,Background / unannotated
+GENE00931,Background / unannotated
+GENE00932,Background / unannotated
+GENE00933,Background / unannotated
+GENE00934,Background / unannotated
+GENE00935,Background / unannotated
+GENE00936,Background / unannotated
+GENE00937,Background / unannotated
+GENE00938,Background / unannotated
+GENE00939,Background / unannotated
+GENE00940,Background / unannotated
+GENE00941,Background / unannotated
+GENE00942,Background / unannotated
+GENE00943,Background / unannotated
+GENE00944,Background / unannotated
+GENE00945,Background / unannotated
+GENE00946,Background / unannotated
+GENE00947,Background / unannotated
+GENE00948,Background / unannotated
+GENE00949,Background / unannotated
+GENE00950,Background / unannotated
+GENE00951,Background / unannotated
+GENE00952,Background / unannotated
+GENE00953,Background / unannotated
+GENE00954,Background / unannotated
+GENE00955,Background / unannotated
+GENE00956,Background / unannotated
+GENE00957,Background / unannotated
+GENE00958,Background / unannotated
+GENE00959,Background / unannotated
+GENE00960,Background / unannotated
+GENE00961,Background / unannotated
+GENE00962,Background / unannotated
+GENE00963,Background / unannotated
+GENE00964,Background / unannotated
+GENE00965,Background / unannotated
+GENE00966,Background / unannotated
+GENE00967,Background / unannotated
+GENE00968,Background / unannotated
+GENE00969,Background / unannotated
+GENE00970,Background / unannotated
+GENE00971,Background / unannotated
+GENE00972,Background / unannotated
+GENE00973,Background / unannotated
+GENE00974,Background / unannotated
+GENE00975,Background / unannotated
+GENE00976,Background / unannotated
+GENE00977,Background / unannotated
+GENE00978,Background / unannotated
+GENE00979,Background / unannotated
+GENE00980,Background / unannotated
+GENE00981,Background / unannotated
+GENE00982,Background / unannotated
+GENE00983,Background / unannotated
+GENE00984,Background / unannotated
+GENE00985,Background / unannotated
+GENE00986,Background / unannotated
+GENE00987,Background / unannotated
+GENE00988,Background / unannotated
+GENE00989,Background / unannotated
+GENE00990,Background / unannotated
+GENE00991,Background / unannotated
+GENE00992,Background / unannotated
+GENE00993,Background / unannotated
+GENE00994,Background / unannotated
+GENE00995,Background / unannotated
+GENE00996,Background / unannotated
+GENE00997,Background / unannotated
+GENE00998,Background / unannotated
+GENE00999,Background / unannotated
+GENE01000,Background / unannotated
+GENE01001,Background / unannotated
+GENE01002,Background / unannotated
+GENE01003,Background / unannotated
+GENE01004,Background / unannotated
+GENE01005,Background / unannotated
+GENE01006,Background / unannotated
+GENE01007,Background / unannotated
+GENE01008,Background / unannotated
+GENE01009,Background / unannotated
+GENE01010,Background / unannotated
+GENE01011,Background / unannotated
+GENE01012,Background / unannotated
+GENE01013,Background / unannotated
+GENE01014,Background / unannotated
+GENE01015,Background / unannotated
+GENE01016,Background / unannotated
+GENE01017,Background / unannotated
+GENE01018,Background / unannotated
+GENE01019,Background / unannotated
+GENE01020,Background / unannotated
+GENE01021,Background / unannotated
+GENE01022,Background / unannotated
+GENE01023,Background / unannotated
+GENE01024,Background / unannotated
+GENE01025,Background / unannotated
+GENE01026,Background / unannotated
+GENE01027,Background / unannotated
+GENE01028,Background / unannotated
+GENE01029,Background / unannotated
+GENE01030,Background / unannotated
+GENE01031,Background / unannotated
+GENE01032,Background / unannotated
+GENE01033,Background / unannotated
+GENE01034,Background / unannotated
+GENE01035,Background / unannotated
+GENE01036,Background / unannotated
+GENE01037,Background / unannotated
+GENE01038,Background / unannotated
+GENE01039,Background / unannotated
+GENE01040,Background / unannotated
+GENE01041,Background / unannotated
+GENE01042,Background / unannotated
+GENE01043,Background / unannotated
+GENE01044,Background / unannotated
+GENE01045,Background / unannotated
+GENE01046,Background / unannotated
+GENE01047,Background / unannotated
+GENE01048,Background / unannotated
+GENE01049,Background / unannotated
+GENE01050,Background / unannotated
+GENE01051,Background / unannotated
+GENE01052,Background / unannotated
+GENE01053,Background / unannotated
+GENE01054,Background / unannotated
+GENE01055,Background / unannotated
+GENE01056,Background / unannotated
+GENE01057,Background / unannotated
+GENE01058,Background / unannotated
+GENE01059,Background / unannotated
+GENE01060,Background / unannotated
+GENE01061,Background / unannotated
+GENE01062,Background / unannotated
+GENE01063,Background / unannotated
+GENE01064,Background / unannotated
+GENE01065,Background / unannotated
+GENE01066,Background / unannotated
+GENE01067,Background / unannotated
+GENE01068,Background / unannotated
+GENE01069,Background / unannotated
+GENE01070,Background / unannotated
+GENE01071,Background / unannotated
+GENE01072,Background / unannotated
+GENE01073,Background / unannotated
+GENE01074,Background / unannotated
+GENE01075,Background / unannotated
+GENE01076,Background / unannotated
+GENE01077,Background / unannotated
+GENE01078,Background / unannotated
+GENE01079,Background / unannotated
+GENE01080,Background / unannotated
+GENE01081,Background / unannotated
+GENE01082,Background / unannotated
+GENE01083,Background / unannotated
+GENE01084,Background / unannotated
+GENE01085,Background / unannotated
+GENE01086,Background / unannotated
+GENE01087,Background / unannotated
+GENE01088,Background / unannotated
+GENE01089,Background / unannotated
+GENE01090,Background / unannotated
+GENE01091,Background / unannotated
+GENE01092,Background / unannotated
+GENE01093,Background / unannotated
+GENE01094,Background / unannotated
+GENE01095,Background / unannotated
+GENE01096,Background / unannotated
+GENE01097,Background / unannotated
+GENE01098,Background / unannotated
+GENE01099,Background / unannotated
+GENE01100,Background / unannotated
+GENE01101,Background / unannotated
+GENE01102,Background / unannotated
+GENE01103,Background / unannotated
+GENE01104,Background / unannotated
+GENE01105,Background / unannotated
+GENE01106,Background / unannotated
+GENE01107,Background / unannotated
+GENE01108,Background / unannotated
+GENE01109,Background / unannotated
+GENE01110,Background / unannotated
+GENE01111,Background / unannotated
+GENE01112,Background / unannotated
+GENE01113,Background / unannotated
+GENE01114,Background / unannotated
+GENE01115,Background / unannotated
+GENE01116,Background / unannotated
+GENE01117,Background / unannotated
+GENE01118,Background / unannotated
+GENE01119,Background / unannotated
+GENE01120,Background / unannotated
+GENE01121,Background / unannotated
+GENE01122,Background / unannotated
+GENE01123,Background / unannotated
+GENE01124,Background / unannotated
+GENE01125,Background / unannotated
+GENE01126,Background / unannotated
+GENE01127,Background / unannotated
+GENE01128,Background / unannotated
+GENE01129,Background / unannotated
+GENE01130,Background / unannotated
+GENE01131,Background / unannotated
+GENE01132,Background / unannotated
+GENE01133,Background / unannotated
+GENE01134,Background / unannotated
+GENE01135,Background / unannotated
+GENE01136,Background / unannotated
+GENE01137,Background / unannotated
+GENE01138,Background / unannotated
+GENE01139,Background / unannotated
+GENE01140,Background / unannotated
+GENE01141,Background / unannotated
+GENE01142,Background / unannotated
+GENE01143,Background / unannotated
+GENE01144,Background / unannotated
+GENE01145,Background / unannotated
+GENE01146,Background / unannotated
+GENE01147,Background / unannotated
+GENE01148,Background / unannotated
+GENE01149,Background / unannotated
+GENE01150,Background / unannotated
+GENE01151,Background / unannotated
+GENE01152,Background / unannotated
+GENE01153,Background / unannotated
+GENE01154,Background / unannotated
+GENE01155,Background / unannotated
+GENE01156,Background / unannotated
+GENE01157,Background / unannotated
+GENE01158,Background / unannotated
+GENE01159,Background / unannotated
+GENE01160,Background / unannotated
+GENE01161,Background / unannotated
+GENE01162,Background / unannotated
+GENE01163,Background / unannotated
+GENE01164,Background / unannotated
+GENE01165,Background / unannotated
+GENE01166,Background / unannotated
+GENE01167,Background / unannotated
+GENE01168,Background / unannotated
+GENE01169,Background / unannotated
+GENE01170,Background / unannotated
+GENE01171,Background / unannotated
+GENE01172,Background / unannotated
+GENE01173,Background / unannotated
+GENE01174,Background / unannotated
+GENE01175,Background / unannotated
+GENE01176,Background / unannotated
+GENE01177,Background / unannotated
+GENE01178,Background / unannotated
+GENE01179,Background / unannotated
+GENE01180,Background / unannotated
+GENE01181,Background / unannotated
+GENE01182,Background / unannotated
+GENE01183,Background / unannotated
+GENE01184,Background / unannotated
+GENE01185,Background / unannotated
+GENE01186,Background / unannotated
+GENE01187,Background / unannotated
+GENE01188,Background / unannotated
+GENE01189,Background / unannotated
+GENE01190,Background / unannotated
+GENE01191,Background / unannotated
+GENE01192,Background / unannotated
+GENE01193,Background / unannotated
+GENE01194,Background / unannotated
+GENE01195,Background / unannotated
+GENE01196,Background / unannotated
+GENE01197,Background / unannotated
+GENE01198,Background / unannotated
+GENE01199,Background / unannotated
+GENE01200,Background / unannotated
+GENE01201,Background / unannotated
+GENE01202,Background / unannotated
+GENE01203,Background / unannotated
+GENE01204,Background / unannotated
+GENE01205,Background / unannotated
+GENE01206,Background / unannotated
+GENE01207,Background / unannotated
+GENE01208,Background / unannotated
+GENE01209,Background / unannotated
+GENE01210,Background / unannotated
+GENE01211,Background / unannotated
+GENE01212,Background / unannotated
+GENE01213,Background / unannotated
+GENE01214,Background / unannotated
+GENE01215,Background / unannotated
+GENE01216,Background / unannotated
+GENE01217,Background / unannotated
+GENE01218,Background / unannotated
+GENE01219,Background / unannotated
+GENE01220,Background / unannotated
+GENE01221,Background / unannotated
+GENE01222,Background / unannotated
+GENE01223,Background / unannotated
+GENE01224,Background / unannotated
+GENE01225,Background / unannotated
+GENE01226,Background / unannotated
+GENE01227,Background / unannotated
+GENE01228,Background / unannotated
+GENE01229,Background / unannotated
+GENE01230,Background / unannotated
+GENE01231,Background / unannotated
+GENE01232,Background / unannotated
+GENE01233,Background / unannotated
+GENE01234,Background / unannotated
+GENE01235,Background / unannotated
+GENE01236,Background / unannotated
+GENE01237,Background / unannotated
+GENE01238,Background / unannotated
+GENE01239,Background / unannotated
+GENE01240,Background / unannotated
+GENE01241,Background / unannotated
+GENE01242,Background / unannotated
+GENE01243,Background / unannotated
+GENE01244,Background / unannotated
+GENE01245,Background / unannotated
+GENE01246,Background / unannotated
+GENE01247,Background / unannotated
+GENE01248,Background / unannotated
+GENE01249,Background / unannotated
+GENE01250,Background / unannotated
+GENE01251,Background / unannotated
+GENE01252,Background / unannotated
+GENE01253,Background / unannotated
+GENE01254,Background / unannotated
+GENE01255,Background / unannotated
+GENE01256,Background / unannotated
+GENE01257,Background / unannotated
+GENE01258,Background / unannotated
+GENE01259,Background / unannotated
+GENE01260,Background / unannotated
+GENE01261,Background / unannotated
+GENE01262,Background / unannotated
+GENE01263,Background / unannotated
+GENE01264,Background / unannotated
+GENE01265,Background / unannotated
+GENE01266,Background / unannotated
+GENE01267,Background / unannotated
+GENE01268,Background / unannotated
+GENE01269,Background / unannotated
+GENE01270,Background / unannotated
+GENE01271,Background / unannotated
+GENE01272,Background / unannotated
+GENE01273,Background / unannotated
+GENE01274,Background / unannotated
+GENE01275,Background / unannotated
+GENE01276,Background / unannotated
+GENE01277,Background / unannotated
+GENE01278,Background / unannotated
+GENE01279,Background / unannotated
+GENE01280,Background / unannotated
+GENE01281,Background / unannotated
+GENE01282,Background / unannotated
+GENE01283,Background / unannotated
+GENE01284,Background / unannotated
+GENE01285,Background / unannotated
+GENE01286,Background / unannotated
+GENE01287,Background / unannotated
+GENE01288,Background / unannotated
+GENE01289,Background / unannotated
+GENE01290,Background / unannotated
+GENE01291,Background / unannotated
+GENE01292,Background / unannotated
+GENE01293,Background / unannotated
+GENE01294,Background / unannotated
+GENE01295,Background / unannotated
+GENE01296,Background / unannotated
+GENE01297,Background / unannotated
+GENE01298,Background / unannotated
+GENE01299,Background / unannotated
+GENE01300,Background / unannotated
+GENE01301,Background / unannotated
+GENE01302,Background / unannotated
+GENE01303,Background / unannotated
+GENE01304,Background / unannotated
+GENE01305,Background / unannotated
+GENE01306,Background / unannotated
+GENE01307,Background / unannotated
+GENE01308,Background / unannotated
+GENE01309,Background / unannotated
+GENE01310,Background / unannotated
+GENE01311,Background / unannotated
+GENE01312,Background / unannotated
+GENE01313,Background / unannotated
+GENE01314,Background / unannotated
+GENE01315,Background / unannotated
+GENE01316,Background / unannotated
+GENE01317,Background / unannotated
+GENE01318,Background / unannotated
+GENE01319,Background / unannotated
+GENE01320,Background / unannotated
+GENE01321,Background / unannotated
+GENE01322,Background / unannotated
+GENE01323,Background / unannotated
+GENE01324,Background / unannotated
+GENE01325,Background / unannotated
+GENE01326,Background / unannotated
+GENE01327,Background / unannotated
+GENE01328,Background / unannotated
+GENE01329,Background / unannotated
+GENE01330,Background / unannotated
+GENE01331,Background / unannotated
+GENE01332,Background / unannotated
+GENE01333,Background / unannotated
+GENE01334,Background / unannotated
+GENE01335,Background / unannotated
+GENE01336,Background / unannotated
+GENE01337,Background / unannotated
+GENE01338,Background / unannotated
+GENE01339,Background / unannotated
+GENE01340,Background / unannotated
+GENE01341,Background / unannotated
+GENE01342,Background / unannotated
+GENE01343,Background / unannotated
+GENE01344,Background / unannotated
+GENE01345,Background / unannotated
+GENE01346,Background / unannotated
+GENE01347,Background / unannotated
+GENE01348,Background / unannotated
+GENE01349,Background / unannotated
+GENE01350,Background / unannotated
+GENE01351,Background / unannotated
+GENE01352,Background / unannotated
+GENE01353,Background / unannotated
+GENE01354,Background / unannotated
+GENE01355,Background / unannotated
+GENE01356,Background / unannotated
+GENE01357,Background / unannotated
+GENE01358,Background / unannotated
+GENE01359,Background / unannotated
+GENE01360,Background / unannotated
+GENE01361,Background / unannotated
+GENE01362,Background / unannotated
+GENE01363,Background / unannotated
+GENE01364,Background / unannotated
+GENE01365,Background / unannotated
+GENE01366,Background / unannotated
+GENE01367,Background / unannotated
+GENE01368,Background / unannotated
+GENE01369,Background / unannotated
+GENE01370,Background / unannotated
+GENE01371,Background / unannotated
+GENE01372,Background / unannotated
+GENE01373,Background / unannotated
+GENE01374,Background / unannotated
+GENE01375,Background / unannotated
+GENE01376,Background / unannotated
+GENE01377,Background / unannotated
+GENE01378,Background / unannotated
+GENE01379,Background / unannotated
+GENE01380,Background / unannotated
+GENE01381,Background / unannotated
+GENE01382,Background / unannotated
+GENE01383,Background / unannotated
+GENE01384,Background / unannotated
+GENE01385,Background / unannotated
+GENE01386,Background / unannotated
+GENE01387,Background / unannotated
+GENE01388,Background / unannotated
+GENE01389,Background / unannotated
+GENE01390,Background / unannotated
+GENE01391,Background / unannotated
+GENE01392,Background / unannotated
+GENE01393,Background / unannotated
+GENE01394,Background / unannotated
+GENE01395,Background / unannotated
+GENE01396,Background / unannotated
+GENE01397,Background / unannotated
+GENE01398,Background / unannotated
+GENE01399,Background / unannotated
+GENE01400,Background / unannotated
+GENE01401,Background / unannotated
+GENE01402,Background / unannotated
+GENE01403,Background / unannotated
+GENE01404,Background / unannotated
+GENE01405,Background / unannotated
+GENE01406,Background / unannotated
+GENE01407,Background / unannotated
+GENE01408,Background / unannotated
+GENE01409,Background / unannotated
+GENE01410,Background / unannotated
+GENE01411,Background / unannotated
+GENE01412,Background / unannotated
+GENE01413,Background / unannotated
+GENE01414,Background / unannotated
+GENE01415,Background / unannotated
+GENE01416,Background / unannotated
+GENE01417,Background / unannotated
+GENE01418,Background / unannotated
+GENE01419,Background / unannotated
+GENE01420,Background / unannotated
+GENE01421,Background / unannotated
+GENE01422,Background / unannotated
+GENE01423,Background / unannotated
+GENE01424,Background / unannotated
+GENE01425,Background / unannotated
+GENE01426,Background / unannotated
+GENE01427,Background / unannotated
+GENE01428,Background / unannotated
+GENE01429,Background / unannotated
+GENE01430,Background / unannotated
+GENE01431,Background / unannotated
+GENE01432,Background / unannotated
+GENE01433,Background / unannotated
+GENE01434,Background / unannotated
+GENE01435,Background / unannotated
+GENE01436,Background / unannotated
+GENE01437,Background / unannotated
+GENE01438,Background / unannotated
+GENE01439,Background / unannotated
+GENE01440,Background / unannotated
+GENE01441,Background / unannotated
+GENE01442,Background / unannotated
+GENE01443,Background / unannotated
+GENE01444,Background / unannotated
+GENE01445,Background / unannotated
+GENE01446,Background / unannotated
+GENE01447,Background / unannotated
+GENE01448,Background / unannotated
+GENE01449,Background / unannotated
+GENE01450,Background / unannotated
+GENE01451,Background / unannotated
+GENE01452,Background / unannotated
+GENE01453,Background / unannotated
+GENE01454,Background / unannotated
+GENE01455,Background / unannotated
+GENE01456,Background / unannotated
+GENE01457,Background / unannotated
+GENE01458,Background / unannotated
+GENE01459,Background / unannotated
+GENE01460,Background / unannotated
+GENE01461,Background / unannotated
+GENE01462,Background / unannotated
+GENE01463,Background / unannotated
+GENE01464,Background / unannotated
+GENE01465,Background / unannotated
+GENE01466,Background / unannotated
+GENE01467,Background / unannotated
+GENE01468,Background / unannotated
+GENE01469,Background / unannotated
+GENE01470,Background / unannotated
+GENE01471,Background / unannotated
+GENE01472,Background / unannotated
+GENE01473,Background / unannotated
+GENE01474,Background / unannotated
+GENE01475,Background / unannotated
+GENE01476,Background / unannotated
+GENE01477,Background / unannotated
+GENE01478,Background / unannotated
+GENE01479,Background / unannotated
+GENE01480,Background / unannotated
+GENE01481,Background / unannotated
+GENE01482,Background / unannotated
+GENE01483,Background / unannotated
+GENE01484,Background / unannotated
+GENE01485,Background / unannotated
+GENE01486,Background / unannotated
+GENE01487,Background / unannotated
+GENE01488,Background / unannotated
+GENE01489,Background / unannotated
+GENE01490,Background / unannotated
+GENE01491,Background / unannotated
+GENE01492,Background / unannotated
+GENE01493,Background / unannotated
+GENE01494,Background / unannotated
+GENE01495,Background / unannotated
+GENE01496,Background / unannotated
+GENE01497,Background / unannotated
+GENE01498,Background / unannotated
+GENE01499,Background / unannotated
+GENE01500,Background / unannotated
+GENE01501,Background / unannotated
+GENE01502,Background / unannotated
+GENE01503,Background / unannotated
+GENE01504,Background / unannotated
+GENE01505,Background / unannotated
+GENE01506,Background / unannotated
+GENE01507,Background / unannotated
+GENE01508,Background / unannotated
+GENE01509,Background / unannotated
+GENE01510,Background / unannotated
+GENE01511,Background / unannotated
+GENE01512,Background / unannotated
+GENE01513,Background / unannotated
+GENE01514,Background / unannotated
+GENE01515,Background / unannotated
+GENE01516,Background / unannotated
+GENE01517,Background / unannotated
+GENE01518,Background / unannotated
+GENE01519,Background / unannotated
+GENE01520,Background / unannotated
+GENE01521,Background / unannotated
+GENE01522,Background / unannotated
+GENE01523,Background / unannotated
+GENE01524,Background / unannotated
+GENE01525,Background / unannotated
+GENE01526,Background / unannotated
+GENE01527,Background / unannotated
+GENE01528,Background / unannotated
+GENE01529,Background / unannotated
+GENE01530,Background / unannotated
+GENE01531,Background / unannotated
+GENE01532,Background / unannotated
+GENE01533,Background / unannotated
+GENE01534,Background / unannotated
+GENE01535,Background / unannotated
+GENE01536,Background / unannotated
+GENE01537,Background / unannotated
+GENE01538,Background / unannotated
+GENE01539,Background / unannotated
+GENE01540,Background / unannotated
+GENE01541,Background / unannotated
+GENE01542,Background / unannotated
+GENE01543,Background / unannotated
+GENE01544,Background / unannotated
+GENE01545,Background / unannotated
+GENE01546,Background / unannotated
+GENE01547,Background / unannotated
+GENE01548,Background / unannotated
+GENE01549,Background / unannotated
+GENE01550,Background / unannotated
+GENE01551,Background / unannotated
+GENE01552,Background / unannotated
+GENE01553,Background / unannotated
+GENE01554,Background / unannotated
+GENE01555,Background / unannotated
+GENE01556,Background / unannotated
+GENE01557,Background / unannotated
+GENE01558,Background / unannotated
+GENE01559,Background / unannotated
+GENE01560,Background / unannotated
+GENE01561,Background / unannotated
+GENE01562,Background / unannotated
+GENE01563,Background / unannotated
+GENE01564,Background / unannotated
+GENE01565,Background / unannotated
+GENE01566,Background / unannotated
+GENE01567,Background / unannotated
+GENE01568,Background / unannotated
+GENE01569,Background / unannotated
+GENE01570,Background / unannotated
+GENE01571,Background / unannotated
+GENE01572,Background / unannotated
+GENE01573,Background / unannotated
+GENE01574,Background / unannotated
+GENE01575,Background / unannotated
+GENE01576,Background / unannotated
+GENE01577,Background / unannotated
+GENE01578,Background / unannotated
+GENE01579,Background / unannotated
+GENE01580,Background / unannotated
+GENE01581,Background / unannotated
+GENE01582,Background / unannotated
+GENE01583,Background / unannotated
+GENE01584,Background / unannotated
+GENE01585,Background / unannotated
+GENE01586,Background / unannotated
+GENE01587,Background / unannotated
+GENE01588,Background / unannotated
+GENE01589,Background / unannotated
+GENE01590,Background / unannotated
+GENE01591,Background / unannotated
+GENE01592,Background / unannotated
+GENE01593,Background / unannotated
+GENE01594,Background / unannotated
+GENE01595,Background / unannotated
+GENE01596,Background / unannotated
+GENE01597,Background / unannotated
+GENE01598,Background / unannotated
+GENE01599,Background / unannotated
+GENE01600,Background / unannotated
+GENE01601,Background / unannotated
+GENE01602,Background / unannotated
+GENE01603,Background / unannotated
+GENE01604,Background / unannotated
+GENE01605,Background / unannotated
+GENE01606,Background / unannotated
+GENE01607,Background / unannotated
+GENE01608,Background / unannotated
+GENE01609,Background / unannotated
+GENE01610,Background / unannotated
+GENE01611,Background / unannotated
+GENE01612,Background / unannotated
+GENE01613,Background / unannotated
+GENE01614,Background / unannotated
+GENE01615,Background / unannotated
+GENE01616,Background / unannotated
+GENE01617,Background / unannotated
+GENE01618,Background / unannotated
+GENE01619,Background / unannotated
+GENE01620,Background / unannotated
+GENE01621,Background / unannotated
+GENE01622,Background / unannotated
+GENE01623,Background / unannotated
+GENE01624,Background / unannotated
+GENE01625,Background / unannotated
+GENE01626,Background / unannotated
+GENE01627,Background / unannotated
+GENE01628,Background / unannotated
+GENE01629,Background / unannotated
+GENE01630,Background / unannotated
+GENE01631,Background / unannotated
+GENE01632,Background / unannotated
+GENE01633,Background / unannotated
+GENE01634,Background / unannotated
+GENE01635,Background / unannotated
+GENE01636,Background / unannotated
+GENE01637,Background / unannotated
+GENE01638,Background / unannotated
+GENE01639,Background / unannotated
+GENE01640,Background / unannotated
+GENE01641,Background / unannotated
+GENE01642,Background / unannotated
+GENE01643,Background / unannotated
+GENE01644,Background / unannotated
+GENE01645,Background / unannotated
+GENE01646,Background / unannotated
+GENE01647,Background / unannotated
+GENE01648,Background / unannotated
+GENE01649,Background / unannotated
+GENE01650,Background / unannotated
+GENE01651,Background / unannotated
+GENE01652,Background / unannotated
+GENE01653,Background / unannotated
+GENE01654,Background / unannotated
+GENE01655,Background / unannotated
+GENE01656,Background / unannotated
+GENE01657,Background / unannotated
+GENE01658,Background / unannotated
+GENE01659,Background / unannotated
+GENE01660,Background / unannotated
+GENE01661,Background / unannotated
+GENE01662,Background / unannotated
+GENE01663,Background / unannotated
+GENE01664,Background / unannotated
+GENE01665,Background / unannotated
+GENE01666,Background / unannotated
+GENE01667,Background / unannotated
+GENE01668,Background / unannotated
+GENE01669,Background / unannotated
+GENE01670,Background / unannotated
+GENE01671,Background / unannotated
+GENE01672,Background / unannotated
+GENE01673,Background / unannotated
+GENE01674,Background / unannotated
+GENE01675,Background / unannotated
+GENE01676,Background / unannotated
+GENE01677,Background / unannotated
+GENE01678,Background / unannotated
+GENE01679,Background / unannotated
+GENE01680,Background / unannotated
+GENE01681,Background / unannotated
+GENE01682,Background / unannotated
+GENE01683,Background / unannotated
+GENE01684,Background / unannotated
+GENE01685,Background / unannotated
+GENE01686,Background / unannotated
+GENE01687,Background / unannotated
+GENE01688,Background / unannotated
+GENE01689,Background / unannotated
+GENE01690,Background / unannotated
+GENE01691,Background / unannotated
+GENE01692,Background / unannotated
+GENE01693,Background / unannotated
+GENE01694,Background / unannotated
+GENE01695,Background / unannotated
+GENE01696,Background / unannotated
+GENE01697,Background / unannotated
+GENE01698,Background / unannotated
+GENE01699,Background / unannotated
+GENE01700,Background / unannotated
+GENE01701,Background / unannotated
+GENE01702,Background / unannotated
+GENE01703,Background / unannotated
+GENE01704,Background / unannotated
+GENE01705,Background / unannotated
+GENE01706,Background / unannotated
+GENE01707,Background / unannotated
+GENE01708,Background / unannotated
+GENE01709,Background / unannotated
+GENE01710,Background / unannotated
+GENE01711,Background / unannotated
+GENE01712,Background / unannotated
+GENE01713,Background / unannotated
+GENE01714,Background / unannotated
+GENE01715,Background / unannotated
+GENE01716,Background / unannotated
+GENE01717,Background / unannotated
+GENE01718,Background / unannotated
+GENE01719,Background / unannotated
+GENE01720,Background / unannotated
+GENE01721,Background / unannotated
+GENE01722,Background / unannotated
+GENE01723,Background / unannotated
+GENE01724,Background / unannotated
+GENE01725,Background / unannotated
+GENE01726,Background / unannotated
+GENE01727,Background / unannotated
+GENE01728,Background / unannotated
+GENE01729,Background / unannotated
+GENE01730,Background / unannotated
+GENE01731,Background / unannotated
+GENE01732,Background / unannotated
+GENE01733,Background / unannotated
+GENE01734,Background / unannotated
+GENE01735,Background / unannotated
+GENE01736,Background / unannotated
+GENE01737,Background / unannotated
+GENE01738,Background / unannotated
+GENE01739,Background / unannotated
+GENE01740,Background / unannotated
+GENE01741,Background / unannotated
+GENE01742,Background / unannotated
+GENE01743,Background / unannotated
+GENE01744,Background / unannotated
+GENE01745,Background / unannotated
+GENE01746,Background / unannotated
+GENE01747,Background / unannotated
+GENE01748,Background / unannotated
+GENE01749,Background / unannotated
+GENE01750,Background / unannotated
+GENE01751,Background / unannotated
+GENE01752,Background / unannotated
+GENE01753,Background / unannotated
+GENE01754,Background / unannotated
+GENE01755,Background / unannotated
+GENE01756,Background / unannotated
+GENE01757,Background / unannotated
+GENE01758,Background / unannotated
+GENE01759,Background / unannotated
+GENE01760,Background / unannotated
+GENE01761,Background / unannotated
+GENE01762,Background / unannotated
+GENE01763,Background / unannotated
+GENE01764,Background / unannotated
+GENE01765,Background / unannotated
+GENE01766,Background / unannotated
+GENE01767,Background / unannotated
+GENE01768,Background / unannotated
+GENE01769,Background / unannotated
+GENE01770,Background / unannotated
+GENE01771,Background / unannotated
+GENE01772,Background / unannotated
+GENE01773,Background / unannotated
+GENE01774,Background / unannotated
+GENE01775,Background / unannotated
+GENE01776,Background / unannotated
+GENE01777,Background / unannotated
+GENE01778,Background / unannotated
+GENE01779,Background / unannotated
+GENE01780,Background / unannotated
+GENE01781,Background / unannotated
+GENE01782,Background / unannotated
+GENE01783,Background / unannotated
+GENE01784,Background / unannotated
+GENE01785,Background / unannotated
+GENE01786,Background / unannotated
+GENE01787,Background / unannotated
+GENE01788,Background / unannotated
+GENE01789,Background / unannotated
+GENE01790,Background / unannotated
+GENE01791,Background / unannotated
+GENE01792,Background / unannotated
+GENE01793,Background / unannotated
+GENE01794,Background / unannotated
+GENE01795,Background / unannotated
+GENE01796,Background / unannotated
+GENE01797,Background / unannotated
+GENE01798,Background / unannotated
+GENE01799,Background / unannotated
+GENE01800,Background / unannotated
+GENE01801,Background / unannotated
+GENE01802,Background / unannotated
+GENE01803,Background / unannotated
+GENE01804,Background / unannotated
+GENE01805,Background / unannotated
+GENE01806,Background / unannotated
+GENE01807,Background / unannotated
+GENE01808,Background / unannotated
+GENE01809,Background / unannotated
+GENE01810,Background / unannotated
+GENE01811,Background / unannotated
+GENE01812,Background / unannotated
+GENE01813,Background / unannotated
+GENE01814,Background / unannotated
+GENE01815,Background / unannotated
+GENE01816,Background / unannotated
+GENE01817,Background / unannotated
+GENE01818,Background / unannotated
+GENE01819,Background / unannotated
+GENE01820,Background / unannotated
+GENE01821,Background / unannotated
+GENE01822,Background / unannotated
+GENE01823,Background / unannotated
+GENE01824,Background / unannotated
+GENE01825,Background / unannotated
+GENE01826,Background / unannotated
+GENE01827,Background / unannotated
+GENE01828,Background / unannotated
+GENE01829,Background / unannotated
+GENE01830,Background / unannotated
+GENE01831,Background / unannotated
+GENE01832,Background / unannotated
+GENE01833,Background / unannotated
+GENE01834,Background / unannotated
+GENE01835,Background / unannotated
+GENE01836,Background / unannotated
+GENE01837,Background / unannotated
+GENE01838,Background / unannotated
+GENE01839,Background / unannotated
+GENE01840,Background / unannotated
+GENE01841,Background / unannotated
+GENE01842,Background / unannotated
+GENE01843,Background / unannotated
+GENE01844,Background / unannotated
+GENE01845,Background / unannotated
+GENE01846,Background / unannotated
+GENE01847,Background / unannotated
+GENE01848,Background / unannotated
+GENE01849,Background / unannotated
+GENE01850,Background / unannotated
+GENE01851,Background / unannotated
+GENE01852,Background / unannotated
+GENE01853,Background / unannotated
+GENE01854,Background / unannotated
+GENE01855,Background / unannotated
+GENE01856,Background / unannotated
+GENE01857,Background / unannotated
+GENE01858,Background / unannotated
+GENE01859,Background / unannotated
+GENE01860,Background / unannotated
+GENE01861,Background / unannotated
+GENE01862,Background / unannotated
+GENE01863,Background / unannotated
+GENE01864,Background / unannotated
+GENE01865,Background / unannotated
+GENE01866,Background / unannotated
+GENE01867,Background / unannotated
+GENE01868,Background / unannotated
+GENE01869,Background / unannotated
+GENE01870,Background / unannotated
+GENE01871,Background / unannotated
+GENE01872,Background / unannotated
+GENE01873,Background / unannotated
+GENE01874,Background / unannotated
+GENE01875,Background / unannotated
+GENE01876,Background / unannotated
+GENE01877,Background / unannotated
+GENE01878,Background / unannotated
+GENE01879,Background / unannotated
+GENE01880,Background / unannotated
+GENE01881,Background / unannotated
+GENE01882,Background / unannotated
+GENE01883,Background / unannotated
+GENE01884,Background / unannotated
+GENE01885,Background / unannotated
+GENE01886,Background / unannotated
+GENE01887,Background / unannotated
+GENE01888,Background / unannotated
+GENE01889,Background / unannotated
+GENE01890,Background / unannotated
+GENE01891,Background / unannotated
+GENE01892,Background / unannotated
+GENE01893,Background / unannotated
+GENE01894,Background / unannotated
+GENE01895,Background / unannotated
+GENE01896,Background / unannotated
+GENE01897,Background / unannotated
+GENE01898,Background / unannotated
+GENE01899,Background / unannotated
+GENE01900,Background / unannotated
