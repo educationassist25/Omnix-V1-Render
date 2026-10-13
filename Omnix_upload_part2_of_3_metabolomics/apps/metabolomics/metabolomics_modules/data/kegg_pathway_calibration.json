@@ -1,0 +1,918 @@
+{
+  "source": "Curated reference-panel ORA output: library kegg_pathway, whole-library background, hypergeometric test",
+  "library_name": "kegg_pathway",
+  "universe_size": 1519,
+  "query_in_library": 60,
+  "n_sets": 81,
+  "exclude_num": 2,
+  "n_query": 87,
+  "n_mapped": 86,
+  "failed_to_map": [
+    "HMDB0000357"
+  ],
+  "pathway_totals": {
+    "Steroid hormone biosynthesis": 86,
+    "Alanine, aspartate and glutamate metabolism": 28,
+    "Arginine biosynthesis": 14,
+    "Valine, leucine and isoleucine biosynthesis": 8,
+    "Purine metabolism": 70,
+    "Citrate cycle (TCA cycle)": 20,
+    "Glyoxylate and dicarboxylate metabolism": 32,
+    "Phenylalanine, tyrosine and tryptophan biosynthesis": 4,
+    "Pyruvate metabolism": 22,
+    "Glycerophospholipid metabolism": 36,
+    "Glycolysis / Gluconeogenesis": 24,
+    "Pyrimidine metabolism": 39,
+    "One carbon pool by folate": 26,
+    "Histidine metabolism": 16,
+    "Primary bile acid biosynthesis": 46,
+    "Glycine, serine and threonine metabolism": 32,
+    "Phenylalanine metabolism": 8,
+    "Lipoic acid metabolism": 28,
+    "D-Amino acid metabolism": 14,
+    "Arginine and proline metabolism": 35,
+    "Biosynthesis of unsaturated fatty acids": 36,
+    "beta-Alanine metabolism": 21,
+    "Valine, leucine and isoleucine degradation": 40,
+    "Glycosylphosphatidylinositol (GPI)-anchor biosynthesis": 6,
+    "Nitrogen metabolism": 6,
+    "Tyrosine metabolism": 42,
+    "Taurine and hypotaurine metabolism": 8,
+    "Glutathione metabolism": 28,
+    "Lysine degradation": 29,
+    "Porphyrin metabolism": 31,
+    "Cysteine and methionine metabolism": 33,
+    "Butanoate metabolism": 15,
+    "Nicotinate and nicotinamide metabolism": 15,
+    "Fatty acid degradation": 39,
+    "Glycerolipid metabolism": 16,
+    "Starch and sucrose metabolism": 18,
+    "Ubiquinone and other terpenoid-quinone biosynthesis": 20,
+    "Selenocompound metabolism": 20,
+    "Ether lipid metabolism": 20,
+    "Pantothenate and CoA biosynthesis": 20,
+    "Fructose and mannose metabolism": 21,
+    "Propanoate metabolism": 22,
+    "Galactose metabolism": 26,
+    "Amino sugar and nucleotide sugar metabolism": 31,
+    "Fatty acid elongation": 38,
+    "Tryptophan metabolism": 40,
+    "Steroid biosynthesis": 41,
+    "Fatty acid biosynthesis": 47
+  },
+  "pathway_ids": {
+    "Steroid hormone biosynthesis": "hsa00140",
+    "Alanine, aspartate and glutamate metabolism": "hsa00250",
+    "Arginine biosynthesis": "hsa00220",
+    "Valine, leucine and isoleucine biosynthesis": "hsa00290",
+    "Purine metabolism": "hsa00230",
+    "Citrate cycle (TCA cycle)": "hsa00020",
+    "Glyoxylate and dicarboxylate metabolism": "hsa00630",
+    "Phenylalanine, tyrosine and tryptophan biosynthesis": "hsa00400",
+    "Pyruvate metabolism": "hsa00620",
+    "Glycerophospholipid metabolism": "hsa00564",
+    "Glycolysis / Gluconeogenesis": "hsa00010",
+    "Pyrimidine metabolism": "hsa00240",
+    "One carbon pool by folate": "hsa00670",
+    "Histidine metabolism": "hsa00340",
+    "Primary bile acid biosynthesis": "hsa00120",
+    "Glycine, serine and threonine metabolism": "hsa00260",
+    "Phenylalanine metabolism": "hsa00360",
+    "Lipoic acid metabolism": "hsa00785",
+    "D-Amino acid metabolism": "hsa00470",
+    "Arginine and proline metabolism": "hsa00330",
+    "Biosynthesis of unsaturated fatty acids": "hsa01040",
+    "beta-Alanine metabolism": "hsa00410",
+    "Valine, leucine and isoleucine degradation": "hsa00280",
+    "Glycosylphosphatidylinositol (GPI)-anchor biosynthesis": "hsa00563",
+    "Nitrogen metabolism": "hsa00910",
+    "Tyrosine metabolism": "hsa00350",
+    "Taurine and hypotaurine metabolism": "hsa00430",
+    "Glutathione metabolism": "hsa00480",
+    "Lysine degradation": "hsa00310",
+    "Porphyrin metabolism": "hsa00860",
+    "Cysteine and methionine metabolism": "hsa00270",
+    "Butanoate metabolism": "hsa00650",
+    "Nicotinate and nicotinamide metabolism": "hsa00760",
+    "Fatty acid degradation": "hsa00071",
+    "Glycerolipid metabolism": "hsa00561",
+    "Starch and sucrose metabolism": "hsa00500",
+    "Ubiquinone and other terpenoid-quinone biosynthesis": "hsa00130",
+    "Selenocompound metabolism": "hsa00450",
+    "Ether lipid metabolism": "hsa00565",
+    "Pantothenate and CoA biosynthesis": "hsa00770",
+    "Fructose and mannose metabolism": "hsa00051",
+    "Propanoate metabolism": "hsa00640",
+    "Galactose metabolism": "hsa00052",
+    "Amino sugar and nucleotide sugar metabolism": "hsa00520",
+    "Fatty acid elongation": "hsa00062",
+    "Tryptophan metabolism": "hsa00380",
+    "Steroid biosynthesis": "hsa00100",
+    "Fatty acid biosynthesis": "hsa00061"
+  },
+  "verified_compounds": {
+    "HMDB0004952": {
+      "name": "Cer(d18:1/22:0)",
+      "kegg": "C00195",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0002802": {
+      "name": "Cortisone",
+      "kegg": "C00762",
+      "in_library": true,
+      "key": "C00762",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0000651": {
+      "name": "Decanoylcarnitine",
+      "kegg": "C03299",
+      "in_library": false,
+      "key": "C03299",
+      "pathways": []
+    },
+    "HMDB0004972": {
+      "name": "GlcCer(d18:1/18:0)",
+      "kegg": "C01190",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000295": {
+      "name": "Uridine 5'-diphosphate",
+      "kegg": "C00015",
+      "in_library": true,
+      "key": "C00015",
+      "pathways": [
+        "Pyrimidine metabolism"
+      ]
+    },
+    "HMDB0001554": {
+      "name": "Xanthylic acid",
+      "kegg": "C00655",
+      "in_library": true,
+      "key": "C00655",
+      "pathways": [
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0004953": {
+      "name": "Cer(d18:1/24:1)",
+      "kegg": "C00195",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0005382": {
+      "name": "TG(16:0/18:1(9Z)/18:1(9Z))",
+      "kegg": "",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0012101": {
+      "name": "SM(d18:1/18:1(9Z))",
+      "kegg": "C00550",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0001397": {
+      "name": "Guanosine monophosphate",
+      "kegg": "C00144",
+      "in_library": true,
+      "key": "C00144",
+      "pathways": [
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0000145": {
+      "name": "Estrone",
+      "kegg": "C00468",
+      "in_library": true,
+      "key": "C00468",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0000538": {
+      "name": "Adenosine triphosphate",
+      "kegg": "C00002",
+      "in_library": true,
+      "key": "C00002",
+      "pathways": [
+        "One carbon pool by folate",
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0001547": {
+      "name": "Corticosterone",
+      "kegg": "C02140",
+      "in_library": true,
+      "key": "C02140",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0000138": {
+      "name": "Glycocholic acid",
+      "kegg": "C01921",
+      "in_library": true,
+      "key": "C01921",
+      "pathways": [
+        "Primary bile acid biosynthesis"
+      ]
+    },
+    "HMDB0000273": {
+      "name": "Thymidine",
+      "kegg": "C00214",
+      "in_library": true,
+      "key": "C00214",
+      "pathways": [
+        "Pyrimidine metabolism"
+      ]
+    },
+    "HMDB0001022": {
+      "name": "Succinyl-CoA",
+      "kegg": "C00091",
+      "in_library": true,
+      "key": "C00091",
+      "pathways": [
+        "Citrate cycle (TCA cycle)",
+        "Glyoxylate and dicarboxylate metabolism",
+        "Lipoic acid metabolism",
+        "Propanoate metabolism",
+        "Valine, leucine and isoleucine degradation"
+      ]
+    },
+    "HMDB0000134": {
+      "name": "Fumaric acid",
+      "kegg": "C00122",
+      "in_library": true,
+      "key": "C00122",
+      "pathways": [
+        "Alanine, aspartate and glutamate metabolism",
+        "Arginine biosynthesis",
+        "Citrate cycle (TCA cycle)",
+        "Pyruvate metabolism",
+        "Tyrosine metabolism"
+      ]
+    },
+    "HMDB0000660": {
+      "name": "D-Fructose",
+      "kegg": "C00095",
+      "in_library": true,
+      "key": "C00095",
+      "pathways": [
+        "Amino sugar and nucleotide sugar metabolism",
+        "Fructose and mannose metabolism",
+        "Galactose metabolism",
+        "Starch and sucrose metabolism"
+      ]
+    },
+    "HMDB0004949": {
+      "name": "Cer(d18:1/16:0)",
+      "kegg": "C00195",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0001564": {
+      "name": "CDP-ethanolamine",
+      "kegg": "C00570",
+      "in_library": true,
+      "key": "C00570",
+      "pathways": [
+        "Glycerophospholipid metabolism"
+      ]
+    },
+    "HMDB0002183": {
+      "name": "Docosahexaenoic acid",
+      "kegg": "C06429",
+      "in_library": true,
+      "key": "C06429",
+      "pathways": [
+        "Biosynthesis of unsaturated fatty acids"
+      ]
+    },
+    "HMDB0001201": {
+      "name": "Guanosine diphosphate",
+      "kegg": "C00035",
+      "in_library": true,
+      "key": "C00035",
+      "pathways": [
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0000126": {
+      "name": "Glycerol 3-phosphate",
+      "kegg": "C00093",
+      "in_library": true,
+      "key": "C00093",
+      "pathways": [
+        "Glycerolipid metabolism",
+        "Glycerophospholipid metabolism"
+      ]
+    },
+    "HMDB0000036": {
+      "name": "Taurocholic acid",
+      "kegg": "C05122",
+      "in_library": true,
+      "key": "C05122",
+      "pathways": [
+        "Primary bile acid biosynthesis",
+        "Taurine and hypotaurine metabolism"
+      ]
+    },
+    "HMDB0004971": {
+      "name": "GlcCer(d18:1/16:0)",
+      "kegg": "C01190",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0001294": {
+      "name": "2,3-Diphosphoglyceric acid",
+      "kegg": "C01159",
+      "in_library": true,
+      "key": "C01159",
+      "pathways": [
+        "Glycolysis / Gluconeogenesis"
+      ]
+    },
+    "HMDB0000791": {
+      "name": "Octanoylcarnitine",
+      "kegg": "C02838",
+      "in_library": false,
+      "key": "C02838",
+      "pathways": []
+    },
+    "HMDB0000631": {
+      "name": "Deoxycholic acid glycine conjugate",
+      "kegg": "C05464",
+      "in_library": false,
+      "key": "C05464",
+      "pathways": []
+    },
+    "HMDB0000086": {
+      "name": "Glycerophosphocholine",
+      "kegg": "C00670",
+      "in_library": true,
+      "key": "C00670",
+      "pathways": [
+        "Ether lipid metabolism",
+        "Glycerophospholipid metabolism"
+      ]
+    },
+    "HMDB0000016": {
+      "name": "Deoxycorticosterone",
+      "kegg": "C03205",
+      "in_library": true,
+      "key": "C03205",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0002103": {
+      "name": "27-Hydroxycholesterol",
+      "kegg": "C15610",
+      "in_library": true,
+      "key": "C15610",
+      "pathways": [
+        "Primary bile acid biosynthesis"
+      ]
+    },
+    "HMDB0000097": {
+      "name": "Choline",
+      "kegg": "C00114",
+      "in_library": true,
+      "key": "C00114",
+      "pathways": [
+        "Glycerophospholipid metabolism",
+        "Glycine, serine and threonine metabolism",
+        "One carbon pool by folate"
+      ]
+    },
+    "HMDB0000222": {
+      "name": "Palmitoylcarnitine",
+      "kegg": "C02990",
+      "in_library": true,
+      "key": "C02990",
+      "pathways": [
+        "Fatty acid degradation"
+      ]
+    },
+    "HMDB0000159": {
+      "name": "Phenylalanine",
+      "kegg": "C00079",
+      "in_library": true,
+      "key": "C00079",
+      "pathways": [
+        "Phenylalanine metabolism",
+        "Phenylalanine, tyrosine and tryptophan biosynthesis"
+      ]
+    },
+    "HMDB0000085": {
+      "name": "Deoxyguanosine",
+      "kegg": "C00330",
+      "in_library": true,
+      "key": "C00330",
+      "pathways": [
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0000243": {
+      "name": "Pyruvic acid",
+      "kegg": "C00022",
+      "in_library": true,
+      "key": "C00022",
+      "pathways": [
+        "Alanine, aspartate and glutamate metabolism",
+        "Arginine and proline metabolism",
+        "Citrate cycle (TCA cycle)",
+        "Cysteine and methionine metabolism",
+        "Glycine, serine and threonine metabolism",
+        "Glycolysis / Gluconeogenesis",
+        "Glyoxylate and dicarboxylate metabolism",
+        "Lipoic acid metabolism",
+        "Pyruvate metabolism",
+        "Tyrosine metabolism"
+      ]
+    },
+    "HMDB0000946": {
+      "name": "Ursodeoxycholic acid",
+      "kegg": "C07880",
+      "in_library": false,
+      "key": "C07880",
+      "pathways": []
+    },
+    "HMDB0000191": {
+      "name": "L-Aspartic acid",
+      "kegg": "C00049",
+      "in_library": true,
+      "key": "C00049",
+      "pathways": [
+        "Alanine, aspartate and glutamate metabolism",
+        "Arginine biosynthesis",
+        "Histidine metabolism",
+        "Nicotinate and nicotinamide metabolism",
+        "Pantothenate and CoA biosynthesis",
+        "beta-Alanine metabolism"
+      ]
+    },
+    "HMDB0000848": {
+      "name": "Stearoylcarnitine",
+      "kegg": "",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000226": {
+      "name": "Orotic acid",
+      "kegg": "C00295",
+      "in_library": true,
+      "key": "C00295",
+      "pathways": [
+        "Pyrimidine metabolism"
+      ]
+    },
+    "HMDB0000158": {
+      "name": "L-Tyrosine",
+      "kegg": "C00082",
+      "in_library": true,
+      "key": "C00082",
+      "pathways": [
+        "Phenylalanine metabolism",
+        "Phenylalanine, tyrosine and tryptophan biosynthesis",
+        "Tyrosine metabolism",
+        "Ubiquinone and other terpenoid-quinone biosynthesis"
+      ]
+    },
+    "HMDB0000319": {
+      "name": "18-Hydroxycorticosterone",
+      "kegg": "C01124",
+      "in_library": true,
+      "key": "C01124",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0004951": {
+      "name": "Cer(d18:1/20:0)",
+      "kegg": "C00195",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000060": {
+      "name": "Acetoacetic acid",
+      "kegg": "C00164",
+      "in_library": false,
+      "key": "C00164",
+      "pathways": []
+    },
+    "HMDB0009003": {
+      "name": "PE(18:0/20:4(5Z,8Z,11Z,14Z))",
+      "kegg": "C00350",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000929": {
+      "name": "L-Tryptophan",
+      "kegg": "C00078",
+      "in_library": true,
+      "key": "C00078",
+      "pathways": [
+        "Tryptophan metabolism"
+      ]
+    },
+    "HMDB0000062": {
+      "name": "L-Carnitine",
+      "kegg": "C00487",
+      "in_library": true,
+      "key": "C00487",
+      "pathways": [
+        "Lysine degradation"
+      ]
+    },
+    "HMDB0000015": {
+      "name": "Cortexolone",
+      "kegg": "C05488",
+      "in_library": true,
+      "key": "C05488",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0013130": {
+      "name": "Glutarylcarnitine",
+      "kegg": "",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000363": {
+      "name": "17a-Hydroxypregnenolone",
+      "kegg": "C05138",
+      "in_library": true,
+      "key": "C05138",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0000123": {
+      "name": "Glycine",
+      "kegg": "C00037",
+      "in_library": true,
+      "key": "C00037",
+      "pathways": [
+        "Glutathione metabolism",
+        "Glycine, serine and threonine metabolism",
+        "Glyoxylate and dicarboxylate metabolism",
+        "Lipoic acid metabolism",
+        "One carbon pool by folate",
+        "Porphyrin metabolism",
+        "Primary bile acid biosynthesis"
+      ]
+    },
+    "HMDB0001161": {
+      "name": "4-Trimethylammoniobutanoic acid",
+      "kegg": "C01181",
+      "in_library": true,
+      "key": "C01181",
+      "pathways": [
+        "Lysine degradation"
+      ]
+    },
+    "HMDB0000037": {
+      "name": "Aldosterone",
+      "kegg": "C01780",
+      "in_library": true,
+      "key": "C01780",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0002250": {
+      "name": "Dodecanoylcarnitine",
+      "kegg": "",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000687": {
+      "name": "Leucine",
+      "kegg": "C00123",
+      "in_library": true,
+      "key": "C00123",
+      "pathways": [
+        "Valine, leucine and isoleucine biosynthesis",
+        "Valine, leucine and isoleucine degradation"
+      ]
+    },
+    "HMDB0002815": {
+      "name": "LysoPC(18:1/0:0)",
+      "kegg": "C04230",
+      "in_library": true,
+      "key": "HMDB0002815",
+      "pathways": [
+        "Glycerophospholipid metabolism"
+      ]
+    },
+    "HMDB0000234": {
+      "name": "Testosterone",
+      "kegg": "C00535",
+      "in_library": true,
+      "key": "C00535",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0005065": {
+      "name": "Oleoylcarnitine",
+      "kegg": "",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000896": {
+      "name": "Taurodeoxycholic acid",
+      "kegg": "C05463",
+      "in_library": false,
+      "key": "C05463",
+      "pathways": []
+    },
+    "HMDB0000148": {
+      "name": "Glutamic acid",
+      "kegg": "C00025",
+      "in_library": true,
+      "key": "C00025",
+      "pathways": [
+        "Alanine, aspartate and glutamate metabolism",
+        "Arginine and proline metabolism",
+        "Arginine biosynthesis",
+        "Butanoate metabolism",
+        "D-Amino acid metabolism",
+        "Glutathione metabolism",
+        "Glyoxylate and dicarboxylate metabolism",
+        "Histidine metabolism",
+        "Nitrogen metabolism",
+        "Porphyrin metabolism"
+      ]
+    },
+    "HMDB0000067": {
+      "name": "Cholesterol",
+      "kegg": "C00187",
+      "in_library": true,
+      "key": "C00187",
+      "pathways": [
+        "Primary bile acid biosynthesis",
+        "Steroid biosynthesis",
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0005066": {
+      "name": "Tetradecanoylcarnitine",
+      "kegg": "",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000077": {
+      "name": "Dehydroepiandrosterone",
+      "kegg": "C01227",
+      "in_library": true,
+      "key": "C01227",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0003974": {
+      "name": "Oxalosuccinic acid",
+      "kegg": "C05379",
+      "in_library": false,
+      "key": "C05379",
+      "pathways": []
+    },
+    "HMDB0000190": {
+      "name": "Lactic acid",
+      "kegg": "C00186",
+      "in_library": true,
+      "key": "C00186",
+      "pathways": [
+        "Glycolysis / Gluconeogenesis",
+        "Pyruvate metabolism"
+      ]
+    },
+    "HMDB0002013": {
+      "name": "Butyrylcarnitine",
+      "kegg": "C02862",
+      "in_library": false,
+      "key": "C02862",
+      "pathways": []
+    },
+    "HMDB0000201": {
+      "name": "L-Acetylcarnitine",
+      "kegg": "C02571",
+      "in_library": false,
+      "key": "C02571",
+      "pathways": []
+    },
+    "HMDB0000262": {
+      "name": "Thymine",
+      "kegg": "C00178",
+      "in_library": true,
+      "key": "C00178",
+      "pathways": [
+        "Pyrimidine metabolism"
+      ]
+    },
+    "HMDB0000167": {
+      "name": "L-Threonine",
+      "kegg": "C00188",
+      "in_library": true,
+      "key": "C00188",
+      "pathways": [
+        "Glycine, serine and threonine metabolism",
+        "Valine, leucine and isoleucine biosynthesis"
+      ]
+    },
+    "HMDB0000696": {
+      "name": "Methionine",
+      "kegg": "C00073",
+      "in_library": true,
+      "key": "C00073",
+      "pathways": [
+        "Cysteine and methionine metabolism",
+        "One carbon pool by folate"
+      ]
+    },
+    "HMDB0001047": {
+      "name": "D-Fructose 2,6-bisphosphate",
+      "kegg": "C00665",
+      "in_library": false,
+      "key": "C00665",
+      "pathways": []
+    },
+    "HMDB0000161": {
+      "name": "L-Alanine",
+      "kegg": "C00041",
+      "in_library": true,
+      "key": "C00041",
+      "pathways": [
+        "Alanine, aspartate and glutamate metabolism",
+        "Selenocompound metabolism"
+      ]
+    },
+    "HMDB0000195": {
+      "name": "Inosine",
+      "kegg": "C00294",
+      "in_library": true,
+      "key": "C00294",
+      "pathways": [
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0000172": {
+      "name": "Isoleucine",
+      "kegg": "C00407",
+      "in_library": true,
+      "key": "C00407",
+      "pathways": [
+        "Valine, leucine and isoleucine biosynthesis",
+        "Valine, leucine and isoleucine degradation"
+      ]
+    },
+    "HMDB0000223": {
+      "name": "Oxalacetic acid",
+      "kegg": "C00036",
+      "in_library": true,
+      "key": "C00036",
+      "pathways": [
+        "Alanine, aspartate and glutamate metabolism",
+        "Citrate cycle (TCA cycle)",
+        "D-Amino acid metabolism",
+        "Glycolysis / Gluconeogenesis",
+        "Glyoxylate and dicarboxylate metabolism",
+        "Pyruvate metabolism"
+      ]
+    },
+    "HMDB0000220": {
+      "name": "Palmitic acid",
+      "kegg": "C00249",
+      "in_library": true,
+      "key": "C00249",
+      "pathways": [
+        "Biosynthesis of unsaturated fatty acids",
+        "Fatty acid biosynthesis",
+        "Fatty acid degradation",
+        "Fatty acid elongation",
+        "Glycosylphosphatidylinositol (GPI)-anchor biosynthesis"
+      ]
+    },
+    "HMDB0000517": {
+      "name": "L-Arginine",
+      "kegg": "C00062",
+      "in_library": true,
+      "key": "C00062",
+      "pathways": [
+        "Arginine and proline metabolism",
+        "Arginine biosynthesis"
+      ]
+    },
+    "HMDB0000296": {
+      "name": "Uridine",
+      "kegg": "C00299",
+      "in_library": true,
+      "key": "C00299",
+      "pathways": [
+        "Pyrimidine metabolism"
+      ]
+    },
+    "HMDB0000031": {
+      "name": "Androsterone",
+      "kegg": "C00523",
+      "in_library": true,
+      "key": "C00523",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0001032": {
+      "name": "Dehydroepiandrosterone sulfate",
+      "kegg": "C04555",
+      "in_library": true,
+      "key": "C04555",
+      "pathways": [
+        "Steroid hormone biosynthesis"
+      ]
+    },
+    "HMDB0001487": {
+      "name": "NADH",
+      "kegg": "C00004",
+      "in_library": false,
+      "key": "C00004",
+      "pathways": []
+    },
+    "HMDB0000177": {
+      "name": "Histidine",
+      "kegg": "C00135",
+      "in_library": true,
+      "key": "C00135",
+      "pathways": [
+        "Histidine metabolism",
+        "beta-Alanine metabolism"
+      ]
+    },
+    "HMDB0000071": {
+      "name": "Deoxyinosine",
+      "kegg": "C05512",
+      "in_library": true,
+      "key": "C05512",
+      "pathways": [
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0000175": {
+      "name": "Inosinic acid",
+      "kegg": "C00130",
+      "in_library": true,
+      "key": "C00130",
+      "pathways": [
+        "Purine metabolism"
+      ]
+    },
+    "HMDB0006750": {
+      "name": "LacCer(d18:1/16:0)",
+      "kegg": "C01290",
+      "in_library": false,
+      "key": "",
+      "pathways": []
+    },
+    "HMDB0000207": {
+      "name": "Oleic acid",
+      "kegg": "C00712",
+      "in_library": true,
+      "key": "C00712",
+      "pathways": [
+        "Biosynthesis of unsaturated fatty acids"
+      ]
+    }
+  },
+  "dropped_maps": {
+    "hsa00970": "Aminoacyl-tRNA biosynthesis -- absent from the calibrated kegg_pathway library (13 in-library input amino acids are KEGG members; no such set reported)"
+  },
+  "merged_maps": {
+    "hsa00470": [
+      "hsa00471",
+      "hsa00472"
+    ]
+  },
+  "renamed_maps": {
+    "hsa00860": "Porphyrin metabolism"
+  }
+}
