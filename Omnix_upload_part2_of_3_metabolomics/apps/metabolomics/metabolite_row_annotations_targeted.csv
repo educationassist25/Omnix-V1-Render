@@ -1,0 +1,61 @@
+Metabolite,HMDB_ID,Class,Method,ISTD
+ISTD_D4-Alanine,,Internal standard,Targeted Metabolomics,ISTD_D4-Alanine
+Tyramine,HMDB0000306,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Valine,HMDB0000883,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Succinyl-CoA,HMDB0001022,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Taurodeoxycholic acid,HMDB0000896,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Inositol cyclic phosphate,HMDB0001125,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-Phenyllactic acid,HMDB0000475,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Glucose,HMDB0304632,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+cis-Aconitic acid,HMDB0000072,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-Ornithine,HMDB0003374,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Glycerol 3-phosphate,HMDB0000126,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-Acetyl-D-tryptophan,HMDB0255052,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Threonine,HMDB0000167,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-Acetylputrescine,HMDB0002064,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+dTDP-D-glucose,HMDB0001328,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Phosphocholine,HMDB0001565,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+CDP-glucose,HMDB0003369,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Deoxyinosine,HMDB0000071,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Selenocysteine,HMDB0003288,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Norleucine,HMDB0001645,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-Lactic acid,HMDB0000171,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+DL-Proline,HMDB0251528,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+"Glucose 1,6-bisphosphate",HMDB0003514,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-Tryptophan,HMDB0013609,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+isopentenyl adenosine,HMDB0304396,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Ureidoisobutyric acid,HMDB0002031,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Arginine,HMDB0000517,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Hypoxanthine,HMDB0000157,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Sphinganine 1-phosphate,HMDB0001383,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+O-Phosphothreonine,HMDB0011185,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-Acetyl-L-methionine,HMDB0011745,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Citric acid,HMDB0000094,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-methyl-L-glutamic Acid,HMDB0062660,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Dehydroascorbic acid,HMDB0001264,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Allodeoxycholic acid,HMDB0000478,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+beta-Tocopherol,HMDB0006335,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-alpha-Aminobutyric acid,HMDB0000650,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Adenosine,HMDB0000050,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+omega-Hydroxylaurate,HMDB0304547,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Hydroxypyruvic acid,HMDB0001352,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+S-Allylcysteine,HMDB0034323,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Lauric aldehyde,HMDB0033933,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-Valine,HMDB0250806,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Norspermidine,HMDB0011634,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Chenodeoxycholic acid,HMDB0000518,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Uridine,HMDB0000296,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Homo-L-arginine,HMDB0000670,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Barbituric acid,HMDB0041833,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-Acetyl-L-glutamic acid,HMDB0001138,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Dodecanoic acid,HMDB0000638,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Diadenosine triphosphate,HMDB0001155,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Malic acid,HMDB0000156,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Propionic acid,HMDB0000237,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Tuberculostearic acid,HMDB0004085,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Bisnorbiotin,HMDB0004821,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Glutamate,HMDB0000148,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-Acetyl-L-tyrosine,HMDB0000866,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Nicotinamide ribotide,HMDB0000229,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Pantothenic acid,HMDB0000210,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Riboflavin,HMDB0000244,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine

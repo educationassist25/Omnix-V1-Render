@@ -1,0 +1,202 @@
+Metabolite,Method,Pathway,HMDB_ID,ISTD
+ISTD_D4-Alanine,Internal standard,,,ISTD_D4-Alanine
+Adenine,Untargeted Metabolomics,Purine Metabolism,HMDB0000034,ISTD_D4-Alanine
+Cholic acid,Targeted Metabolomics,Bile Acid Metabolism,HMDB0000619,ISTD_D4-Alanine
+Guanine,Untargeted Metabolomics,Purine Metabolism,HMDB0000132,ISTD_D4-Alanine
+Citric acid,Untargeted Lipidomics,TCA Cycle,HMDB0000094,ISTD_D4-Alanine
+Cholesterol,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000067,ISTD_D4-Alanine
+Pregnenolone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000253,ISTD_D4-Alanine
+Hypoxanthine,Targeted Metabolomics,Purine Metabolism,HMDB0000157,ISTD_D4-Alanine
+LysoPC(16:0),Untargeted Lipidomics,Lipid Metabolism,HMDB0010382,ISTD_D4-Alanine
+Chenodeoxycholic acid,Targeted Metabolomics,Bile Acid Metabolism,HMDB0000518,ISTD_D4-Alanine
+L-Carnitine,Targeted Metabolomics,Fatty Acid Oxidation,HMDB0000062,ISTD_D4-Alanine
+L-Alanine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000161,ISTD_D4-Alanine
+LysoPC(18:0),Targeted Lipidomics,Lipid Metabolism,HMDB0010384,ISTD_D4-Alanine
+gamma-Butyrobetaine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0001161,ISTD_D4-Alanine
+LysoPC(18:1),Untargeted Lipidomics,Lipid Metabolism,HMDB0002815,ISTD_D4-Alanine
+Pregnenolone sulfate,Targeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000774,ISTD_D4-Alanine
+Cer(d18:0/16:0),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0011760,ISTD_D4-Alanine
+Xanthine,Untargeted Metabolomics,Purine Metabolism,HMDB0000292,ISTD_D4-Alanine
+Choline,Untargeted Metabolomics,Lipid Metabolism,HMDB0000097,ISTD_D4-Alanine
+Dodecanoylcarnitine,Untargeted Lipidomics,Fatty Acid Oxidation,HMDB0002250,ISTD_D4-Alanine
+cis-Aconitic acid,Untargeted Lipidomics,TCA Cycle,HMDB0000072,ISTD_D4-Alanine
+D-Glucose,Untargeted Metabolomics,Glycolysis,HMDB0000122,ISTD_D4-Alanine
+Uracil,Untargeted Metabolomics,Nucleotide Metabolism,HMDB0000300,ISTD_D4-Alanine
+Isocitric acid,Untargeted Lipidomics,TCA Cycle,HMDB0000193,ISTD_D4-Alanine
+Tetradecanoylcarnitine,Untargeted Lipidomics,Fatty Acid Oxidation,HMDB0005066,ISTD_D4-Alanine
+Cer(d18:1/16:0),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0004949,ISTD_D4-Alanine
+17alpha-Hydroxypregnenolone,Untargeted Lipidomics,Steroid Hormone Biosynthesis,HMDB0000363,ISTD_D4-Alanine
+L-Arginine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000517,ISTD_D4-Alanine
+L-Acetylcarnitine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0000201,ISTD_D4-Alanine
+Glucose 6-phosphate,Targeted Lipidomics,Glycolysis,HMDB0001401,ISTD_D4-Alanine
+Uric acid,Targeted Metabolomics,Purine Metabolism,HMDB0000289,ISTD_D4-Alanine
+Glycocholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000138,ISTD_D4-Alanine
+Progesterone,Targeted Lipidomics,Steroid Hormone Biosynthesis,HMDB0001830,ISTD_D4-Alanine
+Taurocholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000036,ISTD_D4-Alanine
+17alpha-Hydroxyprogesterone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000374,ISTD_D4-Alanine
+Glucose 1-phosphate,Targeted Lipidomics,Glycolysis,HMDB0001586,ISTD_D4-Alanine
+Uridine,Untargeted Lipidomics,Nucleotide Metabolism,HMDB0000296,ISTD_D4-Alanine
+L-Aspartic acid,Untargeted Lipidomics,Amino Acid Metabolism,HMDB0000191,ISTD_D4-Alanine
+11-Deoxycorticosterone,Targeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000016,ISTD_D4-Alanine
+L-Glutamic acid,Untargeted Lipidomics,Amino Acid Metabolism,HMDB0000148,ISTD_D4-Alanine
+Fructose 6-phosphate,Untargeted Lipidomics,Glycolysis,HMDB0000124,ISTD_D4-Alanine
+Propionylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation,HMDB0000824,ISTD_D4-Alanine
+Inosine,Untargeted Metabolomics,Purine Metabolism,HMDB0000195,ISTD_D4-Alanine
+Oxalosuccinic acid,Untargeted Metabolomics,TCA Cycle,HMDB0003974,ISTD_D4-Alanine
+Adenosine,Untargeted Lipidomics,Purine Metabolism,HMDB0000050,ISTD_D4-Alanine
+Cer(d18:1/18:0),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0004950,ISTD_D4-Alanine
+Guanosine,Untargeted Metabolomics,Purine Metabolism,HMDB0000133,ISTD_D4-Alanine
+"Fructose 1,6-bisphosphate",Untargeted Metabolomics,Glycolysis,HMDB0001058,ISTD_D4-Alanine
+Malonylcarnitine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0002095,ISTD_D4-Alanine
+Cer(d18:1/20:0),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0004951,ISTD_D4-Alanine
+PC(16:0/18:1),Untargeted Lipidomics,Lipid Metabolism,HMDB0007972,ISTD_D4-Alanine
+3-Ketosphinganine,Targeted Metabolomics,Sphingolipid Metabolism,HMDB0001480,ISTD_D4-Alanine
+Xanthosine,Untargeted Lipidomics,Purine Metabolism,HMDB0000299,ISTD_D4-Alanine
+L-Glutamine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000641,ISTD_D4-Alanine
+Sphinganine,Untargeted Metabolomics,Sphingolipid Metabolism,HMDB0000269,ISTD_D4-Alanine
+Glycochenodeoxycholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000637,ISTD_D4-Alanine
+Taurochenodeoxycholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000951,ISTD_D4-Alanine
+Uridine 5'-monophosphate,Targeted Metabolomics,Nucleotide Metabolism,HMDB0000288,ISTD_D4-Alanine
+7alpha-Hydroxycholesterol,Untargeted Lipidomics,Bile Acid Metabolism,HMDB0001496,ISTD_D4-Alanine
+Oxoglutaric acid,Untargeted Lipidomics,TCA Cycle,HMDB0000208,ISTD_D4-Alanine
+Uridine 5'-diphosphate,Untargeted Metabolomics,Nucleotide Metabolism,HMDB0000295,ISTD_D4-Alanine
+Succinyl-CoA,Untargeted Metabolomics,TCA Cycle,HMDB0001022,ISTD_D4-Alanine
+"Fructose 2,6-bisphosphate",Untargeted Lipidomics,Glycolysis,HMDB0001047,ISTD_D4-Alanine
+Succinic acid,Untargeted Metabolomics,TCA Cycle,HMDB0000254,ISTD_D4-Alanine
+Sphingosine,Untargeted Metabolomics,Sphingolipid Metabolism,HMDB0000252,ISTD_D4-Alanine
+7alpha-Hydroxy-4-cholesten-3-one,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0001993,ISTD_D4-Alanine
+Dihydroxyacetone phosphate,Untargeted Lipidomics,Glycolysis,HMDB0001473,ISTD_D4-Alanine
+Phosphocholine,Untargeted Metabolomics,Lipid Metabolism,HMDB0001565,ISTD_D4-Alanine
+Adenosine monophosphate,Targeted Metabolomics,Purine Metabolism,HMDB0000045,ISTD_D4-Alanine
+Fumaric acid,Targeted Metabolomics,TCA Cycle,HMDB0000134,ISTD_D4-Alanine
+27-Hydroxycholesterol,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0002103,ISTD_D4-Alanine
+Sphingosine 1-phosphate,Untargeted Metabolomics,Sphingolipid Metabolism,HMDB0000277,ISTD_D4-Alanine
+L-Malic acid,Untargeted Lipidomics,TCA Cycle,HMDB0000156,ISTD_D4-Alanine
+Corticosterone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0001547,ISTD_D4-Alanine
+Deoxycholic acid,Targeted Lipidomics,Bile Acid Metabolism,HMDB0000626,ISTD_D4-Alanine
+Oxaloacetic acid,Untargeted Lipidomics,TCA Cycle,HMDB0000223,ISTD_D4-Alanine
+Palmitoylcarnitine,Untargeted Lipidomics,Fatty Acid Oxidation,HMDB0000222,ISTD_D4-Alanine
+ADP,Targeted Metabolomics,Purine Metabolism,HMDB0001341,ISTD_D4-Alanine
+Acetyl-CoA,Targeted Metabolomics,TCA Cycle,HMDB0001206,ISTD_D4-Alanine
+CDP-choline,Untargeted Metabolomics,Lipid Metabolism,HMDB0001413,ISTD_D4-Alanine
+18-Hydroxycorticosterone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000319,ISTD_D4-Alanine
+Uridine triphosphate,Untargeted Lipidomics,Nucleotide Metabolism,HMDB0000285,ISTD_D4-Alanine
+Glycerophosphocholine,Untargeted Metabolomics,Lipid Metabolism,HMDB0000086,ISTD_D4-Alanine
+Sphinganine 1-phosphate,Targeted Metabolomics,Sphingolipid Metabolism,HMDB0001383,ISTD_D4-Alanine
+Glyceraldehyde 3-phosphate,Targeted Metabolomics,Glycolysis,HMDB0001112,ISTD_D4-Alanine
+Aldosterone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000037,ISTD_D4-Alanine
+Butyrylcarnitine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0002013,ISTD_D4-Alanine
+"1,3-Bisphosphoglyceric acid",Targeted Metabolomics,Glycolysis,HMDB0001270,ISTD_D4-Alanine
+PC(16:0/18:2),Targeted Lipidomics,Lipid Metabolism,HMDB0007973,ISTD_D4-Alanine
+Lithocholic acid,Targeted Lipidomics,Bile Acid Metabolism,HMDB0000761,ISTD_D4-Alanine
+Cer(d18:1/22:0),Targeted Metabolomics,Sphingolipid Metabolism,HMDB0004952,ISTD_D4-Alanine
+3-Hydroxybutyrylcarnitine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0013127,ISTD_D4-Alanine
+Ursodeoxycholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000946,ISTD_D4-Alanine
+11-Deoxycortisol,Untargeted Lipidomics,Steroid Hormone Biosynthesis,HMDB0000015,ISTD_D4-Alanine
+Cytidine,Untargeted Lipidomics,Nucleotide Metabolism,HMDB0000089,ISTD_D4-Alanine
+Hyodeoxycholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000733,ISTD_D4-Alanine
+Cytidine monophosphate,Untargeted Metabolomics,Nucleotide Metabolism,HMDB0000095,ISTD_D4-Alanine
+Glycine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000123,ISTD_D4-Alanine
+L-Histidine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000177,ISTD_D4-Alanine
+L-Isoleucine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000172,ISTD_D4-Alanine
+Glycodeoxycholic acid,Targeted Lipidomics,Bile Acid Metabolism,HMDB0000631,ISTD_D4-Alanine
+Ethanolamine,Targeted Metabolomics,Lipid Metabolism,HMDB0000149,ISTD_D4-Alanine
+PC(18:0/18:2),Untargeted Lipidomics,Lipid Metabolism,HMDB0008039,ISTD_D4-Alanine
+Isovalerylcarnitine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0000688,ISTD_D4-Alanine
+Cortisol,Targeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000063,ISTD_D4-Alanine
+Cortisone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0002802,ISTD_D4-Alanine
+Cer(d18:1/24:0),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0004956,ISTD_D4-Alanine
+Adenosine triphosphate,Untargeted Metabolomics,Purine Metabolism,HMDB0000538,ISTD_D4-Alanine
+Inosinic acid,Untargeted Metabolomics,Purine Metabolism,HMDB0000175,ISTD_D4-Alanine
+Cytidine triphosphate,Untargeted Lipidomics,Nucleotide Metabolism,HMDB0000082,ISTD_D4-Alanine
+Glutarylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation,HMDB0013130,ISTD_D4-Alanine
+Coenzyme A,Untargeted Metabolomics,TCA Cycle,HMDB0001423,ISTD_D4-Alanine
+3-Phosphoglyceric acid,Untargeted Lipidomics,Glycolysis,HMDB0000807,ISTD_D4-Alanine
+L-Leucine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000687,ISTD_D4-Alanine
+NAD,Targeted Metabolomics,TCA Cycle,HMDB0000902,ISTD_D4-Alanine
+Cer(d18:1/24:1),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0004953,ISTD_D4-Alanine
+Stearoylcarnitine,Untargeted Lipidomics,Fatty Acid Oxidation,HMDB0000848,ISTD_D4-Alanine
+Hexanoylcarnitine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0000756,ISTD_D4-Alanine
+L-Lysine,Targeted Lipidomics,Amino Acid Metabolism,HMDB0000182,ISTD_D4-Alanine
+NADH,Targeted Lipidomics,TCA Cycle,HMDB0001487,ISTD_D4-Alanine
+2-Phosphoglyceric acid,Untargeted Metabolomics,Glycolysis,HMDB0000362,ISTD_D4-Alanine
+Dehydroepiandrosterone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000077,ISTD_D4-Alanine
+Oleoylcarnitine,Untargeted Lipidomics,Fatty Acid Oxidation,HMDB0005065,ISTD_D4-Alanine
+O-Phosphoethanolamine,Targeted Metabolomics,Lipid Metabolism,HMDB0000224,ISTD_D4-Alanine
+Guanosine monophosphate,Targeted Metabolomics,Purine Metabolism,HMDB0001397,ISTD_D4-Alanine
+Thymine,Untargeted Metabolomics,Nucleotide Metabolism,HMDB0000262,ISTD_D4-Alanine
+Octanoylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation,HMDB0000791,ISTD_D4-Alanine
+Phosphoenolpyruvic acid,Untargeted Lipidomics,Glycolysis,HMDB0000263,ISTD_D4-Alanine
+Dehydroepiandrosterone sulfate,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0001032,ISTD_D4-Alanine
+SM(d18:1/16:0),Untargeted Metabolomics,Sphingolipid Metabolism,HMDB0010169,ISTD_D4-Alanine
+Thymidine,Targeted Metabolomics,Nucleotide Metabolism,HMDB0000273,ISTD_D4-Alanine
+SM(d18:1/18:0),Targeted Metabolomics,Sphingolipid Metabolism,HMDB0001348,ISTD_D4-Alanine
+Androstenedione,Targeted Lipidomics,Steroid Hormone Biosynthesis,HMDB0000053,ISTD_D4-Alanine
+Guanosine diphosphate,Untargeted Lipidomics,Purine Metabolism,HMDB0001201,ISTD_D4-Alanine
+Guanosine triphosphate,Untargeted Lipidomics,Purine Metabolism,HMDB0001273,ISTD_D4-Alanine
+L-Methionine,Targeted Metabolomics,Amino Acid Metabolism,HMDB0000696,ISTD_D4-Alanine
+FAD,Targeted Metabolomics,TCA Cycle,HMDB0001248,ISTD_D4-Alanine
+FADH2,Untargeted Lipidomics,TCA Cycle,HMDB0001197,ISTD_D4-Alanine
+L-Phenylalanine,Targeted Lipidomics,Amino Acid Metabolism,HMDB0000159,ISTD_D4-Alanine
+PE(18:0/20:4),Untargeted Lipidomics,Lipid Metabolism,HMDB0009003,ISTD_D4-Alanine
+Testosterone,Targeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000234,ISTD_D4-Alanine
+CDP-ethanolamine,Targeted Metabolomics,Lipid Metabolism,HMDB0001564,ISTD_D4-Alanine
+Decanoylcarnitine,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0000651,ISTD_D4-Alanine
+Dihydrotestosterone,Targeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0002961,ISTD_D4-Alanine
+Pyruvic acid,Untargeted Metabolomics,Glycolysis,HMDB0000243,ISTD_D4-Alanine
+Linoleyl carnitine,Targeted Lipidomics,Fatty Acid Oxidation,HMDB0006469,ISTD_D4-Alanine
+L-Proline,Untargeted Lipidomics,Amino Acid Metabolism,HMDB0000162,ISTD_D4-Alanine
+Xanthylic acid,Untargeted Metabolomics,Purine Metabolism,HMDB0001554,ISTD_D4-Alanine
+SM(d18:1/18:1),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0012101,ISTD_D4-Alanine
+SM(d18:1/24:0),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0011697,ISTD_D4-Alanine
+PA(16:0/18:1),Targeted Metabolomics,Lipid Metabolism,HMDB0007859,ISTD_D4-Alanine
+GlcCer(d18:1/16:0),Untargeted Lipidomics,Sphingolipid Metabolism,HMDB0004971,ISTD_D4-Alanine
+L-Lactic acid,Targeted Metabolomics,Glycolysis,HMDB0000190,ISTD_D4-Alanine
+Deoxyadenosine,Untargeted Lipidomics,Purine Metabolism,HMDB0000101,ISTD_D4-Alanine
+Malonyl-CoA,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0001175,ISTD_D4-Alanine
+Itaconic acid,Targeted Lipidomics,TCA Cycle,HMDB0002092,ISTD_D4-Alanine
+3-Hydroxybutyric acid,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0000357,ISTD_D4-Alanine
+DG(16:0/18:1/0:0),Targeted Lipidomics,Lipid Metabolism,HMDB0007102,ISTD_D4-Alanine
+D-2-Hydroxyglutaric acid,Targeted Lipidomics,TCA Cycle,HMDB0000606,ISTD_D4-Alanine
+"2,3-Bisphosphoglyceric acid",Untargeted Lipidomics,Glycolysis,HMDB0001294,ISTD_D4-Alanine
+TG(16:0/18:1/18:1),Untargeted Metabolomics,Lipid Metabolism,HMDB0005382,ISTD_D4-Alanine
+Deoxyguanosine,Targeted Lipidomics,Purine Metabolism,HMDB0000085,ISTD_D4-Alanine
+Palmitoyl-CoA,Untargeted Lipidomics,Fatty Acid Oxidation,HMDB0001338,ISTD_D4-Alanine
+Orotic acid,Targeted Lipidomics,Nucleotide Metabolism,HMDB0000226,ISTD_D4-Alanine
+D-Fructose,Targeted Lipidomics,Glycolysis,HMDB0000660,ISTD_D4-Alanine
+L-Serine,Untargeted Lipidomics,Amino Acid Metabolism,HMDB0000187,ISTD_D4-Alanine
+Glycerol 3-phosphate,Untargeted Lipidomics,Glycolysis,HMDB0000126,ISTD_D4-Alanine
+Deoxyinosine,Untargeted Metabolomics,Purine Metabolism,HMDB0000071,ISTD_D4-Alanine
+Taurodeoxycholic acid,Targeted Metabolomics,Bile Acid Metabolism,HMDB0000896,ISTD_D4-Alanine
+Acetoacetic acid,Untargeted Metabolomics,Fatty Acid Oxidation,HMDB0000060,ISTD_D4-Alanine
+Palmitic acid,Targeted Metabolomics,Fatty Acid Oxidation,HMDB0000220,ISTD_D4-Alanine
+Glycerol,Untargeted Metabolomics,Glycolysis,HMDB0000131,ISTD_D4-Alanine
+GlcCer(d18:1/18:0),Targeted Lipidomics,Sphingolipid Metabolism,HMDB0004972,ISTD_D4-Alanine
+Glycolithocholic acid,Targeted Metabolomics,Bile Acid Metabolism,HMDB0000698,ISTD_D4-Alanine
+Estrone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000145,ISTD_D4-Alanine
+Allantoin,Untargeted Metabolomics,Purine Metabolism,HMDB0000462,ISTD_D4-Alanine
+Cyclic AMP,Untargeted Metabolomics,Purine Metabolism,HMDB0000058,ISTD_D4-Alanine
+Cyclic GMP,Untargeted Metabolomics,Purine Metabolism,HMDB0001314,ISTD_D4-Alanine
+L-Threonine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000167,ISTD_D4-Alanine
+Estradiol,Untargeted Lipidomics,Steroid Hormone Biosynthesis,HMDB0000151,ISTD_D4-Alanine
+Oleic acid,Untargeted Lipidomics,Fatty Acid Oxidation,HMDB0000207,ISTD_D4-Alanine
+LacCer(d18:1/16:0),Untargeted Metabolomics,Sphingolipid Metabolism,HMDB0006750,ISTD_D4-Alanine
+L-Tryptophan,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000929,ISTD_D4-Alanine
+D-Mannose,Targeted Lipidomics,Glycolysis,HMDB0000169,ISTD_D4-Alanine
+Estriol,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000153,ISTD_D4-Alanine
+Androsterone,Untargeted Metabolomics,Steroid Hormone Biosynthesis,HMDB0000031,ISTD_D4-Alanine
+Taurolithocholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000722,ISTD_D4-Alanine
+L-Tyrosine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000158,ISTD_D4-Alanine
+Glycoursodeoxycholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000708,ISTD_D4-Alanine
+L-Valine,Untargeted Metabolomics,Amino Acid Metabolism,HMDB0000883,ISTD_D4-Alanine
+Mannose 6-phosphate,Targeted Metabolomics,Glycolysis,HMDB0001078,ISTD_D4-Alanine
+Arachidonic acid,Targeted Metabolomics,Lipid Metabolism,HMDB0001043,ISTD_D4-Alanine
+Tauroursodeoxycholic acid,Untargeted Metabolomics,Bile Acid Metabolism,HMDB0000874,ISTD_D4-Alanine
+D-Galactose,Untargeted Lipidomics,Glycolysis,HMDB0000143,ISTD_D4-Alanine
+Galactose 1-phosphate,Untargeted Lipidomics,Glycolysis,HMDB0000645,ISTD_D4-Alanine
+Glyceric acid,Untargeted Metabolomics,Glycolysis,HMDB0000139,ISTD_D4-Alanine
+Linoleic acid,Untargeted Lipidomics,Lipid Metabolism,HMDB0000673,ISTD_D4-Alanine
+Methylglyoxal,Untargeted Metabolomics,Glycolysis,HMDB0001167,ISTD_D4-Alanine
+Docosahexaenoic acid,Targeted Lipidomics,Lipid Metabolism,HMDB0002183,ISTD_D4-Alanine
+Myristic acid,Targeted Metabolomics,Fatty Acid Oxidation,HMDB0000806,ISTD_D4-Alanine
+Ganglioside GM3 (d18:1/16:0),Untargeted Metabolomics,Sphingolipid Metabolism,HMDB0004844,ISTD_D4-Alanine
