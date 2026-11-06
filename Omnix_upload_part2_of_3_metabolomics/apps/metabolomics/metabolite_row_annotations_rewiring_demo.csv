@@ -1,0 +1,44 @@
+﻿Metabolite,Method,Pathway
+Glucose,Targeted Metabolomics,Glycolysis
+Glucose-6-phosphate,Targeted Metabolomics,Glycolysis
+"Fructose-1,6-bisphosphate",Targeted Metabolomics,Glycolysis
+3-Phosphoglycerate,Targeted Metabolomics,Glycolysis
+Phosphoenolpyruvate,Targeted Metabolomics,Glycolysis
+Pyruvate,Targeted Metabolomics,Glycolysis
+Lactate,Targeted Metabolomics,Glycolysis
+Citrate,Targeted Metabolomics,TCA Cycle
+cis-Aconitate,Targeted Metabolomics,TCA Cycle
+Isocitrate,Targeted Metabolomics,TCA Cycle
+alpha-Ketoglutarate,Targeted Metabolomics,TCA Cycle
+Succinate,Targeted Metabolomics,TCA Cycle
+Fumarate,Targeted Metabolomics,TCA Cycle
+Malate,Targeted Metabolomics,TCA Cycle
+Glutamine,Targeted Metabolomics,Glutamine / Amino Acid Metabolism
+Glutamate,Targeted Metabolomics,Glutamine / Amino Acid Metabolism
+Aspartate,Targeted Metabolomics,Glutamine / Amino Acid Metabolism
+Asparagine,Targeted Metabolomics,Glutamine / Amino Acid Metabolism
+Proline,Targeted Metabolomics,Glutamine / Amino Acid Metabolism
+Tryptophan,Targeted Metabolomics,Tryptophan–Kynurenine Metabolism
+Kynurenine,Targeted Metabolomics,Tryptophan–Kynurenine Metabolism
+Kynurenic acid,Targeted Metabolomics,Tryptophan–Kynurenine Metabolism
+3-Hydroxykynurenine,Targeted Metabolomics,Tryptophan–Kynurenine Metabolism
+Quinolinate,Targeted Metabolomics,Tryptophan–Kynurenine Metabolism
+Serotonin,Targeted Metabolomics,Tryptophan–Kynurenine Metabolism
+Acetylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation (Acylcarnitines)
+Propionylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation (Acylcarnitines)
+Butyrylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation (Acylcarnitines)
+Octanoylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation (Acylcarnitines)
+Palmitoylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation (Acylcarnitines)
+Oleoylcarnitine,Targeted Metabolomics,Fatty Acid Oxidation (Acylcarnitines)
+Serine,Targeted Metabolomics,One-Carbon Metabolism
+Glycine,Targeted Metabolomics,One-Carbon Metabolism
+Methionine,Targeted Metabolomics,One-Carbon Metabolism
+S-Adenosylmethionine,Targeted Metabolomics,One-Carbon Metabolism
+S-Adenosylhomocysteine,Targeted Metabolomics,One-Carbon Metabolism
+Hypoxanthine,Targeted Metabolomics,Purine Metabolism
+Xanthine,Targeted Metabolomics,Purine Metabolism
+Inosine,Targeted Metabolomics,Purine Metabolism
+Glutathione (GSH),Targeted Metabolomics,Glutathione / Redox
+Glutathione disulfide (GSSG),Targeted Metabolomics,Glutathione / Redox
+Cysteine,Targeted Metabolomics,Glutathione / Redox
+Taurine,Targeted Metabolomics,Glutathione / Redox
