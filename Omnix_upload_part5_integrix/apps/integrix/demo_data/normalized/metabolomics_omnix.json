@@ -1,0 +1,18 @@
+{
+  "omnix_export": "1.0",
+  "module": "MetaboAI Pro",
+  "module_version": "example",
+  "layer": "metabolomics",
+  "matrix": "metabolomics.csv",
+  "id_columns": [
+    "Metabolite",
+    "HMDB"
+  ],
+  "scale": "log2",
+  "normalization": "PQN (probabilistic quotient normalization), log2",
+  "imputation": "none",
+  "batch_corrected": false,
+  "batch_method": null,
+  "filtering": "none (all features kept)",
+  "created": "2026-11-05T09:00:00"
+}
