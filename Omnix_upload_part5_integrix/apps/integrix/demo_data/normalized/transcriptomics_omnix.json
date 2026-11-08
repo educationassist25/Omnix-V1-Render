@@ -1,0 +1,17 @@
+{
+  "omnix_export": "1.0",
+  "module": "BulkRNAAI Pro",
+  "module_version": "example",
+  "layer": "transcriptomics",
+  "matrix": "transcriptomics.csv",
+  "id_columns": [
+    "Gene"
+  ],
+  "scale": "log2",
+  "normalization": "log2, per-sample median scaling",
+  "imputation": "none",
+  "batch_corrected": false,
+  "batch_method": null,
+  "filtering": "none (all features kept)",
+  "created": "2026-11-05T09:00:00"
+}
