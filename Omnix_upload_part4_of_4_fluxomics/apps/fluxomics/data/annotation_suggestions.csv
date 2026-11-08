@@ -1,0 +1,13 @@
+DataName,LibraryID,Reason
+3-Oxoglutaric acid,akg,Same formula as 2-oxoglutarate (α-KG); 3-oxoglutarate is not a common cellular metabolite.
+Maleic acid,fum,Maleate is the cis isomer of fumarate; in cells the TCA intermediate is fumarate.
+4-Oxoproline,pglu,Same formula as 5-oxoproline (pyroglutamate).
+Glutaric anhydride,glutar,Anhydride is a chemical artifact; likely glutarate-related in-source species.
+2-Hydroxyadenine,gua,Same formula as guanine.
+Allopurinol riboside,ino,Same formula as inosine (drug metabolite unlikely in culture).
+"D-myo-Inositol 1,4-bisphosphate",fbp,Same formula as hexose bisphosphates.
+Heptulose-2-Phosphate,s7p,Same formula as sedoheptulose 7-phosphate.
+4-Hydroxybutyric acid (GHB),bhb,Same formula as 3-hydroxybutyrate.
+2-Hydroxy-L-methionine,metso,Same formula as methionine sulfoxide.
+DL-β-Leucine,leu,Same formula as leucine/isoleucine.
+L-Alloisoleucine,ile,Same formula as isoleucine/leucine.

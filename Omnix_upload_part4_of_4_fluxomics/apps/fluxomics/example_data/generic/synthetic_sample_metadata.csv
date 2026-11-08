@@ -1,0 +1,21 @@
+Sample,Type,Group,Treatment,Time,TimeUnit,Replicate,Include
+Unlabeled_Ref_1,Unlabeled reference,shControl,,,,,True
+Blank_1,Blank,Blank,,,,,True
+Ctrl_2h_R1,Labeled,shControl,,2.0,h,1,True
+Ctrl_2h_R2,Labeled,shControl,,2.0,h,2,True
+Ctrl_2h_R3,Labeled,shControl,,2.0,h,3,True
+Ctrl_8h_R1,Labeled,shControl,,8.0,h,1,True
+Ctrl_8h_R2,Labeled,shControl,,8.0,h,2,True
+Ctrl_8h_R3,Labeled,shControl,,8.0,h,3,True
+Ctrl_24h_R1,Labeled,shControl,,24.0,h,1,True
+Ctrl_24h_R2,Labeled,shControl,,24.0,h,2,True
+Ctrl_24h_R3,Labeled,shControl,,24.0,h,3,True
+GeneKD_2h_R1,Labeled,GeneKD,,2.0,h,1,True
+GeneKD_2h_R2,Labeled,GeneKD,,2.0,h,2,True
+GeneKD_2h_R3,Labeled,GeneKD,,2.0,h,3,True
+GeneKD_8h_R1,Labeled,GeneKD,,8.0,h,1,True
+GeneKD_8h_R2,Labeled,GeneKD,,8.0,h,2,True
+GeneKD_8h_R3,Labeled,GeneKD,,8.0,h,3,True
+GeneKD_24h_R1,Labeled,GeneKD,,24.0,h,1,True
+GeneKD_24h_R2,Labeled,GeneKD,,24.0,h,2,True
+GeneKD_24h_R3,Labeled,GeneKD,,24.0,h,3,True
