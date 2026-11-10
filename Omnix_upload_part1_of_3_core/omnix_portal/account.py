@@ -30,10 +30,23 @@ def preview_enabled() -> bool:
 
 
 def auth_packages_ok() -> bool:
-    """Sign-in needs Authlib and httpx (requirements: streamlit[auth]). Without them the login
-    route fails with a bare "Internal server error", so buttons are hidden instead."""
+    """Sign-in needs Authlib (requirements: streamlit[auth]). Without it the login route fails with a bare
+    "Internal server error", so buttons are hidden instead. The check follows the web server of the installed
+    Streamlit: Tornado (up to 1.57, Authlib's requests client) or Starlette (1.58+, Authlib's Starlette client)."""
     try:
-        from authlib.integrations import starlette_client  # noqa: F401
+        from authlib.integrations import base_client  # noqa: F401
+    except Exception:
+        return False
+    try:
+        import streamlit.web.server.oidc_mixin  # noqa: F401   Tornado server: this is what st.login uses
+        return True
+    except ModuleNotFoundError as e:
+        if e.name != "streamlit.web.server.oidc_mixin":
+            return False                                         # the module exists but a dependency is missing
+    except Exception:
+        return False
+    try:
+        from authlib.integrations import starlette_client  # noqa: F401   Starlette server
         import httpx  # noqa: F401
         return True
     except Exception:
