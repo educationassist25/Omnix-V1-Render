@@ -482,7 +482,9 @@ def layer_bars(pw: pd.DataFrame, top: int = 6):
                       legend=dict(orientation="h", x=0.5, xanchor="center", y=1.12, yanchor="bottom"))
     fig.update_yaxes(title="pathway activity z", zeroline=True)
     fig.update_xaxes(tickfont=dict(size=11), tickangle=-30, automargin=True)  # angled single lines never collide
-    return _layout(fig, "", 430, margin=dict(l=55, r=15, t=40, b=20))
+    # the first name is angled to the left of its bar: leave room for it so it is never cut at the chart edge
+    left = max(55, int(5.2 * len(xl[0]))) if xl else 55
+    return _layout(fig, "", 430, margin=dict(l=left, r=15, t=40, b=20))
 
 
 def reaction_donut(rx: pd.DataFrame):

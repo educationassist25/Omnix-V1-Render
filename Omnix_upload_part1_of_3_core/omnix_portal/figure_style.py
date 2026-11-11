@@ -77,6 +77,11 @@ def _plotly_light(fig) -> bool:
         return True
 
 
+_OWN_SCALE = {"heatmap", "heatmapgl", "contour", "histogram2d", "histogram2dcontour", "surface", "choropleth",
+              "choroplethmapbox", "choroplethmap", "densitymapbox", "densitymap", "volume", "isosurface", "cone",
+              "streamtube"}
+
+
 def blacken_plotly(fig):
     """Plotly figure: titles, axes, legend, colour bars and annotations in pure black (light background only)."""
     try:
@@ -91,18 +96,26 @@ def blacken_plotly(fig):
             if c is not None and 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2] > 0.82:
                 continue
             ann.font.color = BLACK
-        if "coloraxis" in fig.layout and fig.layout.coloraxis.colorbar is not None:
-            fig.update_layout(coloraxis_colorbar_tickfont_color=BLACK, coloraxis_colorbar_title_font_color=BLACK)
+        # Colour bars: restyle only a colour bar the chart really shows. Writing colour-bar settings onto a trace
+        # or layout that has none makes Plotly draw an extra, empty colour bar for it, and those bars stack on
+        # top of each other at the right of the chart.
+        for name, ca in fig.layout.to_plotly_json().items():
+            if name.startswith("coloraxis") and isinstance(ca, dict) and ca.get("showscale", True) is not False:
+                fig.layout[name].colorbar.tickfont.color = BLACK
+                fig.layout[name].colorbar.title.font.color = BLACK
 
         def _tr(t):
             try:
-                if getattr(t, "colorbar", None) is not None:
+                j = t.to_plotly_json()
+                # traces that draw their own colour bar unless showscale is False
+                if (t.type in _OWN_SCALE and not j.get("coloraxis") and j.get("showscale", True) is not False):
                     t.colorbar.tickfont.color = BLACK
                     t.colorbar.title.font.color = BLACK
-                mk = getattr(t, "marker", None)
-                if mk is not None and getattr(mk, "colorbar", None) is not None:
-                    mk.colorbar.tickfont.color = BLACK
-                    mk.colorbar.title.font.color = BLACK
+                mk = j.get("marker")
+                # marker colour bars are off unless showscale is True
+                if isinstance(mk, dict) and mk.get("showscale") is True and not mk.get("coloraxis"):
+                    t.marker.colorbar.tickfont.color = BLACK
+                    t.marker.colorbar.title.font.color = BLACK
             except Exception:
                 pass
         fig.for_each_trace(_tr)

@@ -24,3 +24,10 @@ Files: `omnix_portal/figure_style.py` (new), `omnix_portal/portal.py` (part 1).
 - Portal tests: 77 passed, 1 skipped on Streamlit 1.52.2 and on 1.67.
 - Integrix tests: 49 passed.
 - Browser: the Proteomics QC page shows all figure text in black.
+
+## Update: stacked colour bars removed
+- Charts without a colour scale (bar charts, the reaction pattern map, …) showed several empty colour bars on
+  top of each other at the right, with overlapping numbers. The black-text step created them; it now restyles
+  only colour bars a chart really has (`omnix_portal/figure_style.py`).
+- Integrix overview "pathway activity z" chart: the first pathway name is no longer cut at the left edge on
+  narrow screens (`trace_core/figures.py`).
