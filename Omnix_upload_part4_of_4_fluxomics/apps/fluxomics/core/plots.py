@@ -187,10 +187,10 @@ def volcano_plotly(T, x="log2FC", p="p", q="FDR (BH)", label="Feature", fdr=0.05
     T["-log10 p"] = -np.log10(T[p].clip(lower=1e-300))
     sig_up = (T[q] < fdr) & (T[x] >= fc if fc else T[x] > 0)
     sig_dn = (T[q] < fdr) & (T[x] <= -fc if fc else T[x] < 0)
-    T["cls"] = np.where(sig_up, "Higher in B", np.where(sig_dn, "Lower in B", "Not significant"))
-    colors = {"Higher in B": "#eb6834", "Lower in B": "#2a78d6", "Not significant": "#c4c3cb"}
+    T["cls"] = np.where(sig_up, "Higher in case", np.where(sig_dn, "Lower in case", "Not significant"))
+    colors = {"Higher in case": "#eb6834", "Lower in case": "#2a78d6", "Not significant": "#c4c3cb"}
     fig = go.Figure()
-    for c in ["Not significant", "Lower in B", "Higher in B"]:
+    for c in ["Not significant", "Lower in case", "Higher in case"]:
         s = T[T.cls == c]
         fig.add_scatter(x=s[x], y=s["-log10 p"], mode="markers", name=c, marker=dict(color=colors[c], size=8,
                         line=dict(color="white", width=0.6)), text=s[label],

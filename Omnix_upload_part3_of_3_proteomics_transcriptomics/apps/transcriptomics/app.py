@@ -1063,20 +1063,19 @@ if ACTIVE_PAGE == 5:
         # =================================================================
         if mode == "Two-group comparison":
             c1, c2, c3 = st.columns(3)
-            group_a = c1.selectbox("Group A", groups_available, index=0, key="stats_group_a")
-            # Default Group B to the strongest/most clinically distinct contrast against
-            # Group A when it's present (e.g. "Type 2 Diabetes" vs a "Healthy Control"
-            # Group A on the Rich Clinical Demo), rather than always the 2nd group in
-            # discovery order -- so a first-time user's default comparison is a
-            # biologically meaningful one with real signal, not the most subtle pair.
-            _default_b_candidates = ["Type 2 Diabetes", "Metabolic Syndrome"]
-            _default_b_idx = next(
-                (groups_available.index(g) for g in _default_b_candidates
-                 if g in groups_available and g != group_a),
+            # Log2FC = A relative to B: A is the case, B the control.
+            # The default case is the most clinically distinct group when present (e.g. "Type 2 Diabetes"
+            # over "Healthy Control" on the Rich Clinical Demo), so a first comparison has real signal.
+            _default_case_candidates = ["Type 2 Diabetes", "Metabolic Syndrome"]
+            _default_case_idx = next(
+                (groups_available.index(g) for g in _default_case_candidates if g in groups_available),
                 min(1, len(groups_available) - 1)
             )
-            group_b = c2.selectbox("Group B", groups_available, index=_default_b_idx,
-                                    key="stats_group_b")
+            group_a = c1.selectbox("Case", groups_available, index=_default_case_idx, key="stats_group_a",
+                                   help="The group of interest. Fold changes are Case over Control (positive = higher in Case).")
+            group_b = c2.selectbox("Control (reference)", groups_available,
+                                   index=0 if _default_case_idx != 0 else min(1, len(groups_available) - 1),
+                                   key="stats_group_b", help="The comparison group (denominator of the fold change).")
 
             st.markdown("**Significance Threshold**")
             sc1, sc2, sc3 = st.columns(3)
@@ -1299,7 +1298,7 @@ if ACTIVE_PAGE == 5:
                 )
                 reference_level = None
                 if contrast_style.startswith("Every group over"):
-                    reference_level = st.selectbox("Reference group", deseq_groups, key="deseq_multi_reference")
+                    reference_level = st.selectbox("Control (reference)", deseq_groups, key="deseq_multi_reference")
                 covariate_options_m = [c for c in stats_cat_cols if c != grouping_var]
                 covariates_m = st.multiselect("Covariates to control for (optional, e.g. Batch)",
                                                covariate_options_m, key="deseq_multi_covariates")

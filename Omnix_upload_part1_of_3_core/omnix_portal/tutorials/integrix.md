@@ -33,7 +33,7 @@ The setup panel on the left has four steps; each collapses to a one-line summary
 ## Step 2: Study design
 
 - **Group column**: any metadata column (Condition, Treatment, Sex or a combined Group).
-- **Case** and **Reference**: the two groups compared.
+- **Case** and **Control (reference)**: the two groups compared. Results read case over control.
 - **Batch column** and **Batch-correct** per layer: off by default, and off for layers the platform already corrected.
 
 ## Step 3: Statistics

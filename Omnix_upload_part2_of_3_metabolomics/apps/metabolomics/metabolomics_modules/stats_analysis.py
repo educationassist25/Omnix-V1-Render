@@ -213,22 +213,22 @@ def two_group_test(
 
     if missing_a:
         raise ValueError(
-            f"Group A samples not found in data: {missing_a}"
+            f"Control group samples not found in data: {missing_a}"
         )
 
     if missing_b:
         raise ValueError(
-            f"Group B samples not found in data: {missing_b}"
+            f"Case group samples not found in data: {missing_b}"
         )
 
     if len(group_a_samples) < 2:
         raise ValueError(
-            "Group A requires at least 2 samples."
+            "The control group needs at least 2 samples."
         )
 
     if len(group_b_samples) < 2:
         raise ValueError(
-            "Group B requires at least 2 samples."
+            "The case group needs at least 2 samples."
         )
 
     a2 = data_log2[group_a_samples]

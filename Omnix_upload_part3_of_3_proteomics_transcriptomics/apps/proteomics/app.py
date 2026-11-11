@@ -1057,8 +1057,9 @@ if ACTIVE_PAGE == 5:
 
         if mode == "Two-group comparison":
             c1, c2, c3 = st.columns(3)
-            group_a = c1.selectbox("Group A", groups_available, index=0)
-            group_b = c2.selectbox("Group B", groups_available, index=min(1, len(groups_available) - 1))
+            # log2FC = mean(A) - mean(B): A is the case, B the control
+            group_a = c1.selectbox("Case", groups_available, index=min(1, len(groups_available) - 1), help="The group of interest. Fold changes are Case over Control (positive = higher in Case).")
+            group_b = c2.selectbox("Control (reference)", groups_available, index=0, help="The comparison group (denominator of the fold change).")
             method = c3.selectbox("Method", ["Welch's t-test", "Wilcoxon rank-sum"])
             method_key = "ttest" if method.startswith("Welch") else "wilcoxon"
 

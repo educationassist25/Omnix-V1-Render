@@ -110,11 +110,11 @@ Under **Potential Outlier Samples**, a sample is flagged if its mean correlation
 
 #### Two-group comparison
 
-1. Select **Group A** and **Group B**. They must be different; if they are the same, the run button does nothing. **Log2FC is Group A relative to Group B**, so a positive value means the gene is higher in Group A.
+1. Select the **Case** (the group of interest) and the **Control (reference)**. They must be different; if they are the same, the run button does nothing. **Log2FC is the case relative to the control** (case over control), so a positive value means the gene is higher in the case.
 2. Under **Significance Threshold**, set **Metric** (**FDR** or **P-value**) and **Threshold** (default 0.05). By default the table and CSV show all genes, with a Significant column; tick **Apply significance filter** to show only genes with metric ≤ threshold.
 3. Set **Covariates to control for (optional, e.g. Batch)** if needed.
 4. Click **Run Two-Group Test**:
-   - **Raw Counts** (**pyDESeq2 Wald test (recommended for raw counts)**): DESeq2 is refit on the filtered counts with this page's design and Group B as the reference. Fold changes are shrunk with apeGLM, so **Log2FC** and **Linear_FC** are shrunken values (unshrunk ones are kept as **Log2FC_MLE_Unshrunk** / **Linear_FC_MLE_Unshrunk**). Shrinkage does not change p-values or FDR.
+   - **Raw Counts** (**pyDESeq2 Wald test (recommended for raw counts)**): DESeq2 is refit on the filtered counts with this page's design and the control as the reference. Fold changes are shrunk with apeGLM, so **Log2FC** and **Linear_FC** are shrunken values (unshrunk ones are kept as **Log2FC_MLE_Unshrunk** / **Linear_FC_MLE_Unshrunk**). Shrinkage does not change p-values or FDR.
    - **Pre-normalized logCPM** (**Wald test (linear model on logCPM)**): a per-gene linear model with the same Wald construction and output columns. It needs at least 3 samples; genes with missing values are dropped.
 5. The table shows **Gene, p-value, FDR, Log2FC, Linear_FC, Significant**. Download it as **\<A\>_vs_\<B\>_Statistics.csv**.
 6. Optional (raw counts): tick the Welch's t-test checkbox and click **Run Welch t-test (transformed data)** for a separate, descriptive test on the VST values (**..._Welch_Transformed_Statistics.csv**). It does not replace the DESeq2 result.
@@ -127,7 +127,7 @@ With raw counts, choose a **Multi-group comparison type**. With logCPM input, on
 
 1. Select the groups to include (at least 3).
 2. Choose **Contrasts**:
-   - **Every group over a reference (Dunnett-style)**: pick a **Reference group**. LFC shrinkage is applied to every contrast.
+   - **Every group over a reference (Dunnett-style)**: pick the **Control (reference)**. LFC shrinkage is applied to every contrast.
    - **Every pairwise combination**: fold changes are unshrunk MLE estimates.
 3. Set covariates and the **Significance Threshold** controls.
 4. Click **Run PyDESeq2 Contrasts**. One DESeq2 fit is made, and each contrast gets its own Benjamini-Hochberg FDR.
@@ -224,7 +224,7 @@ This page analyzes the active Statistics result.
 - **"Negative values found in a matrix marked 'Raw Counts'"**: the data is probably already log-transformed. Reload it as **Pre-normalized logCPM**.
 - **A page says to run an earlier step first**: follow the order Upload → Cleaning → Normalization → Statistics. Volcano, Heatmap, Biomarker Discovery and GSEA all need a Statistics result.
 - **No QC CV or QC correlation figures**: the metadata has no samples with IsQC = True.
-- **Nothing happens when you click Run Two-Group Test**: Group A and Group B are the same group.
+- **Nothing happens when you click Run Two-Group Test**: the case and the control are the same group.
 - **"Need at least 3 values of '...'"** for multi-group tests: choose a grouping variable that has 3 or more groups.
 - **"Not enough samples ... for the requested design"** (logCPM): remove a covariate or add samples.
 - **After an ANOVA**, the active result has placeholder fold changes (Log2FC = 0). Volcano Up/Down calls, biomarker Direction, and GSEA rankings are therefore not meaningful. For directional analysis, use a two-group test or a DESeq2 contrast.
@@ -240,11 +240,11 @@ This page analyzes the active Statistics result.
 - **VST (variance-stabilizing transform)**: DESeq2's log2-like transform that makes variance roughly independent of expression level. Recommended for PCA, clustering and heatmaps.
 - **Design / covariate**: the model formula, e.g. `~ Batch + Diagnosis`. Covariates are variables whose effects are controlled for.
 - **Wald test**: an estimated coefficient divided by its standard error, compared with a normal distribution.
-- **log2 FC (Log2FC)**: log2 of Group A expression relative to Group B (+1 = twice as high in A). **Linear_FC** = 2^Log2FC.
+- **log2 FC (Log2FC)**: log2 of case expression relative to the control (+1 = twice as high in the case). **Linear_FC** = 2^Log2FC.
 - **apeGLM shrinkage**: pulls noisy fold changes for low-count genes toward zero without changing p-values.
 - **padj / FDR**: the Benjamini-Hochberg adjusted p-value (DESeq2 calls it padj), which controls the false discovery rate across tested genes.
 - **CV (coefficient of variation)**: SD divided by the mean, as a percentage, across QC replicates.
 - **Z-score (heatmap)**: each gene's values scaled to mean 0 and SD 1 across the displayed samples.
 - **ORA**: a hypergeometric test of whether a gene set contains more significant genes than expected by chance.
-- **ES / NES**: GSEA's enrichment score and its size-normalized version. A positive NES means the set sits toward the top of the ranking (higher in Group A with signed_neglogp or log2fc).
+- **ES / NES**: GSEA's enrichment score and its size-normalized version. A positive NES means the set sits toward the top of the ranking (higher in the case with signed_neglogp or log2fc).
 - **Leading edge**: the genes that drive a gene set's enrichment score.

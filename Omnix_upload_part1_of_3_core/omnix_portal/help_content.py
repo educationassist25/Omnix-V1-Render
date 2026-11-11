@@ -83,7 +83,7 @@ QUICK_START["integrix"] = [
      "**Upload Omnix exports** (the zips from **Download for Integrix**), **Upload my data**, or a demo dataset. "
      "Pick the **Layers to integrate**: all three, or metabolomics with transcriptomics or proteomics."),
     ("Study design", "Study design (step 2)",
-     "Choose the metadata column that defines the comparison and its **Case** and **Reference** groups. Batch "
+     "Choose the metadata column that defines the comparison and its **Case** and **Control (reference)** groups. Batch "
      "correction is off for layers the platform already corrected."),
     ("Statistics and engines", "Statistics, Engines (steps 3-4)",
      "Permutations, FDR threshold and pattern threshold; switch the network, MOFA+ factors and the integrated "

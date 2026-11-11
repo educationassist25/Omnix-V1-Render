@@ -123,7 +123,7 @@ Internal-standard rows are left out of the untargeted pipeline, since they are n
 
 **Two-group comparison**
 
-2. Pick **Group A** and **Group B**, and a **Method**: **Welch's t-test** or **Wilcoxon rank-sum**.
+2. Pick the **Case** (the group of interest) and the **Control (reference)**, and a **Method**: **Welch's t-test** or **Wilcoxon rank-sum**.
 3. Click **Run Two-Group Test**. The results table has four columns:
    - **p-value**
    - the Benjamini–Hochberg adjusted p-value, labelled **BH P Value** for untargeted data and **FDR** for targeted data
@@ -234,7 +234,7 @@ Both pages reuse results you already ran on the Statistics page (two-group or AN
 
 This page finds metabolite pairs whose correlation changes between two groups: a coupling can be lost, gained or flipped. Before you have normalized data, you can try it with **Explore with the simulated rewiring demo (Tumor over Control, 30 + 30 samples)**.
 
-1. Choose a **Grouping variable**, a **Reference group (A)** and a **Comparison group (B)**. Each group needs at least 3 samples. With 4 or fewer, the test is exact and a note gives the smallest p-value that can be reached.
+1. Choose a **Grouping variable**, the **Case** and the **Control (reference)**. Each group needs at least 3 samples. With 4 or fewer, the test is exact and a note gives the smallest p-value that can be reached.
 2. Main settings:
    - **Pathway library**: KEGG, SMPDB, Human-GEM subsystems or LIPID MAPS.
    - **Correlation**: Pearson or Spearman.
@@ -294,7 +294,7 @@ This page finds metabolite pairs whose correlation changes between two groups: a
 ## Glossary
 
 - **Adjusted p-value (FDR q-value / BH P Value):** the p-value corrected for testing many metabolites at once (Benjamini–Hochberg). It is labelled "BH P Value" for untargeted data and "FDR" for targeted data; the calculation is the same.
-- **Log2 FC:** mean log2 in Group B minus Group A. +1 means twice as high in B. **Linear_FC** = 2^Log2FC.
+- **Log2 FC:** mean log2 in the case minus the control (case over control). +1 means twice as high in the case. **Linear_FC** = 2^Log2FC.
 - **CV (coefficient of variation):** SD ÷ mean × 100 across QC injections. The app uses 20% as its cutoff.
 - **QC sample:** a repeated pooled-QC injection, flagged in **IsQC** and excluded from analysis.
 - **ISTD (internal standard):** a spiked-in reference compound. Dividing by it corrects for differences between injections.

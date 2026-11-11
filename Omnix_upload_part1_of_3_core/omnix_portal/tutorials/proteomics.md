@@ -156,11 +156,11 @@ Changing the method clears any earlier normalized result, so results are never m
 
 **Two-group comparison**
 
-1. Pick **Group A**, **Group B** and a **Method**: **Welch's t-test** (unequal variances) or **Wilcoxon rank-sum**.
+1. Pick the **Case** (the group of interest), the **Control (reference)** and a **Method**: **Welch's t-test** (unequal variances) or **Wilcoxon rank-sum**.
    - In the current version, the results table is always computed with an unequal-variance (Welch) t-test, whichever Method you pick.
    - The Method you selected is still written to the Processing Log.
 2. Click **Run Two-Group Test**. The table contains:
-   - **Log2FC**: mean of Group A minus mean of Group B on the normalized log2 data. Positive means higher in Group A.
+   - **Log2FC**: mean of the case minus mean of the control on the normalized log2 data (case over control). Positive means higher in the case.
    - **p-value**.
    - **FDR**: Benjamini-Hochberg.
    - **Significant**: true when p < 0.05 and FDR < 0.25.
@@ -312,7 +312,7 @@ This page uses the two-group Statistics result. If a Gene column was provided, p
 
 ## Glossary
 
-- **Log2 FC:** difference of group means on the log2 scale (Group A − Group B). A value of 1 means two-fold higher in Group A.
+- **Log2 FC:** difference of group means on the log2 scale (case − control). A value of 1 means two-fold higher in the case.
 - **FDR:** false discovery rate; here the Benjamini-Hochberg adjusted p-value.
 - **CV:** coefficient of variation (SD ÷ mean × 100). CV ≤ 20% across QC replicates is flagged Acceptable.
 - **QC replicate:** repeated injection of a pooled sample, used to judge reproducibility. Excluded from normalization and statistics.
@@ -321,6 +321,6 @@ This page uses the two-group Statistics result. If a Gene column was provided, p
 - **Z-score (heatmap):** a protein's value minus its mean, divided by its SD across the samples shown.
 - **ORA:** over-representation analysis; a hypergeometric test of whether a gene set holds more significant genes than expected.
 - **GSEA:** ranks all proteins and tests whether a gene set's members cluster at the top or bottom of the ranking.
-- **NES:** normalized enrichment score. Positive means enriched among proteins ranked higher in Group A; negative means ranked lower.
+- **NES:** normalized enrichment score. Positive means enriched among proteins ranked higher in the case; negative means ranked lower.
 - **Leading edge:** the gene-set members that drive a GSEA enrichment score.
 - **Fold Enrichment (ORA):** observed ÷ expected overlap; 1.0 is what chance alone would give.

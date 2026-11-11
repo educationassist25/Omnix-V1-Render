@@ -44,3 +44,14 @@ report and demo descriptions, Help and tutorials.
 - Proteomics and Transcriptomics: Log2FC = Group A − Group B, written "A over B".
 - Integrix: "Case over Reference".
 Sample counts such as "(3 vs 4 samples)" are unchanged.
+
+## Same group pickers in every platform
+Every two-group comparison now has the same two pickers, in the same order: **Case** (the group of interest)
+first, then **Control (reference)**. Results always read *case over control*, and a positive fold change always
+means higher in the case. Before, "Group A / Group B" meant opposite things in different platforms.
+- Statistics in Metabolomics/Lipidomics, Proteomics and Transcriptomics; Fluxomics Step 7; Metabolomics
+  Correlation Rewiring; Integrix Study design; the Transcriptomics multi-group "Control (reference)".
+- Defaults pick a non-control group as the case (Transcriptomics demo: Type 2 Diabetes over Healthy Control).
+- Fluxomics volcano legend: "Higher in case" / "Lower in case".
+- Tutorials and Help use the same words; fold-change definitions read "case − control".
+- The statistics themselves are unchanged.

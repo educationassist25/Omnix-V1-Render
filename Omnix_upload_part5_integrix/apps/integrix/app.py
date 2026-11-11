@@ -620,7 +620,7 @@ with st.sidebar:
             if st.session_state.get("des_ref") not in _refs:
                 st.session_state.pop("des_ref", None)
             _r0 = _pick_ref(_refs, case)
-            ref = cg2.selectbox("Reference", _refs, key="des_ref", index=_refs.index(_r0) if _r0 in _refs else 0,
+            ref = cg2.selectbox("Control (reference)", _refs, key="des_ref", index=_refs.index(_r0) if _r0 in _refs else 0,
                                 on_change=_keep_open, args=("step_design",))
             if len(groups) > 2:
                 st.caption(f"{len(groups)} groups in '{group_col}': only the two chosen are compared.")

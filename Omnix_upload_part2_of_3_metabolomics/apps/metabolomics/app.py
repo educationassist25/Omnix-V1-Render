@@ -1791,8 +1791,9 @@ def page_statistics():
             c1, c2, c3 = st.columns(3)
             default_a = groups_available.index("Untreated") if "Untreated" in groups_available else 0
             default_b = groups_available.index("IR Day 2") if "IR Day 2" in groups_available else min(1, len(groups_available) - 1)
-            group_a = c1.selectbox("Group A", groups_available, index=default_a)
-            group_b = c2.selectbox("Group B", groups_available, index=default_b)
+            # Log2FC = mean(B) - mean(A): B is the case, A the control
+            group_b = c1.selectbox("Case", groups_available, index=default_b, help="The group of interest. Fold changes are Case over Control (positive = higher in Case).")
+            group_a = c2.selectbox("Control (reference)", groups_available, index=default_a, help="The comparison group (denominator of the fold change).")
             method = c3.selectbox("Method", ["Welch's t-test", "Wilcoxon rank-sum"])
             method_key = "ttest" if method.startswith("Welch") else "wilcoxon"
 

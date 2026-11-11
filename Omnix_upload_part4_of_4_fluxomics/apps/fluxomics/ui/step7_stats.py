@@ -34,15 +34,17 @@ def render():
         method = q[0].selectbox("Test", list(stt.TTESTS), format_func=stt.TTESTS.get, key="st_tt")
         if len(groups) < 2:
             st.warning("Two-group tests need at least two groups."); return
-        ga = q[1].selectbox("Group A (reference)", groups, index=groups.index(s.group_a) if s.group_a in groups else 0,
-                            key="st_a")
-        rest = [g for g in groups if g != ga]
-        gb = q[2].selectbox("Group B", rest, index=rest.index(s.group_b) if s.group_b in rest else 0, key="st_b")
+        # difference = B - A: B is the case, A the control
+        gb = q[1].selectbox("Case", groups, index=groups.index(s.group_b) if s.group_b in groups else min(1, len(groups) - 1),
+                            key="st_b", help="The group of interest. Fold changes are Case over Control (positive = higher in Case).")
+        rest = [g for g in groups if g != gb]
+        ga = q[2].selectbox("Control (reference)", rest, index=rest.index(s.group_a) if s.group_a in rest else 0,
+                            key="st_a", help="The comparison group (denominator of the fold change).")
         tsel = q[3].multiselect("Time points (each tested separately)", times, default=times,
                                 format_func=lambda h: f"{h:g} h", key="st_times")
         C.direction_banner(ga, gb, True)
         if method == "paired":
-            st.caption("Paired: samples of A and B are matched by the biological-replicate number (Experimental design) within "
+            st.caption("Paired: case and control samples are matched by the biological-replicate number (Experimental design) within "
                        "each time point.")
         settings.update(method=method, group_a=ga, group_b=gb, times=list(tsel))
     else:

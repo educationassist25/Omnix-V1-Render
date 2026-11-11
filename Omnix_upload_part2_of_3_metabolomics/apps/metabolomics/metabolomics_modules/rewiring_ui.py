@@ -126,10 +126,15 @@ def render_workspace(st, data: pd.DataFrame, meta: pd.DataFrame, annotations: pd
     if len(levels) < 2:
         st.warning(f"'{group_col}' has fewer than two groups among biological samples.")
         return
-    a_default = next((i for i, v in enumerate(levels) if re.search(r"control|healthy|normal|untreated|baseline", v, re.I)), 0)
-    group_a = c2.selectbox("Reference group (A)", levels, index=a_default, key=k("group_a"))
-    b_choices = [v for v in levels if v != group_a]
-    group_b = c3.selectbox("Comparison group (B)", b_choices, index=0, key=k("group_b"))
+    # same pickers as every Omnix comparison: Case first, then Control (reference); results read "case over control"
+    _is_ctrl = lambda v: re.search(r"control|healthy|normal|untreated|baseline|parental|wild|vehicle", v, re.I)
+    b_default = next((i for i, v in enumerate(levels) if not _is_ctrl(v)), min(1, len(levels) - 1))
+    group_b = c2.selectbox("Case", levels, index=b_default, key=k("group_b"),
+                           help="The group of interest. Results read Case over Control.")
+    a_choices = [v for v in levels if v != group_b]
+    a_default = next((i for i, v in enumerate(a_choices) if _is_ctrl(v)), 0)
+    group_a = c3.selectbox("Control (reference)", a_choices, index=a_default, key=k("group_a"),
+                           help="The comparison group.")
     counts = meta.loc[bio, group_col].astype(str).value_counts()
     n_a, n_b = int(counts.get(group_a, 0)), int(counts.get(group_b, 0))
     st.caption(f"{n_a} samples in **{group_a}**, {n_b} in **{group_b}** (QC samples excluded).")
