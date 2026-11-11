@@ -9,6 +9,8 @@ numpy
 openpyxl
 pandas
 plotly
+kaleido>=1.0,<2       # Integrix: figure files identical to the screen (needs Chrome: render_start.sh fetches it)
+svglib>=1.5                 # Integrix: vector EPS of the screen figures
 Pillow
 pyarrow
 pydeseq2>=0.4.0

@@ -82,19 +82,91 @@ def get_kb():
 _SHOWN: dict = {}       # charts drawn in this run, per name: every chart gets its own key
 
 
-def show(fig, name="trace_figure", notitle=False):
+def show(fig, name="trace_figure", notitle=False, width_px: int = 1100, pub=None):
+    """Draw a Plotly chart and, under it, the download panel for the same figure.
+
+    width_px: about how wide the chart is on screen (full width ~1100 px, half width ~620 px); the download uses it
+    as its default width, so the file has the screen's proportions. pub: (builder, w, h, fs) of the
+    publication-style figure, used only when the screen figure cannot be exported on this server."""
     cfg = F.config(st.session_state.get("fig_fmt", "png"), st.session_state.get("fig_scale", 6), name)
     # An explicit key: two charts with the same figure on one page (e.g. a pathway chart shown in two sections)
     # would otherwise get the same automatic ID, which Streamlit 1.52 rejects (StreamlitDuplicateElementId).
     _SHOWN[name] = _SHOWN.get(name, 0) + 1
     key = f"plt_{name}_{_SHOWN[name]}"
-    fig = UI.theme_figure(fig, MODE)
+    base = fig
     if notitle:   # the surrounding card already carries the title
-        fig.update_layout(title_text="", margin_t=min(40, fig.layout.margin.t or 40))
+        base = go_figure(fig)
+        base.update_layout(title_text="", margin_t=min(40, fig.layout.margin.t or 40))
+    fig = UI.theme_figure(base, MODE)
     try:
         st.plotly_chart(fig, width="stretch", config=cfg, theme=None, key=key)
     except TypeError:  # older Streamlit
         st.plotly_chart(fig, use_container_width=True, config=cfg, theme=None, key=key)
+    screen_download_panel(f"dl_{name}_{_SHOWN[name]}", base, name, width_px, pub)
+
+
+def go_figure(fig):
+    import plotly.graph_objects as go
+    return go.Figure(fig)
+
+
+def _blacken():
+    """The portal's black-text rule (omnix_portal.figure_style), so files match the screen inside Omnix."""
+    try:
+        from omnix_portal.figure_style import blacken_plotly
+        return blacken_plotly
+    except Exception:
+        return None
+
+
+def screen_download_panel(key: str, fig, name: str, width_px: int = 1100, pub=None):
+    """Download the chart exactly as shown on screen: PNG · TIFF · JPEG · SVG · PDF · EPS or all six, 300-1200 DPI,
+    at the screen's size by default (width and height can be changed). Built only when asked for."""
+    from trace_core import plotly_export as PX
+    h_px = int(fig.layout.height or 450)
+    w_px = int(fig.layout.width or width_px)
+    with st.expander("⬇ Download this figure as shown (PNG · TIFF · JPEG · SVG · PDF · EPS)"):
+        if not PX.available():
+            if pub is not None:
+                st.caption("Figures identical to the screen cannot be made on this server right now; this is the "
+                           "publication-style version of the same chart.")
+                download_panel(key + "_pub", *pub[:4], name=name, expander=False)
+            else:
+                st.caption("Use the camera icon at the top right of the chart to save it as PNG or SVG.")
+            return
+        c = st.columns(3) + st.columns(3)
+        fmt = c[0].selectbox("Format", list(PX.FORMATS) + ["All formats (ZIP)"], key=f"{key}_fmt")
+        dpi = c[1].selectbox("DPI", [300, 600, 1200], index=1, key=f"{key}_dpi")
+        transp = c[2].checkbox("Transparent background", key=f"{key}_tr",
+                               help="PNG, SVG and PDF only; TIFF, JPEG and EPS are always on white.")
+        ww = c[3].number_input("Width (in)", 2.0, 30.0, round(w_px / PX.SCREEN_DPI, 1), 0.5, key=f"{key}_w",
+                               help="Default: the chart's size on screen. A different width lays the chart out "
+                                    "again, like resizing the window.")
+        hh = c[4].number_input("Height (in)", 1.5, 40.0, round(h_px / PX.SCREEN_DPI, 1), 0.5, key=f"{key}_h")
+        go_ = c[5].button("Prepare file", key=f"{key}_go", width="stretch")
+        if go_:
+            with st.spinner("Preparing the file"):
+                out = PX.screen_figure(fig, UI.theme_figure, _blacken(), transp)
+                if fmt.startswith("All"):
+                    data, fn = PX.all_formats_zip(out, name, dpi, ww, hh, transp), f"{name}_all_formats.zip"
+                else:
+                    ext = PX.FORMATS[fmt]
+                    data, fn = PX.figure_bytes(out, ext, dpi, ww, hh, transp), f"{name}.{ext}"
+                eff = PX.effective_dpi(ww, hh, dpi)
+                note = f"{ww:g} × {hh:g} in"
+                if fmt not in ("SVG", "PDF"):
+                    note += f" · {int(ww * eff):,} × {int(hh * eff):,} px at {eff} DPI"
+                    if eff < dpi:
+                        note += " (lowered for this large figure; SVG or PDF keep full quality)"
+                if fmt == "EPS" or fmt.startswith("All"):
+                    note += " · EPS holds the image at this DPI"
+                st.session_state[f"_scr_{key}"] = (fn, data, note)
+        if f"_scr_{key}" in st.session_state:
+            fn, data, note = st.session_state[f"_scr_{key}"]
+            st.download_button(f"Download {fn} ({len(data) / 1e6:.1f} MB)", data, fn,
+                               mime=PX.MIME[fn.rsplit(".", 1)[1]], key=f"{key}_btn", type="primary",
+                               icon=":material/download:")
+            st.caption(note)
 
 
 def show_mpl(fig, max_scale: float = 1.15, cache_key=None):
@@ -187,11 +259,15 @@ def _fonts():
     return [f for f in pref if f in have] or ["DejaVu Sans"]
 
 
-def download_panel(key: str, builder, w: float, h: float | None, fs: float = 7.0, name: str = "figure"):
+def download_panel(key: str, builder, w: float, h: float | None, fs: float = 7.0, name: str = "figure",
+                   expander: bool = True):
     """Publication export for one figure: any format, 300-1200 DPI, custom size / font, or all formats
     at once. `builder(w, h, fs)` returns a matplotlib figure (rendered only when requested)."""
+    import contextlib
     from trace_core import pubfig as PF
-    with st.expander("⬇ Download publication-quality figure (PNG · TIFF · JPEG · SVG · PDF · EPS)"):
+    box = st.expander("⬇ Download publication-quality figure (PNG · TIFF · JPEG · SVG · PDF · EPS)") if expander \
+        else contextlib.nullcontext()
+    with box:
         c = st.columns(3) + st.columns(3)          # two rows of three: readable at half-screen width
         fmt = c[0].selectbox("Format", list(PF.FORMATS) + ["All formats (ZIP)"], key=f"{key}_fmt")
         dpi = c[1].selectbox("DPI", [300, 600, 1200], index=1, key=f"{key}_dpi")
@@ -1221,11 +1297,11 @@ with tabs[0]:
           st.markdown(UI.card_head("Layer concordance across top pathways",
                                    "Per-layer pathway activity z (permutation-standardised Stouffer) for the six "
                                    "most significant pathways; dashed lines at |z| = 2.", "trend"), unsafe_allow_html=True)
-          show(F.layer_bars(pw, 6), "layer_concordance")
+          show(F.layer_bars(pw, 6), "layer_concordance", width_px=720)
       with g2.container(border=True):
           st.markdown(UI.card_head("Reaction classification", "All observable reactions by evidence category.",
                                    "target"), unsafe_allow_html=True)
-          show(F.reaction_donut(rx), "reaction_classification")
+          show(F.reaction_donut(rx), "reaction_classification", width_px=400)
       with st.container(border=True):
           h1, h2 = st.columns([1.5, 1.6])
           h1.markdown(UI.card_head("Key findings & biological interpretations",
@@ -1253,14 +1329,14 @@ with tabs[0]:
       with p1.container(border=True):
           st.markdown(UI.card_head("Reaction pattern map", "Enzyme evidence E vs metabolite balance M.", "bolt"),
                       unsafe_allow_html=True)
-          show(F.pattern_grid(rx), "reaction_patterns", notitle=True)
-          download_panel("ov_pat", lambda w, h, fs: PF.pattern_grid(rx, 12, w, h or 4.2, fs), 5.6, 4.2, 7, "reaction_patterns")
+          show(F.pattern_grid(rx), "reaction_patterns", notitle=True, width_px=620,
+               pub=(lambda w, h, fs: PF.pattern_grid(rx, 12, w, h or 4.2, fs), 5.6, 4.2, 7))
       if len(cp_tbl):
           with p2.container(border=True):
               st.markdown(UI.card_head("Canonical pathways", "Right-tailed Fisher's exact test; colour = directional z.",
                                        "branch"), unsafe_allow_html=True)
-              show(F.canonical_bars(cp_tbl, 15), "canonical_pathways", notitle=True)
-              download_panel("ov_can", lambda w, h, fs: PF.canonical(cp_tbl, 15, w, h, fs), 7.6, None, 7, "canonical_pathways")
+              show(F.canonical_bars(cp_tbl, 15), "canonical_pathways", notitle=True, width_px=620,
+                   pub=(lambda w, h, fs: PF.canonical(cp_tbl, 15, w, h, fs), 7.6, None, 7))
 
 # ===================================================================================== Data & mapping
 with tabs[1]:
@@ -1275,8 +1351,8 @@ with tabs[1]:
           v = cramers_v(res.design.meta["Batch"], res.design.meta["Group"])
           msg = "warning: batch and group are confounded" if v > 0.5 else "batch is not confounded with group"
           st.caption(f"Batch vs group Cramér's V = {v:.2f} ({msg}).")
-      show(F.coverage_bars(layers), "mapping_coverage")
-      download_panel("cov", lambda w, h, fs: PF.coverage(layers, w, h or 2.6, fs), 3.6, 2.6, 7, "mapping_coverage")
+      show(F.coverage_bars(layers), "mapping_coverage",
+           pub=(lambda w, h, fs: PF.coverage(layers, w, h or 2.6, fs), 3.6, 2.6, 7))
       for k, L in layers.items():
           with st.expander(f"{L.name}: processing log and identifier mapping"):
               for line in L.log:
@@ -1299,9 +1375,8 @@ with tabs[2]:
           c[2].metric("Correlation of z-scores", f"{cp['pearson_z']:.2f}")
           c[3].metric("Median within-sample rho", f"{cp.get('median_within_rho', np.nan):.2f}" if "median_within_rho" in cp else "n/a (unpaired)")
           nl = st.slider("Genes labelled", 0, 40, 15, key="conc_nl")
-          show(F.concordance(res.concordance, cp["beta"], nl), "concordance")
-          download_panel("conc", lambda w, h, fs: PF.concordance(res.concordance, cp["beta"], nl, w, h or 4.0, fs),
-                         5.4, 4.0, 7, "concordance")
+          show(F.concordance(res.concordance, cp["beta"], nl), "concordance",
+               pub=(lambda w, h, fs: PF.concordance(res.concordance, cp["beta"], nl, w, h or 4.0, fs), 5.4, 4.0, 7))
           cls = st.multiselect("Show classes", sorted(res.concordance["class"].unique()),
                                default=[c for c in res.concordance["class"].unique() if c != "Unchanged"])
           d = res.concordance[res.concordance["class"].isin(cls)]
@@ -1315,8 +1390,8 @@ with tabs[3]:
                   "**metabolite balance M** (products minus substrates). **Coherence C = E × M.** A reaction is "
                   f"called coherent when both label-permutation and topology q < {res.params['alpha']}.")
       nl = st.slider("Enzymes labelled", 0, 40, 14, key="rx_nl")
-      show(F.pattern_grid(rx, nl), "reaction_patterns")
-      download_panel("rxpat", lambda w, h, fs: PF.pattern_grid(rx, nl, w, h or 4.2, fs), 6.0, 4.4, 7, "reaction_patterns")
+      show(F.pattern_grid(rx, nl), "reaction_patterns",
+           pub=(lambda w, h, fs: PF.pattern_grid(rx, nl, w, h or 4.2, fs), 6.0, 4.4, 7))
       c1, c2, c3 = st.columns([1.2, 2, 2])
       only = c1.radio("Rows", ["Coherent", "Metabolite-driven", "All"], horizontal=False)
       pats = c2.multiselect("Patterns", list(PATTERN_HELP), default=[])
@@ -1382,9 +1457,8 @@ with tabs[5]:
                                    "(orange up, blue down, grey &lt; 4 directional molecules) · line = ratio",
                                    "branch"), unsafe_allow_html=True)
           if len(cp_tbl):
-              show(F.canonical_bars(cp_tbl, ntop), "canonical_pathways", notitle=True)
-              download_panel("can", lambda w, h, fs: PF.canonical(cp_tbl, ntop, w, h, fs), 7.6, None, 7,
-                             "canonical_pathways")
+              show(F.canonical_bars(cp_tbl, ntop), "canonical_pathways", notitle=True, width_px=620,
+                   pub=(lambda w, h, fs: PF.canonical(cp_tbl, ntop, w, h, fs), 7.6, None, 7))
           else:
               st.info("No pathway has enough measured molecules.")
       with c2.container(border=True):
@@ -1392,9 +1466,8 @@ with tabs[5]:
                                    "Colour = permutation-standardised z · size = −log10 q · tile = class "
                                    "(shared-concordant, shared-discordant or omics-specific)", "chart"),
                       unsafe_allow_html=True)
-          show(F.pathway_dotplot(pw, ntop), "pathways", notitle=True)
-          download_panel("pwdot", lambda w, h, fs: PF.pathway_dotplot(pw, ntop, w, h, fs), 7.2, None, 7,
-                         "pathway_activity")
+          show(F.pathway_dotplot(pw, ntop), "pathway_activity", notitle=True, width_px=620,
+               pub=(lambda w, h, fs: PF.pathway_dotplot(pw, ntop, w, h, fs), 7.2, None, 7))
       with st.container(border=True):
           h1, h2 = st.columns([2, 1.4], vertical_alignment="center")
           h1.markdown(UI.card_head("Pathway table", "Per-layer z and q, combined z, heterogeneity (Cochran's Q, I²) "
@@ -1460,18 +1533,17 @@ with tabs[8]:
           st.info(extras.get("factors_error", "Enable 'Latent factors (MOFA+)' in the sidebar and run again."))
       else:
           st.caption(f"Method: {f['method']}. Factors explaining ≥ 2% variance in at least one layer are shown.")
-          show(F.variance_heatmap(f["r2"]), "factor_variance")
-          download_panel("fvar", lambda w, h, fs: PF.variance_heatmap(f["r2"], w, h or 1.8, fs), 0.6 * f["r2"].shape[1] + 1.8,
-                         1.8, 7, "factor_variance")
+          show(F.variance_heatmap(f["r2"]), "factor_variance",
+               pub=(lambda w, h, fs: PF.variance_heatmap(f["r2"], w, h or 1.8, fs), 0.6 * f["r2"].shape[1] + 1.8, 1.8, 7))
           cols = list(f["scores"].columns)
           if len(cols) >= 2:
               a, b = st.columns(2)
               fx = a.selectbox("x", cols, 0)
               fy = b.selectbox("y", cols, 1)
               lbl = st.checkbox("Label samples", False, key="fac_lbl")
-              show(F.factor_scatter(f["scores"], res.design.meta["Group"], fx, fy), "factor_scores")
-              download_panel("fsc", lambda w, h, fs: PF.factor_scatter(f["scores"], res.design.meta["Group"], fx, fy, w,
-                                                                     h or 3.2, fs, label_samples=lbl), 4.2, 3.4, 7, "factor_scores")
+              show(F.factor_scatter(f["scores"], res.design.meta["Group"], fx, fy), "factor_scores",
+                   pub=(lambda w, h, fs: PF.factor_scatter(f["scores"], res.design.meta["Group"], fx, fy, w,
+                                                           h or 3.2, fs, label_samples=lbl), 4.2, 3.4, 7))
           table(f["summary"], 220, key="fac_sum")
           st.markdown("**Factor associations with group and covariates**")
           table(f["assoc"], 240, key="fac_assoc")
@@ -1499,13 +1571,13 @@ with tabs[9]:
                           'clinical use. Validate the panel in an independent cohort.</div>', unsafe_allow_html=True)
               a, b = st.columns(2)
               with a:
-                  show(F.roc_plot(s), "signature_roc")
-                  download_panel("roc", lambda w, h, fs: PF.roc(s, w, h or w, fs), 3.4, 3.4, 7, "signature_roc")
+                  show(F.roc_plot(s), "signature_roc", width_px=620,
+                       pub=(lambda w, h, fs: PF.roc(s, w, h or w, fs), 3.4, 3.4, 7))
               with b:
-                  show(F.perm_hist(s), "signature_permutation")
-                  download_panel("perm", lambda w, h, fs: PF.perm_hist(s, w, h or 2.6, fs), 3.6, 2.6, 7, "signature_permutation")
-              show(F.panel_bars(s["panel"]), "signature_panel")
-              download_panel("panel", lambda w, h, fs: PF.panel_bars(s["panel"], w, h, fs), 5.0, None, 7, "signature_panel")
+                  show(F.perm_hist(s), "signature_permutation", width_px=620,
+                       pub=(lambda w, h, fs: PF.perm_hist(s, w, h or 2.6, fs), 3.6, 2.6, 7))
+              show(F.panel_bars(s["panel"]), "signature_panel",
+                   pub=(lambda w, h, fs: PF.panel_bars(s["panel"], w, h, fs), 5.0, None, 7))
               table(pd.DataFrame({"model": ["Integrated (all layers)"] + [f"{k} only" for k in s["single_layer_auc"]],
                                   "AUC": [s["auc_mean"]] + list(s["single_layer_auc"].values())}).round(3), 200,
                     key="sig_auc_tbl")
@@ -1528,11 +1600,53 @@ with tabs[10]:
       c[0].download_button("Excel workbook (all tables)", xls, "Integrix_results.xlsx", type="primary")
       c[1].download_button("Run manifest (JSON)", json.dumps(man, indent=2, default=str), "Integrix_manifest.json")
       c[2].download_button("Methods text (Markdown)", meth, "Integrix_methods.md")
-      st.markdown("### All publication figures at once")
+      st.markdown("### All figures at once")
+      from trace_core import plotly_export as PX
+      _same = PX.available()
+      st.caption("Every chart exactly as shown on screen (with the settings currently chosen on each page)."
+                 if _same else "Publication-style versions of every chart (figures identical to the screen cannot "
+                               "be made on this server right now).")
       c = st.columns(3)
       fmts = c[0].multiselect("Formats", list(PF.FORMATS), default=["PNG", "PDF", "SVG"], key="all_fmts")
       dpi = c[1].selectbox("DPI", [300, 600, 1200], index=1, key="all_dpi")
-      font = c[2].selectbox("Font family", _fonts(), key="all_font")
+      font = c[2].selectbox("Font family (charts drawn for print: targets, cascade, pathway maps)", _fonts(),
+                            key="all_font")
+
+      def _screen_set():
+          """name -> (Plotly figure as on screen, on-screen width in px), with each page's current settings."""
+          ss = st.session_state
+          figs = {"layer_concordance": (F.layer_bars(pw, 6), 720), "reaction_classification": (F.reaction_donut(rx), 400),
+                  "reaction_patterns": (F.pattern_grid(rx, ss.get("rx_nl", 14)), 1100),
+                  "pathway_activity": (F.pathway_dotplot(pw, ss.get("pw_n", 25)), 620),
+                  "mapping_coverage": (F.coverage_bars(layers), 1100)}
+          if len(cp_tbl):
+              figs["canonical_pathways"] = (F.canonical_bars(cp_tbl, ss.get("pw_n", 25)), 620)
+          if res.concordance is not None:
+              figs["concordance"] = (F.concordance(res.concordance, res.coupling["beta"], ss.get("conc_nl", 15)), 1100)
+          fx_ = extras.get("factors")
+          if fx_:
+              figs["factor_variance"] = (F.variance_heatmap(fx_["r2"]), 1100)
+              if fx_["scores"].shape[1] >= 2:
+                  a_, b_ = list(fx_["scores"].columns[:2])
+                  figs["factor_scores"] = (F.factor_scatter(fx_["scores"], res.design.meta["Group"], a_, b_), 1100)
+          sg_ = extras.get("signature")
+          if sg_ and sg_.get("status") == "ok":
+              figs["signature_roc"] = (F.roc_plot(sg_), 620)
+              figs["signature_permutation"] = (F.perm_hist(sg_), 620)
+              figs["signature_panel"] = (F.panel_bars(sg_["panel"]), 1100)
+          return figs
+
+      def _screen_files(exts, dpi_):
+          out_ = {}
+          for nm_, (fg_, wpx_) in _screen_set().items():
+              fg_.update_layout(title_text="")              # the page shows these titles on the cards
+              sf_ = PX.screen_figure(fg_, UI.theme_figure, _blacken())
+              w_in = (fg_.layout.width or wpx_) / PX.SCREEN_DPI
+              h_in = (fg_.layout.height or 450) / PX.SCREEN_DPI
+              for e_ in exts:
+                  out_[f"{nm_}.{e_}"] = PX.figure_bytes(sf_, e_, dpi_, w_in, h_in)
+          return out_
+
       if st.button("Build figure set (ZIP)"):
           with st.spinner("Rendering all figures"):
               PF.style(font, 7)
@@ -1566,6 +1680,10 @@ with tabs[10]:
                   o_ = NV.NetOptions(scope="Pathway", pathway=p_, max_reactions=30, title=p_)
                   builders[f"pathway_map_{k_ + 1}"] = (lambda o_=o_: NV.render_mpl(*NV.build_view(res, kb, o_, extras.get("targets")), o_))
               out = {}
+              if _same:            # charts that are Plotly on screen: the screen figure itself
+                  out.update(_screen_files([PX.FORMATS[fl] for fl in fmts], dpi))
+                  done = {k.rsplit(".", 1)[0] for k in out}
+                  builders = {k: v for k, v in builders.items() if k not in done}
               for nm, b in builders.items():
                   for fl in fmts:
                       ext = PF.FORMATS[fl]
@@ -1576,7 +1694,8 @@ with tabs[10]:
       st.markdown("### Everything in one archive")
       if st.button("Build full bundle"):
           files = {"Integrix_results.xlsx": xls, "Integrix_manifest.json": man, "Integrix_methods.md": meth}
-          files.update({f"figures/{k}": v for k, v in R.pub_figures(res, extras, "png", 600).items()})
+          figs_ = _screen_files(["png"], 600) if _same else R.pub_figures(res, extras, "png", 600)
+          files.update({f"figures/{k}": v for k, v in figs_.items()})
           if len(cp_tbl):
               files["canonical_pathways.csv"] = cp_tbl.to_csv(index=False)
           if extras.get("subnet"):

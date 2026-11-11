@@ -55,3 +55,16 @@ means higher in the case. Before, "Group A / Group B" meant opposite things in d
 - Fluxomics volcano legend: "Higher in case" / "Lower in case".
 - Tutorials and Help use the same words; fold-change definitions read "case − control".
 - The statistics themselves are unchanged.
+
+## Integrix: every figure downloads exactly as shown
+- Under every chart: **Download this figure as shown**. The file is the on-screen chart itself (same Plotly
+  figure, light style, black text), as PNG, TIFF, JPEG, SVG, PDF, EPS or all six (ZIP), at 300 / 600 / 1200 DPI;
+  the size starts at the chart's size on screen and can be changed. Before, downloads were a separately drawn
+  "publication" version that looked different.
+- Layer concordance and Reaction classification can now be downloaded too.
+- Export tab: the figure set (ZIP) and the full bundle use the same screen figures, with each page's current
+  settings. The targets list, cascade and pathway maps are drawn for print and keep their publication layout.
+- How: Plotly's image engine Kaleido (new `trace_core/plotly_export.py`; `kaleido` and `svglib` added to
+  `requirements.txt`). Kaleido needs a headless Chrome: `render_start.sh` downloads it in the background at
+  start-up. If it cannot run on the server, each panel says so and offers the publication-style figure instead.
+- Raster files are capped at 60 million pixels; SVG, PDF and EPS are vector files.

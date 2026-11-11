@@ -73,7 +73,7 @@ Four section cards sit above the results: **Results**, **Networks & targets**, *
 ## Data & export
 
 - **Data & mapping**: samples per layer, the evidence tier and identifier-mapping coverage, with the unmapped features to download.
-- **Export**: the Excel workbook of every table, the run manifest (inputs, versions, settings, seeds) and an auto-written methods text that cites each platform's normalization. Every figure downloads as PNG, TIFF, JPEG, SVG, PDF or EPS at up to 1200 DPI.
+- **Export**: the Excel workbook of every table, the run manifest (inputs, versions, settings, seeds) and an auto-written methods text that cites each platform's normalization. Every chart has **Download this figure as shown** under it: the file is the chart exactly as it looks on the page (light style, black text), as PNG, TIFF, JPEG, SVG, PDF, EPS or all six in a ZIP, at 300, 600 or 1200 DPI. Its size starts at the chart's size on screen and can be changed. **Build figure set (ZIP)** gives every chart at once, with the settings currently chosen on each page. The prioritised targets list, the cascade and the pathway maps are drawn for print and keep their publication layout.
 - **Methods**: the methods paragraph and references.
 
 ## Tips & troubleshooting
