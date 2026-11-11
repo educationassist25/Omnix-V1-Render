@@ -68,3 +68,6 @@ means higher in the case. Before, "Group A / Group B" meant opposite things in d
   `requirements.txt`). Kaleido needs a headless Chrome: `render_start.sh` downloads it in the background at
   start-up. If it cannot run on the server, each panel says so and offers the publication-style figure instead.
 - Raster files are capped at 60 million pixels; SVG, PDF and EPS are vector files.
+- Fix: charts with many dots (reaction pattern map, gene-protein concordance) are drawn on screen with WebGL,
+  which the server's Chrome cannot draw at print resolution, so their files showed axes and legend but no dots.
+  Files now draw those dots as ordinary SVG dots (same look; vector in SVG, PDF and EPS).

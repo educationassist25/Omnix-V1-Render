@@ -57,7 +57,27 @@ def screen_figure(fig, theme_figure=None, blacken=None, transparent: bool = Fals
         blacken(out)
     bg = "rgba(0,0,0,0)" if transparent else "white"
     out.update_layout(paper_bgcolor=bg, plot_bgcolor=bg)
-    return out
+    return vector_traces(out)
+
+
+def vector_traces(fig):
+    """WebGL layers (Scattergl, used on screen for charts with many dots) drawn as ordinary SVG layers.
+
+    The server's headless Chrome has no graphics card, and at print resolution (several thousand pixels) WebGL
+    draws nothing: the file would show the axes and legend but no dots. The SVG version looks the same, is drawn
+    at any resolution, and stays vector in SVG, PDF and EPS."""
+    import plotly.graph_objects as go
+    if not any(t.type == "scattergl" for t in fig.data):
+        return fig
+    data = []
+    for t in fig.data:
+        if t.type == "scattergl":
+            j = t.to_plotly_json()
+            j.pop("type", None)
+            data.append(go.Scatter(j))
+        else:
+            data.append(t)
+    return go.Figure(data=data, layout=fig.layout)
 
 
 def effective_dpi(w_in: float, h_in: float, dpi: int) -> int:
