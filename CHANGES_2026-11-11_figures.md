@@ -31,3 +31,6 @@ Files: `omnix_portal/figure_style.py` (new), `omnix_portal/portal.py` (part 1).
   only colour bars a chart really has (`omnix_portal/figure_style.py`).
 - Integrix overview "pathway activity z" chart: the first pathway name is no longer cut at the left edge on
   narrow screens (`trace_core/figures.py`).
+- Integrix reaction pattern map: the four quadrant captions ("coherent: enzyme up …", "enzyme down, balance up" …)
+  now sit in empty bands above and below the data, so dots and enzyme labels never cover them
+  (`trace_core/figures.py`).

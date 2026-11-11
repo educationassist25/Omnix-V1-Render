@@ -114,8 +114,17 @@ def pattern_grid(rx: pd.DataFrame, n_label: int = 10):
     sig = sig.drop_duplicates("lab").head(n_label)
     xr = (float(np.nanmin(d["E"])) - 0.6, float(np.nanmax(d["E"])) + 0.6)
     yr = (float(np.nanmin(d["M"])) - 0.6, float(np.nanmax(d["M"])) + 0.6)
-    _repel_annotations(fig, sig["E"].values, sig["M"].values, list(sig["lab"]), d["E"].values, d["M"].values,
-                       xr, yr, 600, 760, (60, 20, 60, 190))   # placed for a half-screen width: stays clear when wider
+    # The four quadrant captions get their own empty band at the top and bottom of the plot (about 45 px each on
+    # the 760 px chart), outside the data, so no dot is ever drawn on them.
+    band = 0.11 * (yr[1] - yr[0])
+    yr = (yr[0] - band, yr[1] + band)
+    # enzyme labels treat the caption corners as occupied, so they are never placed on a caption either
+    cx = np.r_[np.linspace(xr[0], xr[0] + 0.45 * (xr[1] - xr[0]), 12), np.linspace(xr[1] - 0.45 * (xr[1] - xr[0]), xr[1], 12)]
+    cy = np.r_[yr[0] + 0.5 * band, yr[1] - 0.5 * band]
+    corner_x, corner_y = np.repeat(cx, 2), np.tile(cy, len(cx))
+    _repel_annotations(fig, sig["E"].values, sig["M"].values, list(sig["lab"]),
+                       np.r_[d["E"].values, corner_x], np.r_[d["M"].values, corner_y],
+                       xr, yr, 600, 760, (60, 20, 60, 165))   # placed for a half-screen width: stays clear when wider
     fig.add_hline(y=0, line_color="#999", line_width=0.8)
     fig.add_vline(x=0, line_color="#999", line_width=0.8)
     for x, y, t in ((0.98, 0.98, "coherent: enzyme up,<br>products up / substrates down"),
@@ -123,7 +132,7 @@ def pattern_grid(rx: pd.DataFrame, n_label: int = 10):
                     (0.98, 0.02, "enzyme up, balance down"), (0.02, 0.98, "enzyme down, balance up")):
         fig.add_annotation(xref="paper", yref="paper", x=x, y=y, text=t, showarrow=False,
                            xanchor="right" if x > 0.5 else "left", yanchor="top" if y > 0.5 else "bottom",
-                           font=dict(size=10, color="#6B7775"))
+                           font=dict(size=10, color="#6B7775"), bgcolor="rgba(255,255,255,0.85)", borderpad=2)
     fig.update_xaxes(title="Enzyme evidence E (z)", range=list(xr))
     fig.update_yaxes(title="Metabolite balance M = (products - substrates)/sqrt(2)", range=list(yr))
     return _layout(fig, "Reaction pattern map (each dot = one reaction)", 760,
