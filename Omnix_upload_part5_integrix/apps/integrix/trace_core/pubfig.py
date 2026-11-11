@@ -197,7 +197,7 @@ def pathway_dotplot(pw, top=25, w=6.4, h=None, fs=7, title=""):
             if np.isfinite(z):
                 ax.scatter(j, i, s=size_of(q if np.isfinite(q) else 1.0), c=[cmap((np.clip(z, -5, 5) + 5) / 10)],
                            edgecolors="#444", linewidths=0.4, zorder=3, clip_on=False)
-        ax.text(1.0, i, "  " + r["class"], transform=tr, fontsize=f - 0.5, va="center", ha="left", color="#00695C")
+        ax.text(1.0, i, "  " + r["class"], transform=tr, fontsize=f - 0.5, va="center", ha="left", color="black")
     ax.set_yticks(range(n))
     ax.set_yticklabels([p if len(p) <= max_chars else p[:max_chars - 1] + "…" for p in d["pathway"]], fontsize=f)
     ax.set_xticks(range(len(cols)))
@@ -219,8 +219,12 @@ def pathway_dotplot(pw, top=25, w=6.4, h=None, fs=7, title=""):
     lax.axis("off")
     for qv, lab in ((0.05, "q 0.05"), (1e-3, "q 0.001"), (1e-6, "q 1e-6")):
         lax.scatter([], [], s=size_of(qv), c="#BBB", edgecolors="#444", lw=0.4, label=lab)
-    lax.legend(fontsize=max(4, f - 1), loc="lower left", title="size", title_fontsize=max(4, f - 1), frameon=False,
-               labelspacing=1.0, borderaxespad=0)
+    # each legend row is as tall as the largest circle (plus a gap), so the size circles never touch
+    f_leg = max(4, f - 1)
+    big_pt = np.sqrt(size_of(1e-6))                          # diameter of the largest circle, in points
+    lax.legend(fontsize=f_leg, loc="lower left", title="size", title_fontsize=f_leg, frameon=False,
+               handleheight=big_pt / f_leg, handlelength=max(2.0, big_pt / f_leg), labelspacing=0.5,
+               borderaxespad=0, scatterpoints=1)
     if title:
         ax.set_title(title, loc="left", fontweight="bold", pad=22)
     return fig

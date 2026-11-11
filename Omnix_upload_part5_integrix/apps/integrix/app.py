@@ -79,15 +79,22 @@ def get_kb():
     return load_kb()
 
 
+_SHOWN: dict = {}       # charts drawn in this run, per name: every chart gets its own key
+
+
 def show(fig, name="trace_figure", notitle=False):
     cfg = F.config(st.session_state.get("fig_fmt", "png"), st.session_state.get("fig_scale", 6), name)
+    # An explicit key: two charts with the same figure on one page (e.g. a pathway chart shown in two sections)
+    # would otherwise get the same automatic ID, which Streamlit 1.52 rejects (StreamlitDuplicateElementId).
+    _SHOWN[name] = _SHOWN.get(name, 0) + 1
+    key = f"plt_{name}_{_SHOWN[name]}"
     fig = UI.theme_figure(fig, MODE)
     if notitle:   # the surrounding card already carries the title
         fig.update_layout(title_text="", margin_t=min(40, fig.layout.margin.t or 40))
     try:
-        st.plotly_chart(fig, width="stretch", config=cfg, theme=None)
+        st.plotly_chart(fig, width="stretch", config=cfg, theme=None, key=key)
     except TypeError:  # older Streamlit
-        st.plotly_chart(fig, use_container_width=True, config=cfg, theme=None)
+        st.plotly_chart(fig, use_container_width=True, config=cfg, theme=None, key=key)
 
 
 def show_mpl(fig, max_scale: float = 1.15, cache_key=None):
@@ -159,6 +166,9 @@ def table(df, height=380, key=None):
         if df[c].dtype == object and df[c].isna().any():
             df[c] = df[c].where(df[c].notna(), "—")
     h = int(min(height, 38 + 35 * max(len(df), 1) + 2))
+    if key is None:            # same reason as show(): identical tables on one page need their own IDs
+        _SHOWN["__table"] = _SHOWN.get("__table", 0) + 1
+        key = f"tbl_auto_{_SHOWN['__table']}"
     try:
         st.dataframe(df.style.format(fmt, na_rep="—"), height=h, hide_index=True, key=key)
     except Exception:          # Styler not available for this table: plain display

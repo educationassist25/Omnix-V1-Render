@@ -260,3 +260,17 @@ def test_upload_gate_keeps_the_uploader_signature_for_integrix():
     for fn in (st.file_uploader, DeltaGenerator.file_uploader):
         params = compat._params(fn)
         assert params and {"key", "type", "accept_multiple_files", "label"} <= params, params
+
+
+def test_same_chart_twice_on_one_page():
+    """Results shows the canonical-pathway chart in Overview and in Pathways; with 15 pathways chosen in Pathways
+    both charts are identical. Each needs its own key (StreamlitDuplicateElementId on Streamlit 1.52)."""
+    at = _portal()
+    _open(at, "integrix")
+    next(b for b in at.sidebar.button if b.label == "Run analysis").click().run(timeout=600)
+    next(b for b in at.button if b.key == "secbtn_0").click().run()
+    sb = next((x for x in at.selectbox if x.key == "pw_n"), None)
+    if sb is None:
+        pytest.skip("this Streamlit draws the Pathways tab only when it is opened, so the charts never meet")
+    sb.set_value(15).run()
+    assert not at.exception, [e.message for e in at.exception]

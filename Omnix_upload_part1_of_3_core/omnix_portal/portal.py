@@ -17,7 +17,7 @@ import re
 import pandas as pd
 import streamlit as st
 
-from omnix_portal import access, account, account_page, billing, config, contact, demo_files, help_content, isolation, keys
+from omnix_portal import figure_style, access, account, account_page, billing, config, contact, demo_files, help_content, isolation, keys
 from omnix_portal import integrix_bridge
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1330,6 +1330,7 @@ def figure_options_panel():
 # ---------------------------------------------------------------------------
 def main():
     access.install_upload_gate()
+    figure_style.install()              # all figure text in pure black, every platform
     page = _current_page()
     in_app = page in APPS
     isolation.activate(page if in_app else None)
