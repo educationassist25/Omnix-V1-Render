@@ -104,7 +104,7 @@ def deseq2_contrast(dds, factor: str, level_a: str, level_b: str, n_cpus: int = 
                        mle_log2fc.reindex(result.index))
         result.insert(result.columns.get_loc("Linear_FC") + 1, "Linear_FC_MLE_Unshrunk",
                        (2.0 ** mle_log2fc).reindex(result.index))
-    result.attrs["contrast"] = f"{level_a} vs {level_b}"
+    result.attrs["contrast"] = f"{level_a} over {level_b}"
     result.attrs["factor"] = factor
     result.attrs["lfc_shrunk"] = shrink_applied
     return result
@@ -124,12 +124,12 @@ def all_pairwise_contrasts(dds, factor: str, levels: list, reference: str = None
         for lvl in levels:
             if lvl == reference:
                 continue
-            label = f"{lvl} vs {reference}"
+            label = f"{lvl} over {reference}"
             results[label] = deseq2_contrast(dds, factor, lvl, reference, n_cpus=n_cpus,
                                               fdr_threshold=fdr_threshold)
     else:
         for a, b in combinations(levels, 2):
-            label = f"{a} vs {b}"
+            label = f"{a} over {b}"
             results[label] = deseq2_contrast(dds, factor, a, b, n_cpus=n_cpus,
                                               fdr_threshold=fdr_threshold)
     return results
@@ -236,7 +236,7 @@ def wald_test_logcpm(log_df: pd.DataFrame, meta: pd.DataFrame, factor: str,
     out["Higher_In"] = np.where(out["Log2FC"] > 0, level_a, np.where(out["Log2FC"] < 0, level_b, "Equal"))
     out.index.name = "Gene"
     out = out.sort_values("p-value")
-    out.attrs["contrast"] = f"{level_a} vs {level_b}"
+    out.attrs["contrast"] = f"{level_a} over {level_b}"
     out.attrs["factor"] = factor
     return out
 

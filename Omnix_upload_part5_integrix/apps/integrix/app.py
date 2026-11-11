@@ -295,12 +295,12 @@ Each *_omnix.json says how its matrix was made: module, scale, normalization, im
 Integrix reads it and skips those steps; it starts at the per-layer statistics and the integration.
 To use your own normalized tables: Data > Upload my data > Normalized (log2).
 
-Comparisons to try (Study design > Group column, then Case vs Reference)
-  Condition  Cancer vs Normal       glycolysis up, ASS1 bottleneck (citrulline up), tryptophan -> kynurenine,
+Comparisons to try (Study design > Group column, then Case over Reference)
+  Condition  Cancer over Normal     glycolysis up, ASS1 bottleneck (citrulline up), tryptophan -> kynurenine,
                                     fatty-acid-oxidation proteins up without mRNA, cholesterol mRNA up only
-  Treatment  Treatment vs Control   glutaminase blocked: glutamine up, glutamate down, enzyme unchanged
-  Group      Cancer Treatment vs Cancer Control   the drug effect plus glycolysis partly reversed
-  Sex        Female vs Male         aromatase (CYP19A1): testosterone down, estrogens up; otherwise quiet
+  Treatment  Treatment over Control  glutaminase blocked: glutamine up, glutamate down, enzyme unchanged
+  Group      Cancer Treatment over Cancer Control  the drug effect plus glycolysis partly reversed
+  Sex        Female over Male       aromatase (CYP19A1): testosterone down, estrogens up; otherwise quiet
 """,
     FACTORIAL: """Omnix Integrix - example data: Condition x Treatment x Sex (SYNTHETIC)
 =====================================================================
@@ -317,12 +317,12 @@ Design: 2 x 2 x 2, five samples per combination. Values are raw intensities (the
 About 8% of proteomics values are missing at random; low values are censored below a detection limit in every
 layer. Metabolomics batch C has a shift that is not tied to any group (try batch correction).
 
-Comparisons to try (Study design > Group column, then Case vs Reference)
-  Condition  Cancer vs Normal       glycolysis up, ASS1 bottleneck (citrulline up), tryptophan -> kynurenine,
+Comparisons to try (Study design > Group column, then Case over Reference)
+  Condition  Cancer over Normal     glycolysis up, ASS1 bottleneck (citrulline up), tryptophan -> kynurenine,
                                     fatty-acid-oxidation proteins up without mRNA, cholesterol mRNA up only
-  Treatment  Treatment vs Control   glutaminase blocked: glutamine up, glutamate down, enzyme unchanged
-  Group      Cancer Treatment vs Cancer Control   the drug effect plus glycolysis partly reversed
-  Sex        Female vs Male         aromatase (CYP19A1): testosterone down, estrogens up; otherwise quiet
+  Treatment  Treatment over Control  glutaminase blocked: glutamine up, glutamate down, enzyme unchanged
+  Group      Cancer Treatment over Cancer Control  the drug effect plus glycolysis partly reversed
+  Sex        Female over Male       aromatase (CYP19A1): testosterone down, estrogens up; otherwise quiet
 
 To analyse your own data, upload tables in the same layout (Data > Upload my data > Raw intensities).
 """,
@@ -594,7 +594,7 @@ with st.sidebar:
         _groups = sorted(meta[_gc].astype(str).unique()) if _gc in mc else []
         _case = st.session_state.get("des_case", _pick_case(_groups))
         _ref = st.session_state.get("des_ref", _pick_ref(_groups, _case))
-        design_summary = f"{_case} vs {_ref}" + (f" ({_gc})" if _gc not in ("Group",) else "")
+        design_summary = f"{_case} over {_ref}" + (f" ({_gc})" if _gc not in ("Group",) else "")
     else:
         design_summary = "Needs sample metadata"
     with st.expander(f"**Study design** · {design_summary}", key="step_design", expanded=_open == "step_design",

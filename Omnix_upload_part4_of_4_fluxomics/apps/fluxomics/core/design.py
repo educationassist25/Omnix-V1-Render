@@ -141,7 +141,7 @@ def design_warnings(D: pd.DataFrame) -> list:
 CONTRAST_KINDS = {
     "arms_per_time": "Arm B vs arm A at each time point",
     "all_arms_per_time": "Every pair of arms at each time point",
-    "time_vs_first": "Each time point vs the first, within each arm",
+    "time_vs_first": "Each time point over the first, within each arm",
     "time_consecutive": "Consecutive time points, within each arm",
     "custom": "Custom condition pairs",
 }
@@ -164,21 +164,21 @@ def build_contrasts(D: pd.DataFrame, kind: str, arm_a=None, arm_b=None, pairs=No
             for h in times:
                 sa, sb = samples_of(D, a, h), samples_of(D, b, h)
                 if sa and sb:
-                    out.append(_ct(f"{b} vs {a} · {lab[h]}", a, b, sa, sb, lab[h]))
+                    out.append(_ct(f"{b} over {a} · {lab[h]}", a, b, sa, sb, lab[h]))
     elif kind in ("time_vs_first", "time_consecutive"):
         for g in arms:
             tt = [h for h in times if samples_of(D, g, h)]
             for k in range(1, len(tt)):
                 h0 = tt[0] if kind == "time_vs_first" else tt[k - 1]
                 h1 = tt[k]
-                out.append(_ct(f"{g}: {lab[h1]} vs {lab[h0]}", f"{g} · {lab[h0]}", f"{g} · {lab[h1]}",
+                out.append(_ct(f"{g}: {lab[h1]} over {lab[h0]}", f"{g} · {lab[h0]}", f"{g} · {lab[h1]}",
                                samples_of(D, g, h0), samples_of(D, g, h1), None))
     elif kind == "custom":
         for ca, cb in pairs or []:
             sa = an.loc[an.Condition == ca, "Sample"]
             sb = an.loc[an.Condition == cb, "Sample"]
             if len(sa) and len(sb) and ca != cb:
-                out.append(_ct(f"{cb} vs {ca}", ca, cb, sa, sb, None))
+                out.append(_ct(f"{cb} over {ca}", ca, cb, sa, sb, None))
     return out
 
 

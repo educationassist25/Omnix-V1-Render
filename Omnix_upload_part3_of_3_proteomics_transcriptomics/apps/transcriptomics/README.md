@@ -51,7 +51,7 @@ built around raw RNA-seq counts (or pre-normalized logCPM) and **pyDESeq2**.
      (VST/logCPM, with tukey/dunnett/pairwise post-hoc), or, for raw counts,
      **PyDESeq2 count-based contrasts** — a single DESeq2 GLM fit across the
      selected groups with pairwise Wald contrasts drawn from it, each with
-     its own Benjamini-Hochberg FDR. "Every group vs a reference" (Dunnett-
+     its own Benjamini-Hochberg FDR. "Every group over a reference" (Dunnett-
      style) fits with that reference as the model baseline, so LFC shrinkage
      applies to every contrast from the one shared fit; "all pairwise" has no
      single reference coefficient to shrink, so those contrasts report the

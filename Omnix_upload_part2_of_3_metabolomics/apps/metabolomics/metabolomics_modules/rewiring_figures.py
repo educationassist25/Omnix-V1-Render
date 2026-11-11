@@ -320,7 +320,7 @@ def network_figure(result, top: int = 10, metric: str = "p", cutoff: float = 0.0
     sel_txt = ("all pathways" if not top or sel.empty else
                f"top {len(sel)} {result.prep.pathway_library} pathways by {'FDR q-value' if metric == 'q' else 'p-value'}"
                f" ≤ {cutoff:g}")
-    ax.set_title(title or f"Correlation rewiring network: {ga} vs {gb} ({sel_txt})", fontsize=11, color=INK, pad=6)
+    ax.set_title(title or f"Correlation rewiring network: {gb} over {ga} ({sel_txt})", fontsize=11, color=INK, pad=6)
     absorbed = [g for g in sel["pathway"]] if not sel.empty else []
     absorbed = [g for g in absorbed if g not in order]
     if absorbed:

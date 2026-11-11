@@ -1812,7 +1812,7 @@ def page_statistics():
                     ((result["p-value"] < 0.05) & (result[fdr_label] < 0.25)).sum()
                 )
                 st.session_state.processing_notes.append(
-                    f"Statistical comparison ({grouping_var}): {group_a} vs {group_b} using {method} "
+                    f"Statistical comparison ({grouping_var}): {group_b} over {group_a} using {method} "
                     f"(Benjamini-Hochberg p.adjust(method=\"BH\") correction, shown as '{fdr_label}'); "
                     f"{n_significant} significant metabolites (p<0.05 & {fdr_label}<0.25)."
                 )
@@ -1821,7 +1821,7 @@ def page_statistics():
             if st.session_state.stats_result is not None and st.session_state.stats_result_groups is not None:
                 result = st.session_state.stats_result
                 g_a, g_b = st.session_state.stats_result_groups
-                comparison_name = f"{g_a}_vs_{g_b}"
+                comparison_name = f"{g_b}_over_{g_a}"
                 st.dataframe(utils.format_df_for_display(result), width='stretch', height=400)
                 utils.table_download(
                     st,
@@ -2029,7 +2029,7 @@ def page_volcano():
         if groups_used:
             st.caption(
                 f"Reflects the two {group_col_used} values compared in Statistics: "
-                f"**{groups_used[0]}** vs **{groups_used[1]}**"
+                f"**{groups_used[1]}** over **{groups_used[0]}**"
                 + (" (combined normalized data, all datasets)."
                    if st.session_state.data_mode == "multi" else ".")
                 + " To compare a different pair or variable, go back to Statistics and "
@@ -2146,7 +2146,7 @@ def page_volcano():
 
             st.markdown("**Title**")
             c6, c7 = st.columns(2)
-            default_title = f"{groups_used[0]} vs {groups_used[1]}" if groups_used else "Volcano Plot"
+            default_title = f"{groups_used[1]} over {groups_used[0]}" if groups_used else "Volcano Plot"
             custom_title = c6.text_input("Title", value=default_title)
             subtitle = c7.text_input("Subtitle (optional)", value="")
             c8, c9, c10, c11 = st.columns(4)
@@ -2222,7 +2222,7 @@ def page_volcano():
         }
         render_single_figure(fig_volc, width_ratio=(1, 6, 1))
 
-        volcano_tag = (f"{_safe_tag(groups_used[0])}_vs_{_safe_tag(groups_used[1])}"
+        volcano_tag = (f"{_safe_tag(groups_used[1])}_over_{_safe_tag(groups_used[0])}"
                        if groups_used else "Comparison")
         if groups_used and st.session_state.data_mode == "multi":
             volcano_tag = f"Combined_{volcano_tag}"
@@ -2264,7 +2264,7 @@ def page_biomarker():
         if groups_used:
             st.caption(
                 f"Reflects the two {group_col_used} values compared in Statistics: "
-                f"**{groups_used[0]}** vs **{groups_used[1]}**"
+                f"**{groups_used[1]}** over **{groups_used[0]}**"
                 + (" (combined normalized data, all datasets)."
                    if st.session_state.data_mode == "multi" else ".")
                 + " To compare a different pair or variable, go back to Statistics and "
@@ -2287,7 +2287,7 @@ def page_biomarker():
         if st.session_state.get("biomarkers") is not None:
             biomarkers = st.session_state.biomarkers
             st.dataframe(utils.format_df_for_display(biomarkers), width='stretch', height=450)
-            comparison_name = (f"{groups_used[0]}_vs_{groups_used[1]}" if groups_used else "Comparison")
+            comparison_name = (f"{groups_used[1]}_over_{groups_used[0]}" if groups_used else "Comparison")
             biomarker_filename = f"{comparison_name}_Biomarkers.csv"
             utils.table_download(
                 st,
@@ -2778,7 +2778,7 @@ def page_rewiring():
                else ".")
             + " You can try the method now on a simulated dataset with known answers."
         )
-        if st.toggle("Explore with the simulated rewiring demo (Control vs Tumor, 30 + 30 samples)",
+        if st.toggle("Explore with the simulated rewiring demo (Tumor over Control, 30 + 30 samples)",
                      key="rewire_use_demo"):
             peak, meta, ann = rewiring_ui.load_simulated_demo()
             st.caption("43 targeted metabolites with planted rewiring (glutamine–TCA decoupling, a tryptophan–"

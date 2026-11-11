@@ -1345,7 +1345,7 @@ DEMO_PATHWAYS = {
 def simulate_rewiring_demo(n_per_group: int = 30, seed: int = 20260927, rewire: bool = True,
                            outliers: bool = True, batch_effect: bool = True) -> dict:
     """
-    Simulated targeted panel (43 metabolites) for a Control vs Tumor comparison with
+    Simulated targeted panel (43 metabolites) for a Tumor over Control comparison with
     planted rewiring. Returns raw peak areas in MetaboAI Pro's input format plus the
     ground truth.
 

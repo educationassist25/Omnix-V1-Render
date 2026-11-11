@@ -1073,7 +1073,7 @@ if ACTIVE_PAGE == 5:
                 st.session_state.stats_result_groups = (group_a, group_b)
                 st.session_state.stats_result_group_col = grouping_var
                 st.session_state.processing_notes.append(
-                    f"Statistical comparison ({grouping_var}): {group_a} vs {group_b} using {method} "
+                    f"Statistical comparison ({grouping_var}): {group_a} over {group_b} using {method} "
                     f"(BH-FDR correction); {result['Significant'].sum()} significant proteins "
                     f"(p<0.05 & FDR<0.25)."
                 )
@@ -1082,7 +1082,7 @@ if ACTIVE_PAGE == 5:
             if st.session_state.stats_result is not None and st.session_state.stats_result_groups is not None:
                 result = st.session_state.stats_result
                 g_a, g_b = st.session_state.stats_result_groups
-                comparison_name = f"{g_a}_vs_{g_b}"
+                comparison_name = f"{g_a}_over_{g_b}"
                 st.dataframe(utils.format_df_decimals(result), width='stretch', height=400)
                 utils.table_download(
                     st,
@@ -1293,7 +1293,7 @@ if ACTIVE_PAGE == 6:
         if groups_used:
             st.caption(
                 f"Reflects the two {group_col_used} values compared in the Statistics page: "
-                f"**{groups_used[0]}** vs **{groups_used[1]}**."
+                f"**{groups_used[0]}** over **{groups_used[1]}**."
                 + " To compare a different pair or variable, go back to Statistics and "
                 "re-run the two-group test."
             )
@@ -1402,7 +1402,7 @@ if ACTIVE_PAGE == 6:
 
             st.markdown("**Title**")
             c6, c7 = st.columns(2)
-            default_title = f"{groups_used[0]} vs {groups_used[1]}" if groups_used else "Volcano Plot"
+            default_title = f"{groups_used[0]} over {groups_used[1]}" if groups_used else "Volcano Plot"
             custom_title = c6.text_input("Title", value=default_title)
             subtitle = c7.text_input("Subtitle (optional)", value="")
             c8, c9, c10, c11 = st.columns(4)
@@ -1494,7 +1494,7 @@ if ACTIVE_PAGE == 6:
         }
         utils.render_figure(st, fig_volc)
 
-        volcano_tag = (f"{_safe_tag(groups_used[0])}_vs_{_safe_tag(groups_used[1])}"
+        volcano_tag = (f"{_safe_tag(groups_used[0])}_over_{_safe_tag(groups_used[1])}"
                        if groups_used else "Comparison")
         utils.render_figure_download(st, fig_volc, f"{volcano_tag}_VolcanoPlot", key_prefix="volcano_export")
 
@@ -1545,7 +1545,7 @@ if ACTIVE_PAGE == 7:
         if groups_used:
             st.caption(
                 f"Reflects the two {group_col_used} values compared in the Statistics page: "
-                f"**{groups_used[0]}** vs **{groups_used[1]}**."
+                f"**{groups_used[0]}** over **{groups_used[1]}**."
                 + " To compare a different pair or variable, go back to Statistics and "
                 "re-run the two-group test."
             )
@@ -1565,7 +1565,7 @@ if ACTIVE_PAGE == 7:
         if st.session_state.get("biomarkers") is not None:
             biomarkers = st.session_state.biomarkers
             st.dataframe(utils.format_df_decimals(biomarkers), width='stretch', height=450)
-            comparison_name = (f"{groups_used[0]}_vs_{groups_used[1]}" if groups_used else "Comparison")
+            comparison_name = (f"{groups_used[0]}_over_{groups_used[1]}" if groups_used else "Comparison")
             biomarker_filename = f"{comparison_name}_Biomarkers.csv"
             utils.table_download(
                 st,
@@ -1939,7 +1939,7 @@ def render_significant_protein_selector(key_prefix: str):
     group_col_used = st.session_state.get("stats_result_group_col") or "Group"
     if groups_used:
         st.caption(f"Reflects the two {group_col_used} values compared in the Statistics page: "
-                   f"**{groups_used[0]}** vs **{groups_used[1]}**.")
+                   f"**{groups_used[0]}** over **{groups_used[1]}**.")
 
     gene_map = st.session_state.get("gene_map")
     stats_by_gene = stats_df.copy()

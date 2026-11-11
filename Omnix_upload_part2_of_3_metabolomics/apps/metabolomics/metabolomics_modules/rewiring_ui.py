@@ -40,7 +40,7 @@ SCOPES = {
     "Reaction-linked pairs (≤ 2 steps)": "reaction",
     "Direct reactions only": "direct",
 }
-DEMO_LABEL = "Simulated rewiring demo (Control vs Tumor, 30 + 30 samples)"
+DEMO_LABEL = "Simulated rewiring demo (Tumor over Control, 30 + 30 samples)"
 
 
 # ---------------------------------------------------------------------------
@@ -283,7 +283,7 @@ def labelled(df: pd.DataFrame, kind: str = "pairs", groups: tuple | None = None)
 
 def render_results(st, result: rw.RewiringResult, *, key_prefix: str, source_label: str):
     ga, gb = result.prep.group_labels
-    comparison = f"{_safe_tag(ga)}_vs_{_safe_tag(gb)}"
+    comparison = f"{_safe_tag(gb)}_over_{_safe_tag(ga)}"
     c = result.counts()
     S = result.summary()
     n_rew = c["lost"] + c["gained"] + c["flipped"]
@@ -340,7 +340,7 @@ def render_results(st, result: rw.RewiringResult, *, key_prefix: str, source_lab
     d3.download_button("Hypothesis evidence (JSON)", result.evidence_json().encode("utf-8"),
                        file_name=f"{comparison}_Rewiring_Hypotheses.json", mime="application/json",
                        key=f"{key_prefix}_dl_json")
-    report = render_view_html(result, title=f"{ga} vs {gb}", theme="light",
+    report = render_view_html(result, title=f"{gb} over {ga}", theme="light",
                               generated=f"{source_label} · {_dt.date.today().isoformat()}",
                               pw_top=pw_top, pw_metric=pw_metric, pw_cutoff=pw_cut)
     d4.download_button("Interactive report (HTML)", report.encode("utf-8"),
@@ -383,7 +383,7 @@ def render_results(st, result: rw.RewiringResult, *, key_prefix: str, source_lab
             st.dataframe(utils.format_df_for_display(labelled(rt)), width="stretch", height=300)
         st.markdown("**Rewired pairs**")
         st.dataframe(utils.format_df_for_display(labelled(result.rewired_pairs())), width="stretch", height=320)
-        st.markdown(f"**Per-metabolite level change** (Welch t-test on log2 values, {gb} vs {ga}; FDR q-value = Benjamini–Hochberg)")
+        st.markdown(f"**Per-metabolite level change** (Welch t-test on log2 values, {gb} over {ga}; FDR q-value = Benjamini–Hochberg)")
         st.dataframe(utils.format_df_for_display(labelled(result.features, "features").set_index("feature")), width="stretch", height=320)
         if result.hypotheses:
             mods = pd.DataFrame([{

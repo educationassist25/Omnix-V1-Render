@@ -145,7 +145,7 @@ if __name__ == "__main__":
 # ----------------------------------------------------------------------------- factorial demo (v1.7)
 FACTORIAL = {
     "cancer": {
-        "genes": {  # gene: (mRNA effect, protein effect) in log2 units, Cancer vs Normal
+        "genes": {  # gene: (mRNA effect, protein effect) in log2 units, Cancer over Normal
             **{g: (0.9, 0.9) for g in PLANT["glycolysis_genes"]},
             "ASS1": (-1.3, -1.3),
             "IDO1": (1.2, 1.2),
@@ -250,11 +250,11 @@ def make_factorial_demo(kb, out_dir: str, seed: int = 13, n_per_cell: int = 5) -
     meta.to_csv(os.path.join(out_dir, "metadata.csv"), index=False)
     truth = {f: {"genes": {g: list(v) for g, v in s["genes"].items()}, "mets": s["mets"]} for f, s in FACTORIAL.items()}
     truth["expected"] = {
-        "Condition: Cancer vs Normal": ["Glycolysis throughput up", "ASS1 candidate bottleneck",
+        "Condition: Cancer over Normal": ["Glycolysis throughput up", "ASS1 candidate bottleneck",
                                         "IDO1 tryptophan -> kynurenine", "FAO protein-only", "cholesterol mRNA-only"],
-        "Treatment: Treatment vs Control": ["glutaminase non-abundance regulation (glutamine up, glutamate down)"],
-        "Group: Cancer Treatment vs Cancer Control": ["glutaminase step", "glycolysis partly reversed"],
-        "Sex: Female vs Male": ["aromatase CYP19A1 (testosterone down, estrone up)", "otherwise quiet"],
+        "Treatment: Treatment over Control": ["glutaminase non-abundance regulation (glutamine up, glutamate down)"],
+        "Group: Cancer Treatment over Cancer Control": ["glutaminase step", "glycolysis partly reversed"],
+        "Sex: Female over Male": ["aromatase CYP19A1 (testosterone down, estrone up)", "otherwise quiet"],
     }
     json.dump(truth, open(os.path.join(out_dir, "ground_truth.json"), "w"), indent=2)
     return {"rna": t_rna.shape, "prot": t_prot.shape, "met": t_met.shape, "samples": n}

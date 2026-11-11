@@ -122,7 +122,7 @@ FILES = {
                        "covariates. QC injections are left out (the platforms drop them when they export).",
             "columns": [
                 ("Sample", "Yes", "Exactly the sample column names of the matrices.", "S01"),
-                ("Group / Condition / …", "Yes", "Any column can define the comparison (Case vs Reference).", "Cancer"),
+                ("Group / Condition / …", "Yes", "Any column can define the comparison (Case over Reference).", "Cancer"),
                 ("Batch", "No", "Processing batch, for optional batch correction per layer.", "A"),
                 ("Other columns", "No", "Covariates such as age or sex, tested against the MOFA+ factors.", "54"),
             ],

@@ -232,7 +232,7 @@ Both pages reuse results you already ran on the Statistics page (two-group or AN
 
 ### Correlation Rewiring Map
 
-This page finds metabolite pairs whose correlation changes between two groups: a coupling can be lost, gained or flipped. Before you have normalized data, you can try it with **Explore with the simulated rewiring demo (Control vs Tumor, 30 + 30 samples)**.
+This page finds metabolite pairs whose correlation changes between two groups: a coupling can be lost, gained or flipped. Before you have normalized data, you can try it with **Explore with the simulated rewiring demo (Tumor over Control, 30 + 30 samples)**.
 
 1. Choose a **Grouping variable**, a **Reference group (A)** and a **Comparison group (B)**. Each group needs at least 3 samples. With 4 or fewer, the test is exact and a note gives the smallest p-value that can be reached.
 2. Main settings:

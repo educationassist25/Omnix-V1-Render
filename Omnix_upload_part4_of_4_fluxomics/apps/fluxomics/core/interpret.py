@@ -82,7 +82,7 @@ def build_summary(*, group_a: str, group_b: str, intensity: pd.DataFrame | None,
                   top_n: int = 8) -> str:
     L = []
     w = L.append
-    w(f"# Interpretation summary — {group_b} vs {group_a}")
+    w(f"# Interpretation summary — {group_b} over {group_a}")
     w("")
     w(f"*Direction: positive values mean higher in **{group_b}** than in **{group_a}**. "
       f"Significance threshold: FDR < {fdr}. Effects are reported per time point.*")

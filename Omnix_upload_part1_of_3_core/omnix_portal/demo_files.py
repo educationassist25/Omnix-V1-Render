@@ -112,7 +112,7 @@ DEMO = {
     "fluxomics": [
         ("Isotopologue table", [
             {"id": "fluxomics_isotopologue_table_synthetic", "title": "Isotopologue table: synthetic example",
-             "about": "63 metabolites, 373 isotopologue rows (M+0 … M+n) × 20 samples: shControl vs GeneKD, "
+             "about": "63 metabolites, 373 isotopologue rows (M+0 … M+n) × 20 samples: GeneKD over shControl, "
                       "[U-13C6]-glucose, 2 / 8 / 24 h, 3 replicates, one unlabeled reference and one blank. "
                       "Simulated data; the demo the platform loads.",
              "csv": "example_data/generic/synthetic_isotopologue_table.csv"},
@@ -138,7 +138,7 @@ DEMO = {
                       "with the HILIC_Neg template, or replace its rows with your own export.",
              "file": "example_data/templates/cd_sil/CD_SIL_Template_RP_Pos.xlsx"},
             {"id": "fluxomics_cd_sil_hilic_neg", "title": "Compound Discoverer SIL export: HILIC_Neg template",
-             "about": "The second method of the same experiment (shControl vs GeneKD, 12 / 18 / 40 h).",
+             "about": "The second method of the same experiment (GeneKD over shControl, 12 / 18 / 40 h).",
              "file": "example_data/templates/cd_sil/CD_SIL_Template_HILIC_Neg.xlsx"},
         ]),
     ],

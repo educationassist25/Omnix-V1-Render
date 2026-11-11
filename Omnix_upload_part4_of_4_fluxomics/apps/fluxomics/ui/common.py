@@ -418,7 +418,7 @@ def show_mpl(fig):
 
 def direction_banner(group_a, group_b, log_scale=True):
     st.markdown(
-        f"<div class='direction'>Comparison: <b>{group_b}</b> vs <b>{group_a}</b> &nbsp;·&nbsp; "
+        f"<div class='direction'>Comparison: <b>{group_b}</b> over <b>{group_a}</b> &nbsp;·&nbsp; "
         f"{'log2FC = mean(' + group_b + ') − mean(' + group_a + ')' if log_scale else 'difference = ' + group_b + ' − ' + group_a}"
         f" &nbsp;·&nbsp; <span class='pos'>positive = higher in {group_b}</span></div>", unsafe_allow_html=True)
 

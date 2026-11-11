@@ -66,7 +66,7 @@ charts saves a 5× PNG.
     on the first sheet (columns Name … Relative Area 0–25, raw files named
     `<date>_<method>_CellLine_<Group>_<SampleNo>_<Time>.raw`), plus *Sample_List* and *Instructions* sheets.
     New button **Load Compound Discoverer example** processes both templates like uploaded exports
-    (shControl vs GeneKD, 12 / 18 / 40 h, 3 replicates, one 12C reference, one blank per method).
+    (GeneKD over shControl, 12 / 18 / 40 h, 3 replicates, one 12C reference, one blank per method).
   - *Generic format:* isotopologue table with and without the 12C reference column, sample metadata (with
     Replicate and Include) and an instructions workbook. Same layout as the synthetic example.
 
@@ -109,7 +109,7 @@ charts saves a 5× PNG.
 - **Pathway mapping (Step 7):** Z-score heatmaps only (isotope-incorporation panels removed; incorporation stays in
   Steps 4, 5 and 9). Metabolite IDs of the selected pathway are verified online (KEGG / PubChem) automatically, once
   per metabolite and session; offline it is skipped with a retry button. Failed lookups are no longer cached.
-- **Heatmaps (Step 8):** choose any conditions and time points (e.g. Control vs KD at 12 & 18 h); the Z-score is
+- **Heatmaps (Step 8):** choose any conditions and time points (e.g. KD over Control at 12 & 18 h); the Z-score is
   recomputed across the samples shown. *Entire dataset* or *Selected pathways* (from the annotation), as one combined
   heatmap or one heatmap per pathway, each with its own downloads.
 - **Grouped row labels (default):** isotopologues of a metabolite stay together (M+0 … M+n), labelled “M+i”, with
@@ -149,7 +149,7 @@ charts saves a 5× PNG.
   distributions sum to 100 %. Intensity analyses (normalization, statistics, heatmaps, Z-scores) are unchanged.
 
 ### Changes in 2.5.2
-* Example data replaced by a fully synthetic data set (generic format; shControl vs GeneKD). The reference raw-file
+* Example data replaced by a fully synthetic data set (generic format; GeneKD over shControl). The reference raw-file
   naming pattern now recognises `…_shControl_<n>_<time>.raw` / `…_GeneKD_<n>_<time>.raw`; other names use the generic
   file-name parser.
 * Heatmap colour scale: shorter and thicker bar, title on its own line above it (no overlap).
@@ -235,7 +235,7 @@ Streamlit 1.35, without scikit-learn) and Python 3.13 (pandas 3, numpy 2.5, Stre
   (annotation panel below the map; queries KEGG REST / PubChem from your computer).
 * **Pathway maps** (`core/pathway_templates.py`) are curated drawings; metabolites are matched by KEGG ID (name as
   fallback). Add a pathway by adding a template there (same builder calls: met, stub, edge, arc, circle, box).
-* **Example data** (`example_data/generic/`) are fully SYNTHETIC: shControl vs GeneKD, [U-13C6]-glucose, 2 / 8 / 24 h,
+* **Example data** (`example_data/generic/`) are fully SYNTHETIC: GeneKD over shControl, [U-13C6]-glucose, 2 / 8 / 24 h,
   3 replicates, one unlabeled reference and one blank; 63 metabolites (names and formulas from the public metabolite
   library), every value simulated with a seeded labeling model (`make_synthetic_example.py` regenerates them). They
   come from no real experiment. Load them in Step 1 → Generic isotopologue table + metadata → Load synthetic example.

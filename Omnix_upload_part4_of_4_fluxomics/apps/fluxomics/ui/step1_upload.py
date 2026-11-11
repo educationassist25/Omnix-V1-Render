@@ -91,7 +91,7 @@ def _cd_route(s):
             "contain a sample list and full instructions on their extra sheets.")
         _template_buttons([("RP_Pos template (Excel)", CD_TEMPLATES[0]),
                            ("HILIC_Neg template (Excel)", CD_TEMPLATES[1])], "cd_tpl")
-        cd_example = st.button("Load Compound Discoverer example (RP_Pos + HILIC_Neg templates; shControl vs GeneKD, "
+        cd_example = st.button("Load Compound Discoverer example (RP_Pos + HILIC_Neg templates; GeneKD over shControl, "
                                "12 / 18 / 40 h)", key="cd_example", disabled=not all(f.exists() for f in CD_TEMPLATES),
                                help="Processes the two template workbooks exactly like uploaded exports.")
     s.min_area = float(st.number_input(
@@ -138,7 +138,7 @@ def _generic_route(s):
             d2.download_button("⬇ Metadata template (CSV)", TEMPLATE_META.to_csv(index=False).encode(),
                                "sample_metadata_template.csv", "text/csv")
     ex = GENERIC / "synthetic_isotopologue_table.csv"
-    use_example = st.button("Load synthetic example data (shControl vs GeneKD, [U-13C6]-glucose, 2 / 8 / 24 h)",
+    use_example = st.button("Load synthetic example data (GeneKD over shControl, [U-13C6]-glucose, 2 / 8 / 24 h)",
                             disabled=not ex.exists(), key="gen_example",
                             help="Simulated data (no real experiment): 63 metabolites, 2 groups × 3 time points × 3 "
                                  "replicates, one unlabeled reference and one blank.")

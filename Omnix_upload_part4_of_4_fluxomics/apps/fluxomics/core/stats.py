@@ -204,9 +204,9 @@ def per_time_contrasts(X: pd.DataFrame, design_samples: pd.DataFrame, group_a: s
 
 def direction_text(group_a: str, group_b: str, log_scale: bool = True) -> str:
     if log_scale:
-        return (f"{group_b} vs {group_a}: log2FC = mean({group_b}) − mean({group_a}); "
+        return (f"{group_b} over {group_a}: log2FC = mean({group_b}) − mean({group_a}); "
                 f"positive = higher in {group_b}")
-    return f"{group_b} vs {group_a}: difference = {group_b} − {group_a}; positive = higher in {group_b}"
+    return f"{group_b} over {group_a}: difference = {group_b} − {group_a}; positive = higher in {group_b}"
 
 
 # ---------------------------------------------------------------------------

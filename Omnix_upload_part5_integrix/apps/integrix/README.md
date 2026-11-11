@@ -119,7 +119,7 @@ All 30 tests pass (29 validation tests plus an app smoke test). They take under 
 ### What changed in v1.4.0 (layout: Option A)
 
 - **Analysis setup panel:** the left panel is a four-step setup checklist (Data, Study design, Statistics, Engines) with a progress bar.
-  - Each step collapses to a one-line summary, for example "Study design · Tumor vs Control".
+  - Each step collapses to a one-line summary, for example "Study design · Tumor over Control".
   - Only one step is open at a time, and the open step is outlined in teal.
   - Rarely used options (topology permutations, seed, log transform, missing-value filter) are under "More options".
   - Every input stays loaded while its step is closed, so settings and uploaded files are kept.

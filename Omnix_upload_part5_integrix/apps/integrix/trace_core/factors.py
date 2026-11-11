@@ -106,7 +106,7 @@ def run_factors(layers: dict, design, n_factors: int = 8, top_var: int = 1500, s
         y = meta["Group"] == design.case
         a, b = scores.loc[y, f].dropna(), scores.loc[~y, f].dropna()
         t, p = stats.ttest_ind(a, b, equal_var=False) if len(a) > 1 and len(b) > 1 else (np.nan, np.nan)
-        assoc.append({"factor": f, "covariate": f"Group ({design.case} vs {design.ref})", "statistic": t, "p": p})
+        assoc.append({"factor": f, "covariate": f"Group ({design.case} over {design.ref})", "statistic": t, "p": p})
         for c in meta.columns:
             if c in ("Group",):
                 continue

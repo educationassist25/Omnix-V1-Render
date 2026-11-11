@@ -127,9 +127,9 @@ def available_stats_sources(state) -> dict:
     if two is not None and len(two) and groups:
         g_a, g_b = groups
         fdr_col = "BH P Value" if "BH P Value" in two.columns else "FDR"
-        sources[f"Two-group test: {g_a} vs {g_b}"] = {
+        sources[f"Two-group test: {g_b} over {g_a}"] = {
             "df": two, "p_col": "p-value", "fdr_col": fdr_col, "kind": "two_group",
-            "comparison": f"{g_a}_vs_{g_b}", "fc_col": "Log2FC" if "Log2FC" in two.columns else None,
+            "comparison": f"{g_b}_over_{g_a}", "fc_col": "Log2FC" if "Log2FC" in two.columns else None,
             "groups": (g_a, g_b),
         }
     anova = state.get("anova_result")

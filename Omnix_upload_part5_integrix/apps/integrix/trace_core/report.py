@@ -27,7 +27,7 @@ def excel(res, extras: dict) -> bytes:
     with pd.ExcelWriter(buf, engine="openpyxl") as xw:
         pd.DataFrame({"item": ["Contrast", "Evidence tier", "Knowledge base", "Permutations (label)",
                                "Permutations (topology)", "FDR alpha", "Pattern threshold (z)"],
-                      "value": [f"{res.design.case} vs {res.design.ref}", res.design.tier_text,
+                      "value": [f"{res.design.case} over {res.design.ref}", res.design.tier_text,
                                 extras.get("kb_version", ""), res.params["B"], res.params["B_topo"],
                                 res.params["alpha"], res.params["pattern_thr"]]}).to_excel(xw, sheet_name="Summary", index=False)
         res.reactions.to_excel(xw, sheet_name="Reactions", index=False)

@@ -39,8 +39,8 @@ Fluxomics accepts two kinds of input. Choose one in **Upload & inspect** under *
 
 ### Demo datasets
 
-- **Load synthetic example data** (Generic route): a fully simulated study, shControl vs GeneKD on [U-¹³C₆]-glucose at 2 / 8 / 24 h with 3 replicates, one unlabeled reference and one blank; 63 metabolites. The values come from no real experiment.
-- **Load Compound Discoverer example** (Compound Discoverer route): the two template exports (RP_Pos and HILIC_Neg), processed exactly like uploaded files: shControl vs GeneKD at 12 / 18 / 40 h, 3 replicates, one 12C reference and one blank per method.
+- **Load synthetic example data** (Generic route): a fully simulated study, GeneKD over shControl on [U-¹³C₆]-glucose at 2 / 8 / 24 h with 3 replicates, one unlabeled reference and one blank; 63 metabolites. The values come from no real experiment.
+- **Load Compound Discoverer example** (Compound Discoverer route): the two template exports (RP_Pos and HILIC_Neg), processed exactly like uploaded files: GeneKD over shControl at 12 / 18 / 40 h, 3 replicates, one 12C reference and one blank per method.
 
 **Templates and example files (Help → Data preparation, and Upload & inspect)**
 - Generic: isotopologue table with and without the 12C reference column, sample metadata, and an instructions workbook.

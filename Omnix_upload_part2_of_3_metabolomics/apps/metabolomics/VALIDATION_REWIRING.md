@@ -209,7 +209,7 @@ Automated gold standards were used while tuning the pairing rules, so random rea
 
 ## 2. Simulation study (`validate_rewiring.py`)
 
-Simulated panel: 43 metabolites, Control vs Tumor, planted rewiring (21 + 5 lost, 4 flipped, 5 gained pairs), two
+Simulated panel: 43 metabolites, Tumor over Control, planted rewiring (21 + 5 lost, 4 flipped, 5 gained pairs), two
 balanced batches with a batch mean shift, and three outlier samples that create a decoy correlation. Each dataset
 is a fresh random draw. Sections 1–4 use the annotation-column grouping (unchanged from the first version);
 section 5 uses the KEGG library from the MSEA page, the reaction scopes and the pathway-level test.

@@ -173,7 +173,7 @@ def test_contrast_builder():
         "Treatment": "", "TimeValue": np.tile(np.repeat([1.0, 2.0], 3), 2), "TimeUnit": "h", "Include": True,
         "Replicate": 1}))
     c = dz.build_contrasts(D, "arms_per_time", "A", "B")
-    assert [x["name"] for x in c] == ["B vs A · 1 h", "B vs A · 2 h"] and c[0]["samples_b"] == ["s6", "s7", "s8"]
+    assert [x["name"] for x in c] == ["B over A · 1 h", "B over A · 2 h"] and c[0]["samples_b"] == ["s6", "s7", "s8"]
     assert len(dz.build_contrasts(D, "time_vs_first")) == 2
     D2 = D.copy(); D2.loc[D2.Sample == "s0", "Treatment"] = "Drug"
     assert "A + Drug" in dz.groups_of(dz.finalize_design(D2))

@@ -404,7 +404,7 @@ def setup_head(n_ready: int, total: int) -> str:
 def study_line(tier_text: str, case: str, ref: str, alpha: float) -> str:
     tier = tier_text.split(":")[0].strip()
     return (f'<div class="tr-study"><span class="chip">{_esc(tier)}</span><span class="chip"><span class="case">'
-            f'{_esc(case)}</span> vs <span class="ref">{_esc(ref)}</span></span>'
+            f'{_esc(case)}</span> over <span class="ref">{_esc(ref)}</span></span>'
             f'<span class="chip ok">&#10003; FDR calibrated &middot; q &lt; {alpha:g}</span></div>')
 
 
@@ -424,7 +424,7 @@ def banner(tier_text: str, case: str, ref: str, alpha: float) -> str:
     tier, _, desc = tier_text.partition(":")
     return (f'<div class="tr-banner"><div class="ic">{ICONS["stack"]}</div><div class="body">'
             f'<span class="tr-tag">{_esc(tier.strip())}</span>'
-            f'<span class="tr-contrast">Contrast: <span class="case">{_esc(case)}</span> vs '
+            f'<span class="tr-contrast">Contrast: <span class="case">{_esc(case)}</span> over '
             f'<span class="ref">{_esc(ref)}</span></span>'
             f'<p>Directional integration of <b>transcriptomics &rarr; proteomics &rarr; enzyme function &rarr; '
             f'metabolomics</b>. {_esc(desc.strip()).capitalize()}. Every reaction is scored for directional '

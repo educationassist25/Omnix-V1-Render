@@ -127,7 +127,7 @@ With raw counts, choose a **Multi-group comparison type**. With logCPM input, on
 
 1. Select the groups to include (at least 3).
 2. Choose **Contrasts**:
-   - **Every group vs a reference (Dunnett-style)**: pick a **Reference group**. LFC shrinkage is applied to every contrast.
+   - **Every group over a reference (Dunnett-style)**: pick a **Reference group**. LFC shrinkage is applied to every contrast.
    - **Every pairwise combination**: fold changes are unshrunk MLE estimates.
 3. Set covariates and the **Significance Threshold** controls.
 4. Click **Run PyDESeq2 Contrasts**. One DESeq2 fit is made, and each contrast gets its own Benjamini-Hochberg FDR.

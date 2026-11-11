@@ -34,3 +34,13 @@ Files: `omnix_portal/figure_style.py` (new), `omnix_portal/portal.py` (part 1).
 - Integrix reaction pattern map: the four quadrant captions ("coherent: enzyme up …", "enzyme down, balance up" …)
   now sit in empty bands above and below the data, so dots and enzyme labels never cover them
   (`trace_core/figures.py`).
+
+## Comparisons read "case over control"
+Every two-group comparison is now written as **case over control** (for example "Resistant over Parental"),
+in the order of the fold change, in all six platforms: result notes, figure titles, volcano plot titles,
+table and file names (`Resistant_over_Parental_Statistics.csv`), contrast lists, the Integrix contrast banner,
+report and demo descriptions, Help and tutorials.
+- Metabolomics/Lipidomics and Fluxomics: Log2FC = Group B − Group A, written "B over A".
+- Proteomics and Transcriptomics: Log2FC = Group A − Group B, written "A over B".
+- Integrix: "Case over Reference".
+Sample counts such as "(3 vs 4 samples)" are unchanged.

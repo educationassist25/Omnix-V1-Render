@@ -1112,7 +1112,7 @@ if ACTIVE_PAGE == 5:
 
                 if st.button("Run Two-Group Test", key="run_two_group_raw") and group_a != group_b:
                     try:
-                        with st.spinner(f"Fitting DESeq2 for {grouping_var} and testing {group_a} vs {group_b}..."):
+                        with st.spinner(f"Fitting DESeq2 for {grouping_var} and testing {group_a} over {group_b}..."):
                             # reference_level=group_b sets group_b as the model's baseline
                             # category, which is required for apeGLM LFC shrinkage (the
                             # coefficient for group_a must exist as "<factor>[T.<group_a>]").
@@ -1130,7 +1130,7 @@ if ACTIVE_PAGE == 5:
                         st.session_state.stats_result_group_col = grouping_var
                         shrunk_note = " (LFC shrunk via apeGLM prior)" if result.attrs.get("lfc_shrunk") else ""
                         st.session_state.processing_notes.append(
-                            f"DESeq2 Wald test ({grouping_var}): {group_a} vs {group_b} "
+                            f"DESeq2 Wald test ({grouping_var}): {group_a} over {group_b} "
                             f"(design ~ {' + '.join(design_factors)}){shrunk_note}; "
                             f"{int(result['Significant'].sum())} significant genes ({sig_metric} ≤ {sig_fdr_threshold:g})."
                         )
@@ -1165,7 +1165,7 @@ if ACTIVE_PAGE == 5:
                         welch_result, sig_metric, sig_fdr_threshold, apply_filter=False)
                     st.session_state.stats_transformed_result = welch_result
                     st.session_state.processing_notes.append(
-                        f"Welch's t-test on VST ({grouping_var}): {group_a} vs {group_b}; "
+                        f"Welch's t-test on VST ({grouping_var}): {group_a} over {group_b}; "
                         f"{int(welch_result['Significant'].sum())} significant genes ({sig_metric} ≤ {sig_fdr_threshold:g})."
                     )
             else:
@@ -1195,7 +1195,7 @@ if ACTIVE_PAGE == 5:
                         st.session_state.stats_result_group_col = grouping_var
                         design_desc = " + ".join(covariates + [grouping_var])
                         st.session_state.processing_notes.append(
-                            f"Wald test on logCPM ({grouping_var}): {group_a} vs {group_b} "
+                            f"Wald test on logCPM ({grouping_var}): {group_a} over {group_b} "
                             f"(design ~ {design_desc}); "
                             f"{int(result['Significant'].sum())} significant genes ({sig_metric} ≤ {sig_fdr_threshold:g})."
                         )
@@ -1206,8 +1206,8 @@ if ACTIVE_PAGE == 5:
             if st.session_state.stats_result is not None and st.session_state.get("stats_result_groups"):
                 result = st.session_state.stats_result
                 g_a, g_b = st.session_state.stats_result_groups
-                st.session_state.stats_contrast_label = f"{g_a} vs {g_b}"
-                comparison_name = f"{g_a}_vs_{g_b}"
+                st.session_state.stats_contrast_label = f"{g_a} over {g_b}"
+                comparison_name = f"{g_a}_over_{g_b}"
                 # Display/export only the 6 requested columns for the primary two-group
                 # test output (Gene, p-value, FDR, Log2FC, Linear_FC, Significant). This
                 # is a display-only view built on a copy -- the full `result` (with its
@@ -1294,11 +1294,11 @@ if ACTIVE_PAGE == 5:
                     groups_available, default=groups_available, key="deseq_multi_group_select"
                 )
                 contrast_style = st.radio(
-                    "Contrasts", ["Every group vs a reference (Dunnett-style)", "Every pairwise combination"],
+                    "Contrasts", ["Every group over a reference (Dunnett-style)", "Every pairwise combination"],
                     key="deseq_multi_contrast_style"
                 )
                 reference_level = None
-                if contrast_style.startswith("Every group vs"):
+                if contrast_style.startswith("Every group over"):
                     reference_level = st.selectbox("Reference group", deseq_groups, key="deseq_multi_reference")
                 covariate_options_m = [c for c in stats_cat_cols if c != grouping_var]
                 covariates_m = st.multiselect("Covariates to control for (optional, e.g. Batch)",
@@ -1331,7 +1331,7 @@ if ACTIVE_PAGE == 5:
                             sub_counts = st.session_state.filtered_counts[
                                 [c for c in st.session_state.filtered_counts.columns if c in sub_samples]
                             ]
-                            is_dunnett = contrast_style.startswith("Every group vs")
+                            is_dunnett = contrast_style.startswith("Every group over")
                             # reference_level lets apeGLM LFC shrinkage apply to every contrast in
                             # one shared fit when every contrast is vs the same reference (Dunnett-
                             # style). "All pairwise" has no single reference, so shrinkage is skipped
@@ -1362,7 +1362,7 @@ if ACTIVE_PAGE == 5:
                                                     key="deseq_multi_contrast_view")
                     contrast_df = contrasts[contrast_choice]
                     st.session_state.stats_result = contrast_df
-                    st.session_state.stats_result_groups = tuple(contrast_choice.split(" vs "))
+                    st.session_state.stats_result_groups = tuple(contrast_choice.split(" over ", 1))
                     st.session_state.stats_contrast_label = contrast_choice
                     n_sig = int(utils.apply_significance_filter(
                         contrast_df, sig_metric_m, sig_fdr_threshold_m, apply_filter=False)["Significant"].sum())
@@ -1374,14 +1374,14 @@ if ACTIVE_PAGE == 5:
                             "unshrunk MLE estimate is in Log2FC_MLE_Unshrunk / Linear_FC_MLE_Unshrunk. "
                             "Shrinkage does not change the p-value or FDR."
                         )
-                    elif contrast_style.startswith("Every group vs"):
+                    elif contrast_style.startswith("Every group over"):
                         st.caption("LFC shrinkage was not applied to this contrast (reference-coefficient mismatch); "
                                    "showing the unshrunk MLE estimate.")
                     else:
                         st.caption(
                             "'All pairwise' contrasts aren't vs. a single reference, so apeGLM LFC "
                             "shrinkage (which shrinks one named design coefficient) doesn't apply here — "
-                            "this is the unshrunk MLE estimate. Use 'Every group vs a reference' for "
+                            "this is the unshrunk MLE estimate. Use 'Every group over a reference' for "
                             "shrunk estimates."
                         )
                     # Each pairwise DESeq2 contrast here is itself a two-group Wald test
@@ -1540,7 +1540,7 @@ if ACTIVE_PAGE == 6:
         if groups_used:
             st.caption(
                 f"Reflects the two {group_col_used} values compared in the Statistics page: "
-                f"**{groups_used[0]}** vs **{groups_used[1]}**."
+                f"**{groups_used[0]}** over **{groups_used[1]}**."
                 + " To compare a different pair or variable, go back to Statistics and "
                 "re-run the two-group test."
             )
@@ -1659,7 +1659,7 @@ if ACTIVE_PAGE == 6:
 
             st.markdown("**Title**")
             c6, c7 = st.columns(2)
-            default_title = f"{groups_used[0]} vs {groups_used[1]}" if groups_used else "Volcano Plot"
+            default_title = f"{groups_used[0]} over {groups_used[1]}" if groups_used else "Volcano Plot"
             custom_title = c6.text_input("Title", value=default_title, key="volc_title")
             subtitle = c7.text_input("Subtitle (optional)", value="", key="volc_subtitle")
             c8, c9, c10, c11 = st.columns(4)
@@ -1758,7 +1758,7 @@ if ACTIVE_PAGE == 6:
         }
         utils.render_figure(st, fig_volc)
 
-        volcano_tag = (f"{_safe_tag(groups_used[0])}_vs_{_safe_tag(groups_used[1])}"
+        volcano_tag = (f"{_safe_tag(groups_used[0])}_over_{_safe_tag(groups_used[1])}"
                        if groups_used else "Comparison")
         utils.render_figure_download(st, fig_volc, f"{volcano_tag}_VolcanoPlot", key_prefix="volcano_export")
 
@@ -1850,7 +1850,7 @@ if ACTIVE_PAGE == 7:
                 st.caption("Pathway breakdown of candidate biomarkers:")
                 st.bar_chart(merged["Pathway"].value_counts())
             groups_used = st.session_state.get("stats_result_groups")
-            comparison_name = (f"{groups_used[0]}_vs_{groups_used[1]}" if groups_used else "Comparison")
+            comparison_name = (f"{groups_used[0]}_over_{groups_used[1]}" if groups_used else "Comparison")
             biomarker_filename = f"{comparison_name}_Biomarkers.csv"
             utils.table_download(
                 st,
@@ -2239,7 +2239,7 @@ if ACTIVE_PAGE == 10:
         group_col_used = st.session_state.get("stats_result_group_col") or "Group"
         if groups_used:
             st.caption(f"Reflects the two {group_col_used} values compared in the Statistics page: "
-                       f"**{groups_used[0]}** vs **{groups_used[1]}**.")
+                       f"**{groups_used[0]}** over **{groups_used[1]}**.")
         st.caption(
             "RNA-seq features are already gene identifiers, so no separate identifier→gene mapping step is "
             "needed here — the gene names in the expression matrix are used directly for "

@@ -72,7 +72,7 @@ def render():
             st.error(f"Statistics failed: {e}")
             return
         name = (f"{C.INT_LABEL[s.intensity_choice].split(' intensity')[0]} · " +
-                (f"{stt.TTESTS[settings['method']].split(' (')[0]} · {settings['group_b']} vs {settings['group_a']}"
+                (f"{stt.TTESTS[settings['method']].split(' (')[0]} · {settings['group_b']} over {settings['group_a']}"
                  if kind == "ttest" else f"{stt.ANOVAS[settings['method']].split(' (')[0]}"
                  + (f" · {settings['factor']}" if settings["method"] != "twoway" else "")))
         res.update(settings=settings, info=info, label=name)
@@ -111,7 +111,7 @@ def _run(X, D, an, kind, p, crit, alpha):
             T = T.rename(columns={"n A": f"n {p['group_a']}", "n B": f"n {p['group_b']}",
                                   "Mean A": f"Mean {p['group_a']}", "Mean B": f"Mean {p['group_b']}",
                                   "SD A": f"SD {p['group_a']}", "SD B": f"SD {p['group_b']}"})
-            T.insert(0, "Comparison", f"{p['group_b']} vs {p['group_a']} · {h:g} h")
+            T.insert(0, "Comparison", f"{p['group_b']} over {p['group_a']} · {h:g} h")
             out.append(T)
     elif p["method"] == "twoway":
         sub = an[an.Group.isin(p["groups"]) & an.Hours.isin(p["times"])][["Sample", "Group", "TimeLabel"]]
