@@ -1,0 +1,299 @@
+Metabolite,HMDB_ID,Class,Method,ISTD
+Adenylsuccinic acid,HMDB0000536,Metabolite,Untargeted Metabolomics,
+Biotin amide,HMDB0001458,Metabolite,Untargeted Metabolomics,
+Phosphoenolpyruvic acid,HMDB0000263,Metabolite,Untargeted Metabolomics,
+Thioguanine,HMDB0014496,Metabolite,Untargeted Metabolomics,
+Glyceraldehyde 3-phosphate,HMDB0001112,Metabolite,Untargeted Metabolomics,
+tetrahydrofolate,HMDB0304496,Metabolite,Untargeted Metabolomics,
+Formiminoglutamic acid,HMDB0000854,Metabolite,Untargeted Metabolomics,
+D-Proline,HMDB0003411,Metabolite,Untargeted Metabolomics,
+Diguanosine tetraphosphate,HMDB0001340,Metabolite,Untargeted Metabolomics,
+Glutamylglutamic acid,HMDB0028818,Metabolite,Untargeted Metabolomics,
+Acetyl-CoA,HMDB0001206,Metabolite,Untargeted Metabolomics,
+Adenosine diphosphate-D-ribose,HMDB0303049,Metabolite,Untargeted Metabolomics,
+ADP-Mannose,HMDB0006369,Metabolite,Untargeted Metabolomics,
+gamma-Glutamylalanine,HMDB0006248,Metabolite,Untargeted Metabolomics,
+Inosine triphosphate,HMDB0000189,Metabolite,Untargeted Metabolomics,
+Tyrosine methylester,HMDB0029217,Metabolite,Untargeted Metabolomics,
+Methionine sulfoxide,HMDB0002005,Metabolite,Untargeted Metabolomics,
+Beta-Guanidinopropionic acid,HMDB0013222,Metabolite,Untargeted Metabolomics,
+Iodotyrosine,HMDB0000021,Metabolite,Untargeted Metabolomics,
+Murocholic acid,HMDB0000811,Metabolite,Untargeted Metabolomics,
+Diethyl oxalpropionate,HMDB0032306,Metabolite,Untargeted Metabolomics,
+O-Phosphohomoserine,HMDB0003484,Metabolite,Untargeted Metabolomics,
+N'-Formylkynurenine,HMDB0001200,Metabolite,Untargeted Metabolomics,
+Oxaloacetic acid,HMDB0000223,Metabolite,Untargeted Metabolomics,
+N-Acetylhistamine,HMDB0013253,Metabolite,Untargeted Metabolomics,
+FADH2,HMDB0001197,Metabolite,Untargeted Metabolomics,
+Uridine diphosphategalactose,HMDB0000302,Metabolite,Untargeted Metabolomics,
+Cyclic AMP,HMDB0000058,Metabolite,Untargeted Metabolomics,
+Ursodeoxycholic acid,HMDB0000946,Metabolite,Untargeted Metabolomics,
+L-N-Acetylaspartate,HMDB0000812,Metabolite,Untargeted Metabolomics,
+Diadenosine tetraphosphate,HMDB0001211,Metabolite,Untargeted Metabolomics,
+Vanilloyl glucose,HMDB0302470,Metabolite,Untargeted Metabolomics,
+Cysteinylglycine,HMDB0000078,Metabolite,Untargeted Metabolomics,
+Tauro-b-muricholic acid,HMDB0000932,Metabolite,Untargeted Metabolomics,
+Fructose 1-phosphate,HMDB0001076,Metabolite,Untargeted Metabolomics,
+L-Cystine,HMDB0000192,Metabolite,Untargeted Metabolomics,
+Hippuric acid,HMDB0000714,Metabolite,Untargeted Metabolomics,
+DL-Arginine,HMDB0251511,Metabolite,Untargeted Metabolomics,
+Coenzyme A,HMDB0001423,Metabolite,Untargeted Metabolomics,
+beta-D-Galactose,HMDB0003449,Metabolite,Untargeted Metabolomics,
+Pyridoxine-P,HMDB0001319,Metabolite,Untargeted Metabolomics,
+L-Glutamic gamma-semialdehyde,HMDB0002104,Metabolite,Untargeted Metabolomics,
+Glycylleucine,HMDB0000759,Metabolite,Untargeted Metabolomics,
+Taurine,HMDB0000251,Metabolite,Untargeted Metabolomics,
+3-Ketosphinganine,HMDB0001480,Metabolite,Untargeted Metabolomics,
+Xanthylic acid,HMDB0001554,Metabolite,Untargeted Metabolomics,
+Nonadecanoic acid,HMDB0000772,Metabolite,Untargeted Metabolomics,
+L-Cysteine,HMDB0000574,Metabolite,Untargeted Metabolomics,
+Ricinoleic acid,HMDB0034297,Metabolite,Untargeted Metabolomics,
+"1,3-Bisphosphoglyceric acid",HMDB0001270,Metabolite,Untargeted Metabolomics,
+Dihydrofolate,HMDB0001056,Metabolite,Untargeted Metabolomics,
+Oxoglutaric acid,HMDB0000208,Metabolite,Untargeted Metabolomics,
+Guanosine diphosphate mannose,HMDB0001163,Metabolite,Untargeted Metabolomics,
+Succinic acid,HMDB0000254,Metabolite,Untargeted Metabolomics,
+Citramalic acid,HMDB0000426,Metabolite,Untargeted Metabolomics,
+Uridine triphosphate,HMDB0000285,Metabolite,Untargeted Metabolomics,
+Guanosine triphosphate,HMDB0001273,Metabolite,Untargeted Metabolomics,
+N-Caffeoylputrescine,HMDB0139529,Metabolite,Untargeted Metabolomics,
+Dihydrothymine,HMDB0000079,Metabolite,Untargeted Metabolomics,
+DL-Homocystine,HMDB0000575,Metabolite,Untargeted Metabolomics,
+Histidylleucine,HMDB0028889,Metabolite,Untargeted Metabolomics,
+dTDP-alpha-D-glucose,HMDB0304344,Metabolite,Untargeted Metabolomics,
+Phosphohydroxypyruvic acid,HMDB0001024,Metabolite,Untargeted Metabolomics,
+Muricholic acid,HMDB0000865,Metabolite,Untargeted Metabolomics,
+Tridecanoic acid,HMDB0000910,Metabolite,Untargeted Metabolomics,
+N-Acetylaspartylglutamic acid,HMDB0001067,Metabolite,Untargeted Metabolomics,
+Folic acid,HMDB0000121,Metabolite,Untargeted Metabolomics,
+Hydroxyproline,HMDB0000725,Metabolite,Untargeted Metabolomics,
+Dimethyltryptamine,HMDB0005973,Metabolite,Untargeted Metabolomics,
+D-Tyrosine,HMDB0250803,Metabolite,Untargeted Metabolomics,
+Isolithocholic acid,HMDB0000717,Metabolite,Untargeted Metabolomics,
+alpha-Muricholic acid,HMDB0000506,Metabolite,Untargeted Metabolomics,
+Mannitol,HMDB0000765,Metabolite,Untargeted Metabolomics,
+Paraxanthine,HMDB0001860,Metabolite,Untargeted Metabolomics,
+alpha-Tocopherol acetate,HMDB0034227,Metabolite,Untargeted Metabolomics,
+N-Methylalanine,HMDB0094692,Metabolite,Untargeted Metabolomics,
+Ornithine,HMDB0000214,Metabolite,Untargeted Metabolomics,
+Glycine-betaxanthin,HMDB0304685,Metabolite,Untargeted Metabolomics,
+Adenine,HMDB0000034,Metabolite,Untargeted Metabolomics,
+Se-Methylselenocysteine,HMDB0004113,Metabolite,Untargeted Metabolomics,
+D-Galactose,HMDB0000143,Metabolite,Untargeted Metabolomics,
+Allolithocholic acid,HMDB0000381,Metabolite,Untargeted Metabolomics,
+Homocitrulline,HMDB0000679,Metabolite,Untargeted Metabolomics,
+Histamine,HMDB0000870,Metabolite,Untargeted Metabolomics,
+Oxaluric acid,HMDB0303019,Metabolite,Untargeted Metabolomics,
+Butyrylcarnitine,HMDB0002013,Metabolite,Untargeted Metabolomics,
+Glycerophosphoinositol,HMDB0011649,Metabolite,Untargeted Metabolomics,
+Isovalerylcarnitine,HMDB0000688,Metabolite,Untargeted Metabolomics,
+Betaine aldehyde,HMDB0001252,Metabolite,Untargeted Metabolomics,
+Pyruvic acid,HMDB0000243,Metabolite,Untargeted Metabolomics,
+S-Adenosylmethionine,HMDB0001185,Metabolite,Untargeted Metabolomics,
+Hypotaurine,HMDB0000965,Metabolite,Untargeted Metabolomics,
+Uracil,HMDB0000300,Metabolite,Untargeted Metabolomics,
+L-Methionine,HMDB0000696,Metabolite,Untargeted Metabolomics,
+Selenomethionine,HMDB0003966,Metabolite,Untargeted Metabolomics,
+myo-Inositol,HMDB0000211,Metabolite,Untargeted Metabolomics,
+Cytidine,HMDB0000089,Metabolite,Untargeted Metabolomics,
+L-Serine,HMDB0000187,Metabolite,Untargeted Metabolomics,
+delta-Tocopherol,HMDB0002902,Metabolite,Untargeted Metabolomics,
+Glucose 6-phosphate,HMDB0001401,Metabolite,Untargeted Metabolomics,
+Norvaline,HMDB0013716,Metabolite,Untargeted Metabolomics,
+L-Phosphoarginine,HMDB0029438,Metabolite,Untargeted Metabolomics,
+Glycineamideribotide,HMDB0002022,Metabolite,Untargeted Metabolomics,
+Coprocholic acid,HMDB0000601,Metabolite,Untargeted Metabolomics,
+Dopamine,HMDB0000073,Metabolite,Untargeted Metabolomics,
+Tryptophanamide,HMDB0013318,Metabolite,Untargeted Metabolomics,
+Acetoacetyl-CoA,HMDB0001484,Metabolite,Untargeted Metabolomics,
+Malonyl-CoA,HMDB0001175,Metabolite,Untargeted Metabolomics,
+Succinic anhydride,HMDB0032523,Metabolite,Untargeted Metabolomics,
+Dopamine quinone,HMDB0012219,Metabolite,Untargeted Metabolomics,
+Hydroxypropionic acid,HMDB0000700,Metabolite,Untargeted Metabolomics,
+L-Lactic acid,HMDB0000190,Metabolite,Untargeted Metabolomics,
+Neryl formate,HMDB0035156,Metabolite,Untargeted Metabolomics,
+Alanyltryptophan,HMDB0013209,Metabolite,Untargeted Metabolomics,
+gamma-Glutamylcysteine,HMDB0001049,Metabolite,Untargeted Metabolomics,
+Glucose 1-phosphate,HMDB0001586,Metabolite,Untargeted Metabolomics,
+L-Allothreonine,HMDB0004041,Metabolite,Untargeted Metabolomics,
+Pyridoxine,HMDB0000239,Metabolite,Untargeted Metabolomics,
+Ethyl acetoacetate,HMDB0031216,Metabolite,Untargeted Metabolomics,
+Methylglyoxal,HMDB0001167,Metabolite,Untargeted Metabolomics,
+ISTD_D4-Alanine,,Internal standard,Targeted Metabolomics,ISTD_D4-Alanine
+Sphingosine 1-phosphate,HMDB0000277,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-Aspartic acid,HMDB0006483,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Dehydrospermidine,HMDB0012925,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-Glutamine,HMDB0003423,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+alpha-Methyltryptamine,HMDB0245770,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Adenosine monophosphate,HMDB0000045,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Xanthosine,HMDB0000299,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-alpha-Acetyl-L-lysine,HMDB0000446,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Inosine,HMDB0000195,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Dolichyl phosphate D-mannose,HMDB0000994,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Proline,HMDB0000162,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Thiamine monophosphate,HMDB0002666,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Aminoadipic acid,HMDB0000510,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Deoxyguanosine,HMDB0000085,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+gamma-Glutamylglutamic acid,HMDB0011737,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Proline betaine,HMDB0004827,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+N-Methyltyramine,HMDB0003633,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Hyocholic acid,HMDB0000760,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Isodeoxycholic acid,HMDB0002536,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Pyroglutamic acid,HMDB0000267,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+UDP-D-Xylose,HMDB0001018,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Allantoin,HMDB0000462,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Glutamic acid,HMDB0000148,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+dTDP-D-galactose,HMDB0006876,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+NAD,HMDB0000902,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Dethiobiotin,HMDB0003581,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Benzyl formate,HMDB0041485,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Kynurenine,HMDB0000684,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Argininosuccinic acid,HMDB0001006,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Fructose,HMDB0062538,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Glycinexylidide,HMDB0060679,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Methionine,HMDB0033951,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-serine,HMDB0003406,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Methacholine,HMDB0015654,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+NADH,HMDB0001487,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Desaminotyrosine,HMDB0002199,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Hydroxyphenylacetylglycine,HMDB0000735,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Stearic acid,HMDB0000827,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+O-Acetylserine,HMDB0003011,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+D-threo-Isocitric acid,HMDB0001874,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Betaine,HMDB0000043,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Uridine diphosphate glucose,HMDB0000286,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Threonine,HMDB0000167,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Levoinositol,HMDB0034220,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Adipic acid,HMDB0000448,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Niacinamide,HMDB0001406,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+L-Phenylalanine,HMDB0000159,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Gamma-glutamyl-L-putrescine,HMDB0012230,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+Methylmalonic acid,HMDB0000202,Metabolite,Targeted Metabolomics,ISTD_D4-Alanine
+"PE(16:0/20:3(8Z,11Z,14Z))",HMDB0008936,Lipid,Untargeted Lipidomics,
+"PS(20:5(5Z,8Z,11Z,14Z,17Z)/20:3(8Z,11Z,14Z))",HMDB0112694,Lipid,Untargeted Lipidomics,
+"PC(22:5(7Z,10Z,13Z,16Z,19Z)/22:5(7Z,10Z,13Z,16Z,19Z))",HMDB0008714,Lipid,Untargeted Lipidomics,
+17alpha-Hydroxyprogesterone,HMDB0000374,Lipid,Untargeted Lipidomics,
+"PG(18:2(9Z,12Z)/18:1(9Z))",HMDB0010649,Lipid,Untargeted Lipidomics,
+"PA(20:5(5Z,8Z,11Z,14Z,17Z)/20:4(8Z,11Z,14Z,17Z))",HMDB0115213,Lipid,Untargeted Lipidomics,
+GlcCer(d18:1/18:0),HMDB0004972,Lipid,Untargeted Lipidomics,
+LacCer(d18:1/24:0),HMDB0011595,Lipid,Untargeted Lipidomics,
+"PE(14:0/22:6(4Z,7Z,10Z,13Z,16Z,19Z))",HMDB0008847,Lipid,Untargeted Lipidomics,
+"PE(18:3(6Z,9Z,12Z)/20:0)",HMDB0009130,Lipid,Untargeted Lipidomics,
+"TG(18:1(9Z)/16:0/22:5(7Z,10Z,13Z,16Z,19Z))",HMDB0010454,Lipid,Untargeted Lipidomics,
+Taurocholic acid,HMDB0000036,Lipid,Untargeted Lipidomics,
+"PE(20:5(5Z,8Z,11Z,14Z,17Z)/20:0)",HMDB0009460,Lipid,Untargeted Lipidomics,
+PE(18:1(11Z)/16:0),HMDB0009022,Lipid,Untargeted Lipidomics,
+"PA(22:6(4Z,7Z,10Z,13Z,16Z,19Z)/22:6(4Z,7Z,10Z,13Z,16Z,19Z))",HMDB0115425,Lipid,Untargeted Lipidomics,
+"TG(18:3(6Z,9Z,12Z)/20:0/18:3(9Z,12Z,15Z))",HMDB0052908,Lipid,Untargeted Lipidomics,
+PE(15:0/18:0),HMDB0008892,Lipid,Untargeted Lipidomics,
+PE(16:1(9Z)/14:0),HMDB0008953,Lipid,Untargeted Lipidomics,
+TG(18:0/22:0/22:0),HMDB0044805,Lipid,Untargeted Lipidomics,
+"PC(20:4(5Z,8Z,11Z,14Z)/14:1(9Z))",HMDB0008427,Lipid,Untargeted Lipidomics,
+Ganglioside GM3 (d18:1/16:0),HMDB0004844,Lipid,Untargeted Lipidomics,
+Dehydroepiandrosterone sulfate,HMDB0001032,Lipid,Untargeted Lipidomics,
+"PC(15:0/20:5(5Z,8Z,11Z,14Z,17Z))",HMDB0007951,Lipid,Untargeted Lipidomics,
+Cholesterol,HMDB0000067,Lipid,Untargeted Lipidomics,
+27-Hydroxycholesterol,HMDB0002103,Lipid,Untargeted Lipidomics,
+Cortisone,HMDB0002802,Lipid,Untargeted Lipidomics,
+18-Hydroxycorticosterone,HMDB0000319,Lipid,Untargeted Lipidomics,
+"PA(22:5(4Z,7Z,10Z,13Z,16Z)/24:0)",HMDB0115374,Lipid,Untargeted Lipidomics,
+GlcCer(d18:1/24:0),HMDB0004978,Lipid,Untargeted Lipidomics,
+"TG(18:2(9Z,12Z)/16:1(9Z)/22:4(7Z,10Z,13Z,16Z))",HMDB0052522,Lipid,Untargeted Lipidomics,
+TG(16:0/20:3n6/18:1(9Z)),HMDB0044341,Lipid,Untargeted Lipidomics,
+"PC(22:6(4Z,7Z,10Z,13Z,16Z,19Z)/18:1(11Z))",HMDB0008728,Lipid,Untargeted Lipidomics,
+Myristic acid,HMDB0000806,Lipid,Untargeted Lipidomics,
+Glycochenodeoxycholic acid,HMDB0000637,Lipid,Untargeted Lipidomics,
+"TG(24:0/20:3n6/18:3(6Z,9Z,12Z))",HMDB0047447,Lipid,Untargeted Lipidomics,
+"PC(20:3(5Z,8Z,11Z)/18:0)",HMDB0008366,Lipid,Untargeted Lipidomics,
+"PA(20:5(5Z,8Z,11Z,14Z,17Z)/14:1(9Z))",HMDB0115199,Lipid,Untargeted Lipidomics,
+Glycodeoxycholic acid,HMDB0000631,Lipid,Untargeted Lipidomics,
+"PE(20:4(5Z,8Z,11Z,14Z)/24:1(15Z))",HMDB0009410,Lipid,Untargeted Lipidomics,
+"TG(14:1(9Z)/20:5(5Z,8Z,11Z,14Z,17Z)/22:5(7Z,10Z,13Z,16Z,19Z))",HMDB0048342,Lipid,Untargeted Lipidomics,
+PA(22:0/18:1(9Z)),HMDB0116705,Lipid,Untargeted Lipidomics,
+"PG(22:6(4Z,7Z,10Z,13Z,16Z,19Z)/18:2(9Z,12Z))",HMDB0116600,Lipid,Untargeted Lipidomics,
+"PC(22:5(4Z,7Z,10Z,13Z,16Z)/20:5(5Z,8Z,11Z,14Z,17Z))",HMDB0008675,Lipid,Untargeted Lipidomics,
+"PG(22:5(4Z,7Z,10Z,13Z,16Z)/16:0)",HMDB0116743,Lipid,Untargeted Lipidomics,
+Cer(d18:1/16:0),HMDB0004949,Lipid,Untargeted Lipidomics,
+LysoPC(16:0),HMDB0010382,Lipid,Untargeted Lipidomics,
+Tetradecenoylcarnitine,HMDB0002014,Lipid,Untargeted Lipidomics,
+PC(16:0/18:2),HMDB0007973,Lipid,Untargeted Lipidomics,
+"TG(18:0/18:3(6Z,9Z,12Z)/18:3(9Z,12Z,15Z))",HMDB0045120,Lipid,Untargeted Lipidomics,
+Taurodeoxycholic acid,HMDB0000896,Lipid,Untargeted Lipidomics,
+PI(16:0/18:1(9Z)),HMDB0009783,Lipid,Untargeted Lipidomics,
+TG(15:0/14:0/18:1(9Z)),HMDB0042969,Lipid,Untargeted Lipidomics,
+Oleic acid,HMDB0000207,Lipid,Untargeted Lipidomics,
+Cer(d18:1/24:0),HMDB0004956,Lipid,Untargeted Lipidomics,
+Glycolithocholic acid,HMDB0000698,Lipid,Untargeted Lipidomics,
+"PE(22:1(13Z)/20:4(5Z,8Z,11Z,14Z))",HMDB0009531,Lipid,Untargeted Lipidomics,
+PE(18:0/22:0),HMDB0009006,Lipid,Untargeted Lipidomics,
+Tetrahydrocortisone,HMDB0000903,Lipid,Untargeted Lipidomics,
+Glycocholic acid,HMDB0000138,Lipid,Untargeted Lipidomics,
+PC(18:0/16:1(9Z)),HMDB0008035,Lipid,Untargeted Lipidomics,
+Linoleic acid,HMDB0000673,Lipid,Untargeted Lipidomics,
+Hyodeoxycholic acid,HMDB0000733,Lipid,Untargeted Lipidomics,
+"TG(22:0/22:5(4Z,7Z,10Z,13Z,16Z)/22:5(7Z,10Z,13Z,16Z,19Z))",HMDB0046828,Lipid,Untargeted Lipidomics,
+"TG(18:0/22:4(7Z,10Z,13Z,16Z)/24:1(15Z))",HMDB0045246,Lipid,Untargeted Lipidomics,
+Cer(d18:1/18:0),HMDB0004950,Lipid,Untargeted Lipidomics,
+"PC(22:4(7Z,10Z,13Z,16Z)/22:4(7Z,10Z,13Z,16Z))",HMDB0008646,Lipid,Untargeted Lipidomics,
+PI(16:0/16:0),HMDB0009778,Lipid,Untargeted Lipidomics,
+Pregnenolone sulfate,HMDB0000774,Lipid,Untargeted Lipidomics,
+"PA(20:5(5Z,8Z,11Z,14Z,17Z)/24:0)",HMDB0115222,Lipid,Untargeted Lipidomics,
+"TG(20:3(5Z,8Z,11Z)/22:5(7Z,10Z,13Z,16Z,19Z)/22:5(4Z,7Z,10Z,13Z,16Z))",HMDB0051365,Lipid,Untargeted Lipidomics,
+Chenodeoxycholic acid,HMDB0000518,Lipid,Untargeted Lipidomics,
+GlcCer(d18:1/22:0),HMDB0004974,Lipid,Untargeted Lipidomics,
+"PC(15:0/18:3(9Z,12Z,15Z))",HMDB0007942,Lipid,Untargeted Lipidomics,
+TG(16:0/20:3n6/16:1(9Z)),HMDB0044339,Lipid,Untargeted Lipidomics,
+"PG(18:1(9Z)/20:4(5Z,8Z,11Z,14Z))",HMDB0010640,Lipid,Untargeted Lipidomics,
+"PG(18:1(9Z)/22:5(7Z,10Z,13Z,16Z,19Z))",HMDB0010643,Lipid,Untargeted Lipidomics,
+"PS(20:5(5Z,8Z,11Z,14Z,17Z)/22:5(4Z,7Z,10Z,13Z,16Z))",HMDB0112702,Lipid,Untargeted Lipidomics,
+LysoPC(18:2),HMDB0010386,Lipid,Untargeted Lipidomics,
+Oleoylcarnitine,HMDB0005065,Lipid,Untargeted Lipidomics,
+Pregnenolone,HMDB0000253,Lipid,Untargeted Lipidomics,
+"TG(20:1(11Z)/16:1(9Z)/18:3(9Z,12Z,15Z))",HMDB0050464,Lipid,Untargeted Lipidomics,
+"PE(22:5(7Z,10Z,13Z,16Z,19Z)/24:1(15Z))",HMDB0009674,Lipid,Untargeted Lipidomics,
+Androsterone,HMDB0000031,Lipid,Untargeted Lipidomics,
+"PS(20:3(8Z,11Z,14Z)/14:1(9Z))",HMDB0012419,Lipid,Untargeted Lipidomics,
+"PC(20:5(5Z,8Z,11Z,14Z,17Z)/18:2(9Z,12Z))",HMDB0008500,Lipid,Untargeted Lipidomics,
+"PC(24:0/22:5(4Z,7Z,10Z,13Z,16Z))",HMDB0008779,Lipid,Untargeted Lipidomics,
+"TG(22:0/22:5(7Z,10Z,13Z,16Z,19Z)/18:1(9Z))",HMDB0046936,Lipid,Untargeted Lipidomics,
+"TG(24:1(15Z)/18:0/18:3(6Z,9Z,12Z))",HMDB0051967,Lipid,Untargeted Lipidomics,
+ISTD_PC(15:0/18:1-d7),,Internal standard,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Palmitoylcarnitine,HMDB0000222,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+TG(16:0/18:1/18:1),HMDB0005382,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Docosahexaenoic acid,HMDB0002183,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Stearoylcarnitine,HMDB0000848,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PS(20:3(5Z,8Z,11Z)/18:3(6Z,9Z,12Z))",HMDB0112602,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+TG(18:0/15:0/20:0),HMDB0044696,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PS(20:4(5Z,8Z,11Z,14Z)/16:0)",HMDB0012431,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PE(20:4(5Z,8Z,11Z,14Z)/18:0)",HMDB0009387,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+GlcCer(d18:1/16:0),HMDB0004971,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+PE(18:0/20:4),HMDB0009003,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+PC(14:0/22:1(13Z)),HMDB0007887,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+LacCer(d18:1/16:0),HMDB0006750,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Estradiol,HMDB0000151,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"TG(16:0/22:6(4Z,7Z,10Z,13Z,16Z,19Z)/20:0)",HMDB0044615,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+CE(18:0),HMDB0010368,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Dihydrotestosterone,HMDB0002961,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"TG(15:0/14:1(9Z)/22:4(7Z,10Z,13Z,16Z))",HMDB0043183,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PE(22:4(7Z,10Z,13Z,16Z)/22:4(7Z,10Z,13Z,16Z))",HMDB0009602,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+SM(d18:1/18:1),HMDB0012101,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"TG(16:1(9Z)/20:3n6/18:3(9Z,12Z,15Z))",HMDB0048824,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Arachidonic acid,HMDB0001043,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PA(22:6(4Z,7Z,10Z,13Z,16Z,19Z)/18:0)",HMDB0115406,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PG(22:5(4Z,7Z,10Z,13Z,16Z)/16:1(9Z))",HMDB0116615,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PA(20:4(8Z,11Z,14Z,17Z)/20:3(8Z,11Z,14Z))",HMDB0115501,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+7alpha-Hydroxycholesterol,HMDB0001496,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Palmitoyl-CoA,HMDB0001338,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Corticosterone,HMDB0001547,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Linoleyl carnitine,HMDB0006469,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Tetradecanoylcarnitine,HMDB0005066,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+PS(18:1(11Z)/18:1(9Z)),HMDB0112290,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PE(24:1(15Z)/22:6(4Z,7Z,10Z,13Z,16Z,19Z))",HMDB0009771,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"TG(14:1(9Z)/18:3(9Z,12Z,15Z)/24:1(15Z))",HMDB0048260,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+PS(15:0/14:0),HMDB0112320,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PE(22:0/20:3(5Z,8Z,11Z))",HMDB0009496,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Testosterone,HMDB0000234,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"TG(24:0/14:0/22:5(4Z,7Z,10Z,13Z,16Z))",HMDB0047021,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+Androsterone sulfate,HMDB0002759,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"TG(20:0/14:1(9Z)/22:6(4Z,7Z,10Z,13Z,16Z,19Z))",HMDB0045683,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
+"PC(14:1(9Z)/18:3(9Z,12Z,15Z))",HMDB0007909,Lipid,Targeted Lipidomics,ISTD_PC(15:0/18:1-d7)
