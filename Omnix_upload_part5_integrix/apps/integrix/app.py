@@ -120,46 +120,53 @@ def _blacken():
 
 
 def screen_download_panel(key: str, fig, name: str, width_px: int = 1100, pub=None):
-    """Download the chart exactly as shown on screen: PNG · TIFF · JPEG · SVG · PDF · EPS or all six, 300-1200 DPI,
-    at the screen's size by default (width and height can be changed). Built only when asked for."""
+    """Publication download of the chart on screen: the same chart (data, marks, colours) typeset for a journal
+    (trace_core.printfig): column width, real point sizes, height from the content, tight margins, no title.
+    PNG · TIFF · JPEG · SVG · PDF · EPS or all six, 300-1200 DPI. Built only when asked for."""
     from trace_core import plotly_export as PX
-    h_px = int(fig.layout.height or 450)
-    w_px = int(fig.layout.width or width_px)
-    with st.expander("⬇ Download this figure as shown (PNG · TIFF · JPEG · SVG · PDF · EPS)"):
+    from trace_core import printfig as PRT
+    with st.expander("⬇ Download publication figure (PNG · TIFF · JPEG · SVG · PDF · EPS)"):
         if not PX.available():
             if pub is not None:
-                st.caption("Figures identical to the screen cannot be made on this server right now; this is the "
-                           "publication-style version of the same chart.")
+                st.caption("The typeset version of this chart cannot be drawn on this server right now; this is "
+                           "the matplotlib version of the same chart.")
                 download_panel(key + "_pub", *pub[:4], name=name, expander=False)
             else:
                 st.caption("Use the camera icon at the top right of the chart to save it as PNG or SVG.")
             return
+        widths = PRT.widths_for(name)
+        sizes = list(widths)
+        d_w = PRT.DEFAULT_WIDTH.get(name, 5.5)
+        d_i = next((i for i, k in enumerate(sizes) if widths[k] == d_w), len(sizes) - 1)
         c = st.columns(3) + st.columns(3)
-        fmt = c[0].selectbox("Format", list(PX.FORMATS) + ["All formats (ZIP)"], key=f"{key}_fmt")
-        dpi = c[1].selectbox("DPI", [300, 600, 1200], index=1, key=f"{key}_dpi")
-        transp = c[2].checkbox("Transparent background", key=f"{key}_tr",
+        size = c[0].selectbox("Width", sizes, index=d_i, key=f"{key}_size",
+                              help="Journal column widths. The chart is laid out again at this width; text keeps "
+                                   "its point size, so it prints at exactly that size.")
+        font = c[1].selectbox("Text size (pt)", [7, 8, 9, 10, 12], index=1, key=f"{key}_pt",
+                              help="Size of labels and axis titles in the printed figure; tick labels and legend "
+                                   "are 1 pt smaller (never below 6 pt).")
+        hh = c[2].number_input("Height (in, 0 = auto)", 0.0, 30.0, 0.0, 0.25, key=f"{key}_h")
+        fmt = c[3].selectbox("Format", list(PX.FORMATS) + ["All formats (ZIP)"], key=f"{key}_fmt")
+        dpi = c[4].selectbox("DPI", [300, 600, 1200], index=1, key=f"{key}_dpi")
+        transp = c[5].checkbox("Transparent background", key=f"{key}_tr",
                                help="PNG, SVG and PDF only; TIFF, JPEG and EPS are always on white.")
-        ww = c[3].number_input("Width (in)", 2.0, 30.0, round(w_px / PX.SCREEN_DPI, 1), 0.5, key=f"{key}_w",
-                               help="Default: the chart's size on screen. A different width lays the chart out "
-                                    "again, like resizing the window.")
-        hh = c[4].number_input("Height (in)", 1.5, 40.0, round(h_px / PX.SCREEN_DPI, 1), 0.5, key=f"{key}_h")
-        go_ = c[5].button("Prepare file", key=f"{key}_go", width="stretch")
-        if go_:
+        if st.button("Prepare file", key=f"{key}_go", type="secondary"):
             with st.spinner("Preparing the file"):
-                out = PX.screen_figure(fig, UI.theme_figure, _blacken(), transp)
+                sf = PX.screen_figure(fig, UI.theme_figure, _blacken(), transp)
+                out, ww, hh_ = PRT.typeset(sf, name, widths[size], font, hh or None)
+                if transp:
+                    out.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
                 if fmt.startswith("All"):
-                    data, fn = PX.all_formats_zip(out, name, dpi, ww, hh, transp), f"{name}_all_formats.zip"
+                    data, fn = PX.all_formats_zip(out, name, dpi, ww, hh_, transp), f"{name}_all_formats.zip"
                 else:
                     ext = PX.FORMATS[fmt]
-                    data, fn = PX.figure_bytes(out, ext, dpi, ww, hh, transp), f"{name}.{ext}"
-                eff = PX.effective_dpi(ww, hh, dpi)
-                note = f"{ww:g} × {hh:g} in"
-                if fmt not in ("SVG", "PDF"):
-                    note += f" · {int(ww * eff):,} × {int(hh * eff):,} px at {eff} DPI"
+                    data, fn = PX.figure_bytes(out, ext, dpi, ww, hh_, transp), f"{name}.{ext}"
+                eff = PX.effective_dpi(ww, hh_, dpi)
+                note = f"{ww:g} × {hh_:.2f} in · text {font} pt"
+                if fmt not in ("SVG", "PDF", "EPS"):
+                    note += f" · {int(ww * eff):,} × {int(hh_ * eff):,} px at {eff} DPI"
                     if eff < dpi:
                         note += " (lowered for this large figure; SVG or PDF keep full quality)"
-                if fmt == "EPS" or fmt.startswith("All"):
-                    note += " · EPS holds the image at this DPI"
                 st.session_state[f"_scr_{key}"] = (fn, data, note)
         if f"_scr_{key}" in st.session_state:
             fn, data, note = st.session_state[f"_scr_{key}"]
@@ -1603,8 +1610,8 @@ with tabs[10]:
       st.markdown("### All figures at once")
       from trace_core import plotly_export as PX
       _same = PX.available()
-      st.caption("Every chart exactly as shown on screen (with the settings currently chosen on each page)."
-                 if _same else "Publication-style versions of every chart (figures identical to the screen cannot "
+      st.caption("Every chart as on screen, typeset for a journal (default column width, 8 pt text), with the "
+                 "settings currently chosen on each page." if _same else "Publication-style versions of every chart (figures identical to the screen cannot "
                                "be made on this server right now).")
       c = st.columns(3)
       fmts = c[0].multiselect("Formats", list(PF.FORMATS), default=["PNG", "PDF", "SVG"], key="all_fmts")
@@ -1637,14 +1644,13 @@ with tabs[10]:
           return figs
 
       def _screen_files(exts, dpi_):
+          from trace_core import printfig as PRT
           out_ = {}
           for nm_, (fg_, wpx_) in _screen_set().items():
-              fg_.update_layout(title_text="")              # the page shows these titles on the cards
               sf_ = PX.screen_figure(fg_, UI.theme_figure, _blacken())
-              w_in = (fg_.layout.width or wpx_) / PX.SCREEN_DPI
-              h_in = (fg_.layout.height or 450) / PX.SCREEN_DPI
+              tf_, w_in, h_in = PRT.typeset(sf_, nm_)        # journal width, 8 pt text, height from content
               for e_ in exts:
-                  out_[f"{nm_}.{e_}"] = PX.figure_bytes(sf_, e_, dpi_, w_in, h_in)
+                  out_[f"{nm_}.{e_}"] = PX.figure_bytes(tf_, e_, dpi_, w_in, h_in)
           return out_
 
       if st.button("Build figure set (ZIP)"):

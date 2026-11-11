@@ -71,3 +71,26 @@ means higher in the case. Before, "Group A / Group B" meant opposite things in d
 - Fix: charts with many dots (reaction pattern map, gene-protein concordance) are drawn on screen with WebGL,
   which the server's Chrome cannot draw at print resolution, so their files showed axes and legend but no dots.
   Files now draw those dots as ordinary SVG dots (same look; vector in SVG, PDF and EPS).
+
+## Integrix: downloads typeset as journal figures
+Review of the first version: the files copied the browser layout (a large canvas with tall rows and wide
+margins), so the text became too small once the figure was reduced to a journal column, with empty space
+around the chart. New `trace_core/printfig.py` keeps the chart (data, marks, colours) and sets it for print:
+- **Width:** single column 3.5 in (89 mm), 1.5 column 5.5 in (140 mm) or double column 7.2 in (183 mm). Dense
+  charts offer only the widths their labels fit: reaction pattern map and concordance 1.5 or double column,
+  layer concordance double column.
+- **Type:** 8 pt by default (7–12 pt to choose); tick labels and legend 1 pt smaller, never below 6 pt;
+  Arial/Liberation Sans, black; gene and enzyme labels at most 7.5 pt; long axis titles wrap instead of being cut.
+- **Height from the content** (rows, wrapped labels, legend lines); tight margins; no title inside the image.
+- **Chart details:**
+  - The canonical pathways chart has no empty band above the first and below the last bar.
+  - The pathway activity dot plot has a key across the figure whose size circles are drawn at exactly the dot
+    sizes of the grid.
+  - Pathway names in the layer chart are written in full, wrapped under each group.
+  - Heatmap values are black on light cells and white on dark ones.
+  - The y-axis titles "Features" and "Permutations" are added.
+- **Reference lines:** the template drew shapes at 30 % opacity, which hid the p = 0.05 threshold and the
+  observed-AUC line. They are now drawn solid, on screen too.
+- **EPS:** gradient colour bars are converted to 64 solid bands, so heatmap EPS files work and stay vector.
+- **Checked:** every chart in all six formats, at the default and at the narrowest width with 10 pt text. No
+  blank files, no clipped or overlapping text.

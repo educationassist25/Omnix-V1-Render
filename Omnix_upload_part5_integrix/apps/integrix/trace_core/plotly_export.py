@@ -123,13 +123,85 @@ def svg_to_eps(svg: bytes, w_in: float, h_in: float) -> bytes:
     import tempfile
     from reportlab.graphics import renderPS
     from svglib.svglib import svg2rlg
-    d = svg2rlg(io.BytesIO(svg))
-    sx, sy = w_in * 72.0 / d.width, h_in * 72.0 / d.height       # Plotly's SVG is in CSS px; EPS in points
-    d.scale(sx, sy)
-    d.width, d.height = w_in * 72.0, h_in * 72.0
-    with tempfile.NamedTemporaryFile(suffix=".eps") as tmp:
-        renderPS.drawToFile(d, tmp.name)
-        return open(tmp.name, "rb").read()
+    import re
+
+    def _render(src: bytes) -> bytes:
+        d = svg2rlg(io.BytesIO(src))
+        sx, sy = w_in * 72.0 / d.width, h_in * 72.0 / d.height       # Plotly's SVG is in CSS px; EPS in points
+        d.scale(sx, sy)
+        d.width, d.height = w_in * 72.0, h_in * 72.0
+        with tempfile.NamedTemporaryFile(suffix=".eps") as tmp:
+            renderPS.drawToFile(d, tmp.name)
+            return open(tmp.name, "rb").read()
+
+    svg = flatten_gradients(svg)
+    try:
+        return _render(svg)
+    except Exception:
+        # ReportLab's PostScript writer cannot clip some shapes (e.g. the cell image of a heatmap). Plotly only
+        # clips to the plot area, where those shapes already fit, so draw them without the clip.
+        return _render(re.sub(rb'\s?clip-path="[^"]*"', b"", svg))
+
+
+def flatten_gradients(svg: bytes, steps: int = 64) -> bytes:
+    """Replace each gradient-filled rectangle (Plotly colour bars) by `steps` solid bands of the same colours.
+    PostScript output cannot shade gradients; at print size 64 bands look the same and stay vector."""
+    import re
+    text = svg.decode("utf-8")
+    grads = {}
+    for m in re.finditer(r'<linearGradient([^>]*)>(.*?)</linearGradient>', text, re.S):
+        attrs = dict(re.findall(r'(\w+)="([^"]*)"', m.group(1)))
+        stops = []
+        for st_ in re.finditer(r'<stop([^>]*)/?>', m.group(2)):
+            a = dict(re.findall(r'([\w-]+)="([^"]*)"', st_.group(1)))
+            off = float(a.get("offset", "0").rstrip("%")) / (100.0 if "%" in a.get("offset", "") else 1.0)
+            rgb = [float(v) for v in re.findall(r"[\d.]+", a.get("stop-color", "rgb(0,0,0)"))[:3]]
+            stops.append((off, rgb))
+        if attrs.get("id") and stops:
+            grads[attrs["id"]] = (attrs, sorted(stops))
+
+    def colour(stops, t):
+        for (o0, c0), (o1, c1) in zip(stops, stops[1:]):
+            if o0 <= t <= o1:
+                k = 0 if o1 == o0 else (t - o0) / (o1 - o0)
+                return [c0[i] + k * (c1[i] - c0[i]) for i in range(3)]
+        return stops[0][1] if t < stops[0][0] else stops[-1][1]
+
+    def repl(m):
+        tag = m.group(0)
+        gid = m.group(1)
+        if gid not in grads:
+            return tag
+        attrs, stops = grads[gid]
+        g = {k: float(v) for k, v in re.findall(r'\s(x|y|width|height)="([-\d.]+)"', tag)}
+        if not {"x", "y", "width", "height"} <= set(g):
+            return tag
+        x1, y1, x2, y2 = (float(attrs.get(k, d)) for k, d in (("x1", 0), ("y1", 0), ("x2", 1), ("y2", 0)))
+        vertical = abs(x2 - x1) < 1e-9
+        out = []
+        for i in range(steps):
+            t0, t1 = i / steps, (i + 1) / steps
+            tm = (t0 + t1) / 2
+            # position along the gradient vector -> offset
+            off = (y1 + (y2 - y1) * tm) if vertical else (x1 + (x2 - x1) * tm)
+            off = (off - (y1 if vertical else x1)) / ((y2 - y1) if vertical else (x2 - x1))
+            r, gg, b = colour(stops, tm)
+            if vertical:   # bbox units: y runs top (0) to bottom (1); the gradient goes from y1 to y2
+                ya = y1 + (y2 - y1) * t0
+                yb = y1 + (y2 - y1) * t1
+                top, bot = min(ya, yb), max(ya, yb)
+                xx, yy, ww, hh = g["x"], g["y"] + top * g["height"], g["width"], (bot - top) * g["height"] + 0.3
+            else:
+                xa_ = x1 + (x2 - x1) * t0
+                xb_ = x1 + (x2 - x1) * t1
+                lft, rgt = min(xa_, xb_), max(xa_, xb_)
+                xx, yy, ww, hh = g["x"] + lft * g["width"], g["y"], (rgt - lft) * g["width"] + 0.3, g["height"]
+            out.append(f'<rect x="{xx:.3f}" y="{yy:.3f}" width="{ww:.3f}" height="{hh:.3f}" '
+                       f'style="fill: rgb({r:.0f}, {gg:.0f}, {b:.0f}); stroke: none;"/>')
+        return "".join(out)
+
+    text = re.sub(r"""<rect[^>]*fill:\s*url\(['"]?#([^'")]+)['"]?\)[^>]*/>""", repl, text)
+    return text.encode("utf-8")
 
 
 def all_formats_zip(fig, name: str, dpi: int, w_in: float, h_in: float, transparent: bool = False) -> bytes:

@@ -610,6 +610,9 @@ def theme_figure(fig, mode: str = "light"):
     out.update_yaxes(**ax)
     if out.layout.title and out.layout.title.text:
         out.layout.title.font.color = p["ink"]
+    for sh in out.layout.shapes or ():     # the template draws shapes at 30 % opacity: keep reference lines visible
+        if sh.opacity is None:
+            sh.opacity = 1
     return out
 
 
