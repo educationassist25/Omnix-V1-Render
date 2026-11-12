@@ -69,7 +69,7 @@ def render():
                                      line=dict(width=1)))
         fig.update_layout(grid=dict(rows=2, columns=1, pattern="independent"), template="plotly_white", height=640,
                           margin=dict(l=60, r=10, t=40, b=40), title="Per-sample distributions (top: log2, bottom: "
-                          "log2 + IQR; colour = group)")
+                          "log2 + IQR; color = group)")
         fig.update_layout(yaxis=dict(title="log2"), yaxis2=dict(title="log2 + IQR"))
         fig.update_xaxes(tickangle=-90, tickfont=dict(size=9), automargin=True)   # long sample names: full, not cut
         C.show_plotly(fig, key="norm_box")

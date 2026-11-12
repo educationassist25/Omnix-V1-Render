@@ -43,7 +43,7 @@ GENE_ORG = {"Cytosol": "Cytosol", "Nucleus": "Nucleus", "Endoplasmic reticulum":
 PALETTES = {
     "IPA (red up / green down)": ("#1A9850", "#F7F7F7", "#D73027"),
     "Red / blue": ("#2166AC", "#F7F7F7", "#B2182B"),
-    "Orange / purple (colour-blind safe)": ("#5E3C99", "#F7F7F7", "#E66101"),
+    "Orange / purple (color-blind safe)": ("#5E3C99", "#F7F7F7", "#E66101"),
     "Teal / brown": ("#01665E", "#F5F5F5", "#8C510A"),
 }
 PRED_UP, PRED_DOWN, INCONS, NOPRED = "#F28C28", "#2E86C1", "#E8C547", "#9AA5A2"
@@ -321,25 +321,25 @@ PRESETS = {
                         color_by=COLOR_BY[0], edge_color="IPA relationship", edge_route="Curved", show_bands=True,
                         theme="Light", hulls=False, effect_linestyle=False, prediction=True, label_box=True),
     "KEGG map": dict(layout="Hierarchical flow (left-right)", shape_scheme="KEGG (boxes for genes)", palette="Red / blue",
-                     color_by=COLOR_BY[0], edge_color="Single colour", edge_single="#333333", edge_route="Orthogonal (elbow)",
+                     color_by=COLOR_BY[0], edge_color="Single color", edge_single="#333333", edge_route="Orthogonal (elbow)",
                      show_bands=False, theme="Light", hulls=False, label_inside=True, prediction=False),
     "Cytoscape default": dict(layout="Force-directed", shape_scheme="All circles", palette="Red / blue",
-                              color_by=COLOR_BY[0], edge_color="Single colour", edge_single="#9AA5A2",
+                              color_by=COLOR_BY[0], edge_color="Single color", edge_single="#9AA5A2",
                               edge_route="Straight", show_bands=False, theme="Light", hulls=False),
     "Journal minimal": dict(layout="Force-directed", shape_scheme="All circles", palette="Red / blue", node_size=11.0,
-                            edge_color="Single colour", edge_single="#C0C6C5", edge_width=0.6, edge_route="Straight",
+                            edge_color="Single color", edge_single="#C0C6C5", edge_width=0.6, edge_route="Straight",
                             show_bands=False, label_mode="Measured", font_size=7.0, label_box=False, theme="Light"),
-    "Dark presentation": dict(layout="Force-directed", shape_scheme="IPA shapes", palette="Orange / purple (colour-blind safe)",
+    "Dark presentation": dict(layout="Force-directed", shape_scheme="IPA shapes", palette="Orange / purple (color-blind safe)",
                               edge_color="IPA relationship", edge_route="Curved", show_bands=False, theme="Dark",
                               label_box=False, font_size=9.0),
-    "Colour-blind safe": dict(palette="Orange / purple (colour-blind safe)", edge_color="By relation type",
+    "Color-blind safe": dict(palette="Orange / purple (color-blind safe)", edge_color="By relation type",
                               effect_linestyle=True, theme="Light"),
-    "Greyscale print": dict(palette="Greyscale (print)", edge_color="Single colour", edge_single="#444444",
+    "Greyscale print": dict(palette="Greyscale (print)", edge_color="Single color", edge_single="#444444",
                             effect_linestyle=True, show_bands=True, theme="Light", hulls=False),
-    "Module map": dict(layout="Force-directed", color_by="Module (community)", hulls=True, edge_color="Single colour",
+    "Module map": dict(layout="Force-directed", color_by="Module (community)", hulls=True, edge_color="Single color",
                        edge_single="#B8C2C0", edge_route="Straight", show_bands=False, theme="Light"),
-    "Hub focus": dict(layout="Radial (focus-centred)", color_by="Betweenness centrality", size_mode="Degree",
-                      edge_color="Single colour", edge_single="#B8C2C0", edge_route="Straight", show_bands=False),
+    "Hub focus": dict(layout="Radial (focus-centered)", color_by="Betweenness centrality", size_mode="Degree",
+                      edge_color="Single color", edge_single="#B8C2C0", edge_route="Straight", show_bands=False),
     "Chord / circos": dict(layout="Circular (edge-bundled chord)", color_by="Molecule type", edge_color="IPA relationship",
                            show_bands=False, hulls=False, arrows=False),
     "Hive plot": dict(layout="Hive plot (axes by molecule type)", color_by="z-score (measured / predicted)",
@@ -696,7 +696,7 @@ def geometry(N: pd.DataFrame, E: pd.DataFrame, o: NetOptions):
 
 
 def _edge_color(kind, o):
-    if o.edge_color == "Single colour":
+    if o.edge_color == "Single color":
         return o.edge_single
     if o.edge_color == "By relation type":
         return {"produces": "#C0392B", "substrate of": "#2C6FB7", "catalyses": "#555555", "PPI": "#999999"}.get(kind, "#777")

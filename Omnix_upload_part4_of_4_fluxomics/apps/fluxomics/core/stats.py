@@ -78,7 +78,7 @@ def welch_table(X: pd.DataFrame, samples_a: list, samples_b: list, name_a: str =
             row["log2FC"] = mb - ma
             row["FC"] = 2 ** (mb - ma) if np.isfinite(mb - ma) else np.nan
         else:
-            row["Difference (B−A)"] = mb - ma
+            row["Difference (compared − reference)"] = mb - ma
         row.update({"t": t, "Welch df": dfw, "p": p, "Warnings": "; ".join(warn)})
         rows.append(row)
     T = pd.DataFrame(rows)
@@ -139,7 +139,7 @@ def tukey_kramer(groups: dict) -> pd.DataFrame:
             p = float(studentized_sf(q, k, dfe)[0])
             qc = _qcrit(k, float(dfe))
             lo, hi = diff - qc * se, diff + qc * se
-        rows.append({"Group A": na, "Group B": nb, "Difference (B−A)": diff, "95% CI low": lo,
+        rows.append({"Reference group": na, "Compared group": nb, "Difference (compared − reference)": diff, "95% CI low": lo,
                      "95% CI high": hi, "q": q, "p (Tukey)": p})
     return pd.DataFrame(rows)
 
@@ -182,8 +182,8 @@ def anova_table(X: pd.DataFrame, groups: dict, log_scale: bool = True):
     A.insert(A.columns.get_loc("p (ANOVA)") + 1, "FDR (BH)", bh_fdr(A["p (ANOVA)"]))
     TK = pd.concat(tk, ignore_index=True) if tk else pd.DataFrame()
     if log_scale and len(TK):
-        TK["log2FC (B−A)"] = TK["Difference (B−A)"]
-        TK["FC"] = 2 ** TK["log2FC (B−A)"]
+        TK["log2FC (compared − reference)"] = TK["Difference (compared − reference)"]
+        TK["FC"] = 2 ** TK["log2FC (compared − reference)"]
     return A, TK
 
 
@@ -288,13 +288,13 @@ def games_howell(groups: dict) -> pd.DataFrame:
         sa, sb = va.var(ddof=1) / len(va), vb.var(ddof=1) / len(vb)
         se = np.sqrt(sa + sb)
         if se == 0 or k < 2:
-            rows.append({"Group A": na, "Group B": nb, "Difference (B−A)": diff, "p (Games-Howell)": np.nan})
+            rows.append({"Reference group": na, "Compared group": nb, "Difference (compared − reference)": diff, "p (Games-Howell)": np.nan})
             continue
         df = (sa + sb) ** 2 / (sa ** 2 / (len(va) - 1) + sb ** 2 / (len(vb) - 1))
         q = abs(diff) / se * np.sqrt(2)
         p = float(st.studentized_range.sf(q, k, df))
         qc = _qcrit(k, round(float(df), 1)) / np.sqrt(2)      # CI: df rounded to 0.1 (p-value is exact)
-        rows.append({"Group A": na, "Group B": nb, "Difference (B−A)": diff, "95% CI low": diff - qc * se,
+        rows.append({"Reference group": na, "Compared group": nb, "Difference (compared − reference)": diff, "95% CI low": diff - qc * se,
                      "95% CI high": diff + qc * se, "q": q, "df": df, "p (Games-Howell)": min(p, 1.0)})
     return pd.DataFrame(rows)
 
@@ -310,7 +310,7 @@ def pairwise_welch(groups: dict, adjust: str = "holm") -> pd.DataFrame:
             with _w.catch_warnings():
                 _w.simplefilter("ignore")
                 t, p = st.ttest_ind(vb, va, equal_var=False)
-        rows.append({"Group A": na, "Group B": nb, "Difference (B−A)": vb.mean() - va.mean() if len(va) and len(vb)
+        rows.append({"Reference group": na, "Compared group": nb, "Difference (compared − reference)": vb.mean() - va.mean() if len(va) and len(vb)
                      else np.nan, "t": t, "p": p})
     T = pd.DataFrame(rows)
     if len(T):
@@ -366,7 +366,7 @@ def anova_v2(X: pd.DataFrame, groups: dict, log_scale: bool = True, adjust: str 
             ph.append(t)
     P = pd.concat(ph, ignore_index=True) if ph else pd.DataFrame()
     if log_scale and len(P):
-        P["FC"] = 2 ** P["Difference (B−A)"]
+        P["FC"] = 2 ** P["Difference (compared − reference)"]
     return A, P
 
 
@@ -497,10 +497,10 @@ def two_group(X: pd.DataFrame, samples_a: list, samples_b: list, method: str = "
         row = {"Feature": feat, "n A": len(a), "n B": len(b), "Mean A": ma, "Mean B": mb,
                "SD A": a.std(ddof=1) if len(a) > 1 else np.nan, "SD B": b.std(ddof=1) if len(b) > 1 else np.nan}
         if log_scale:
-            row["log2FC (B−A)"] = mb - ma
+            row["log2FC (compared − reference)"] = mb - ma
             row["FC"] = 2 ** (mb - ma) if np.isfinite(mb - ma) else np.nan
         else:
-            row["Difference (B−A)"] = mb - ma
+            row["Difference (compared − reference)"] = mb - ma
         row.update({"Statistic": stat, "p": p, "Warnings": "; ".join(warn)})
         rows.append(row)
     T = pd.DataFrame(rows)
@@ -517,7 +517,7 @@ def pairwise_mw(groups: dict, adjust: str = "holm") -> pd.DataFrame:
             with _w.catch_warnings():
                 _w.simplefilter("ignore")
                 p = st.mannwhitneyu(vb, va, alternative="two-sided").pvalue
-        rows.append({"Group A": na, "Group B": nb, "Difference of medians (B−A)": np.median(vb) - np.median(va)
+        rows.append({"Reference group": na, "Compared group": nb, "Difference of medians (compared − reference)": np.median(vb) - np.median(va)
                      if len(va) and len(vb) else np.nan, "p": p})
     T = pd.DataFrame(rows)
     if len(T):

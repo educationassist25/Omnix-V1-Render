@@ -121,7 +121,7 @@ def two_group_test(data_log2: pd.DataFrame, group_a_samples, group_b_samples, me
         "p-value": pvals,
         "FDR": fdr,
     }, index=data_log2.index)
-    result["Significant"] = (result["p-value"] < 0.05) & (result["FDR"] < 0.25)
+    result["Significant"] = (result["p-value"] < 0.05) & (result["FDR"] < 0.05)
     return result.sort_values("p-value")
 
 
@@ -161,8 +161,8 @@ def anova_test(data_log2: pd.DataFrame, group_map: pd.Series, posthoc: str = "tu
         "FDR": fdr,
     }, index=data_log2.index).sort_values("ANOVA p-value")
 
-    # Post-hoc for significant features (FDR < 0.25), capped to avoid huge runtime
-    sig_features = anova_table[anova_table["FDR"] < 0.25].index.tolist()
+    # Post-hoc for significant features (FDR < 0.05), capped to avoid huge runtime
+    sig_features = anova_table[anova_table["FDR"] < 0.05].index.tolist()
     posthoc_results = {}
 
     for feat in sig_features:

@@ -56,7 +56,7 @@ def test_tukey_matches_statsmodels():
     vals = np.concatenate(list(g.values())); lab = np.repeat(list(g), [len(v) for v in g.values()])
     ref = pairwise_tukeyhsd(vals, lab).summary().data[1:]
     assert np.allclose(mine["p (Tukey)"], [r[3] for r in ref], atol=1e-3)
-    assert np.allclose(mine["Difference (B−A)"], [r[2] for r in ref], atol=1e-4)
+    assert np.allclose(mine["Difference (compared − reference)"], [r[2] for r in ref], atol=1e-4)
 
 
 def test_anova_matches_scipy():
@@ -155,7 +155,7 @@ def test_games_howell_and_welch_anova_reference_values():
     g = {"x": np.array([0.1, -0.5, 0.9, 0.3]), "y": np.array([1.8, 0.2, 2.9, 0.4, 1.1]),
          "z": np.array([2.2, 1.7, 2.6])}
     GH = stt.games_howell(g)
-    assert np.allclose(GH["Difference (B−A)"], [g["y"].mean() - g["x"].mean(), g["z"].mean() - g["x"].mean(),
+    assert np.allclose(GH["Difference (compared − reference)"], [g["y"].mean() - g["x"].mean(), g["z"].mean() - g["x"].mean(),
                                                 g["z"].mean() - g["y"].mean()])
     try:
         import pingouin as pg

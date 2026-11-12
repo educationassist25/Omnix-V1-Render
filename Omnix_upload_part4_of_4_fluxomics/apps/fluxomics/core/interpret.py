@@ -117,7 +117,7 @@ def build_summary(*, group_a: str, group_b: str, intensity: pd.DataFrame | None,
     if incorporation is None or incorporation.empty:
         w("Not computed.")
     else:
-        dcol = "Difference (B−A)"
+        dcol = "Difference (compared − reference)"
         sig = incorporation[(incorporation["FDR (BH)"] < fdr) & (incorporation[dcol].abs() >= min_diff)]
         if sig.empty:
             w(f"No metabolite showed a difference in total incorporation at FDR < {fdr} and ≥ {min_diff:g} percentage points.")
@@ -139,7 +139,7 @@ def build_summary(*, group_a: str, group_b: str, intensity: pd.DataFrame | None,
     if channels is None or channels.empty:
         w("Not computed.")
     else:
-        dcol = "Difference (B−A)"
+        dcol = "Difference (compared − reference)"
         sig = channels[(channels["FDR (BH)"] < fdr) & (channels[dcol].abs() * 100 >= min_diff)].copy()
         if sig.empty:
             w(f"No isotopologue fraction differed at FDR < {fdr} by ≥ {min_diff:g} percentage points.")
@@ -192,7 +192,7 @@ def build_summary(*, group_a: str, group_b: str, intensity: pd.DataFrame | None,
     w("## 5. Pathway-level pattern")
     hyp = []
     if incorporation is not None and not incorporation.empty and A is not None:
-        dcol = "Difference (B−A)"
+        dcol = "Difference (compared − reference)"
         sig = incorporation[(incorporation["FDR (BH)"] < fdr) & (incorporation[dcol].abs() >= min_diff)]
         sig = sig.merge(A[["Compound", "Pathways"]], left_on="Feature", right_on="Compound", how="left")
         rows = []

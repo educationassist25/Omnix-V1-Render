@@ -116,7 +116,7 @@ Under **Potential Outlier Samples**, a sample is flagged if its mean correlation
 4. Click **Run Two-Group Test**:
    - **Raw Counts** (**pyDESeq2 Wald test (recommended for raw counts)**): DESeq2 is refit on the filtered counts with this page's design and the control as the reference. Fold changes are shrunk with apeGLM, so **Log2FC** and **Linear_FC** are shrunken values (unshrunk ones are kept as **Log2FC_MLE_Unshrunk** / **Linear_FC_MLE_Unshrunk**). Shrinkage does not change p-values or FDR.
    - **Pre-normalized logCPM** (**Wald test (linear model on logCPM)**): a per-gene linear model with the same Wald construction and output columns. It needs at least 3 samples; genes with missing values are dropped.
-5. The table shows **Gene, p-value, FDR, Log2FC, Linear_FC, Significant**. Download it as **\<A\>_vs_\<B\>_Statistics.csv**.
+5. The table shows **Gene, p-value, FDR, Log2FC, Linear_FC, Significant**. Download it as **\<Case\>_over_\<Control\>_Statistics.csv**.
 6. Optional (raw counts): tick the Welch's t-test checkbox and click **Run Welch t-test (transformed data)** for a separate, descriptive test on the VST values (**..._Welch_Transformed_Statistics.csv**). It does not replace the DESeq2 result.
 
 #### Three or more groups
@@ -183,8 +183,8 @@ Download the figure with the standard download row (any format, 300–1200 DPI).
 
 1. Set the **p-value cutoff** (default 0.05) and the **FDR cutoff** (default 0.05).
 2. Choose the **Selection criterion**: both FDR and P value below their cutoffs (default), P value only, or FDR only.
-3. Click **Run Biomarker Discovery**. The table lists p-value, FDR, Linear_FC, Log2FC and Direction (Up/Down) for each candidate gene, plus any columns from your gene annotation file. If the annotation file has a Pathway column, a bar chart shows how many candidates fall in each pathway.
-4. Download **\<A\>_vs_\<B\>_Biomarkers.csv**.
+3. Click **Discover Biomarkers**. The table lists p-value, FDR, Linear_FC, Log2FC and Direction (Up/Down) for each candidate gene, plus any columns from your gene annotation file. If the annotation file has a Pathway column, a bar chart shows how many candidates fall in each pathway.
+4. Download **\<Case\>_over_\<Control\>_Biomarkers.csv**.
 
 ## Pathway Analysis
 

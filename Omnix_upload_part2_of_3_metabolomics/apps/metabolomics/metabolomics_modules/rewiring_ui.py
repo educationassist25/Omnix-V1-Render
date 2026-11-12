@@ -26,6 +26,16 @@ from metabolomics_modules import rewiring_figures as rf
 from metabolomics_modules import rewiring_reactions as rr
 from metabolomics_modules import utils
 
+
+def _w(text):
+    """On-screen wording: 'metabolite' reads 'lipid' in the Lipidomics app (labels only, never data columns)."""
+    import streamlit as _stw
+    if _stw.session_state.get("_feature_word", "metabolite") == "metabolite":
+        return text
+    return (text.replace("Metabolites", "Lipids").replace("metabolites", "lipids")
+                .replace("Metabolite", "Lipid").replace("metabolite", "lipid"))
+
+
 _ASSET = os.path.join(os.path.dirname(__file__), "rewiring_assets", "rewiring_view.html")
 LIBRARY_OPTIONS = {
     "KEGG (as in MSEA)": "KEGG",
@@ -309,7 +319,9 @@ def render_results(st, result: rw.RewiringResult, *, key_prefix: str, source_lab
     else:
         msg += (f" Pairs called on the FDR q-value ({'permutation FDR' if result.fdr_used == 'permutation' else 'Benjamini–Hochberg'})"
                 f" ≤ {result.cfg.fdr:g}.")
-    (st.success if (n_rew or S["n_pathways_significant"]) else st.info)(msg)
+    (st.success if (n_rew or S["n_pathways_significant"]) else st.info)(_w(msg))
+    if not n_rew:
+        st.caption("No pairs changed at this threshold. Try the Rich Clinical demo, or raise the FDR threshold.")
 
     # network display: which pathways the ring shows (also used for the figure downloads)
     has_pw = result.pathway_tests is not None and not result.pathway_tests.empty
@@ -322,7 +334,7 @@ def render_results(st, result: rw.RewiringResult, *, key_prefix: str, source_lab
         pw_top, pw_metric = rf.TOP_CHOICES[top_label], ("q" if metric_label == "FDR q-value" else "p")
     else:
         pw_top, pw_metric, pw_cut = 0, "q", 1.0
-        st.caption("The pathway-level test was not run (no permutations), so the network shows all metabolites.")
+        st.caption(_w("The pathway-level test was not run (no permutations), so the network shows all metabolites."))
 
     html = render_view_html(result, theme=_theme(st), pw_top=pw_top, pw_metric=pw_metric, pw_cutoff=pw_cut)
     show_html(st, html)
@@ -388,7 +400,7 @@ def render_results(st, result: rw.RewiringResult, *, key_prefix: str, source_lab
             st.dataframe(utils.format_df_for_display(labelled(rt)), width="stretch", height=300)
         st.markdown("**Rewired pairs**")
         st.dataframe(utils.format_df_for_display(labelled(result.rewired_pairs())), width="stretch", height=320)
-        st.markdown(f"**Per-metabolite level change** (Welch t-test on log2 values, {gb} over {ga}; FDR q-value = Benjamini–Hochberg)")
+        st.markdown(_w("**Per-metabolite level change**") + f" (Welch t-test on log2 values, {gb} over {ga}; FDR q-value = Benjamini–Hochberg)")
         st.dataframe(utils.format_df_for_display(labelled(result.features, "features").set_index("feature")), width="stretch", height=320)
         if result.hypotheses:
             mods = pd.DataFrame([{

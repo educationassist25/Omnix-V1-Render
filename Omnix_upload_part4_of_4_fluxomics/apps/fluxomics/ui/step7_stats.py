@@ -24,7 +24,7 @@ def render():
     lay = "int"                         # active intensity dataset (sidebar switch)
     X, info = C.layer(lay)
     crit, alpha = "P value", None       # v2.3: no threshold — p and FDR are reported for every channel
-    st.caption(f"{len(X)} isotopologue channels · {X.shape[1]} samples · effects are log2 fold changes (B − A).")
+    st.caption(f"{len(X)} isotopologue channels · {X.shape[1]} samples · effects are log2 fold changes (case − control).")
     kind = st.radio("Analysis", list(KINDS), format_func=KINDS.get, horizontal=True, key="st_kind")
     an = dz.analysed(D)
     settings = dict(layer=lay, kind=kind, n=len(X))

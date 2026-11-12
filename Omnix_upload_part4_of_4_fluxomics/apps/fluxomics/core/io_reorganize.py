@@ -580,7 +580,7 @@ def write_readme(wb, sources, df, W, S, rule, W_removed=None, D=None, dropped_pe
         ("Rule (1) only applies when the larger co-eluting compound's formula equals this compound plus a common "
          "in-source neutral loss (water, ammonia, CO2, formic acid, phosphate, ribose, deoxyribose, hexose, "
          "ribose-/hexose-phosphate, pyrophosphate, glycine, pyroglutamate, trimethylamine).", False),
-        ("All other candidates move to Removed_peaks. To force a method, use 'Preferred method' in Step 1 (Advanced).", False),
+        ("All other candidates move to Removed_peaks. To force a method, use 'Preferred method' on the Upload & inspect page (Advanced).", False),
         ("", False),
         ("METABOLITES WITH ONLY M+0", True),
         ("After one peak per metabolite is chosen, a metabolite whose kept peak has only the M+0 isotopologue row "
@@ -833,7 +833,7 @@ def process_files(inputs, keep_partial: bool = False, aliases: dict | None = Non
     else:
         S = order_samples(S.drop(columns=["Block"]))
         log.append("Note: raw-file names do not match FILE_PATTERN; groups and times were read by the generic "
-                   "parser (check them in Step 2).")
+                   "parser (check them on the Experimental design page).")
     for m in modes:
         S[f"File {m}"] = S.Sample.map(files[m]) if m in files else np.nan
         absent = S.Sample[S[f"File {m}"].isna()].tolist()

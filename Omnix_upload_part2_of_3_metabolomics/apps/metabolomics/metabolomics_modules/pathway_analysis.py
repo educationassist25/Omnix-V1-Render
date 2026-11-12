@@ -73,6 +73,16 @@ from metabolomics_modules import hmdb_gene_mapping as hgm
 from metabolomics_modules import stats_analysis, utils, dataset_manager
 from metabolomics_modules import gene_set_enrichment as gse
 
+
+def _w(text):
+    """On-screen wording: 'metabolite' reads 'lipid' in the Lipidomics app (labels only, never data columns)."""
+    import streamlit as _stw
+    if _stw.session_state.get("_feature_word", "metabolite") == "metabolite":
+        return text
+    return (text.replace("Metabolites", "Lipids").replace("metabolites", "lipids")
+                .replace("Metabolite", "Lipid").replace("metabolite", "lipid"))
+
+
 matplotlib.use("Agg")
 
 MODE_P = "Significant by P-value"
@@ -941,7 +951,7 @@ def _render_metabolite_selection(st, sources, method, kp="pa"):
     dict, or None when nothing is selected. `kp` prefixes the widget keys (the MGPA tab keeps the
     original 'pa' keys; the MSEA tab uses 'msea' so both tabs can render in the same run).
     """
-    st.subheader("Input Metabolite Selection")
+    st.subheader(_w("Input Metabolite Selection"))
     c1, c2, c3, c4 = st.columns([1.6, 1.4, 1.0, 1.2])
     src_label = c1.selectbox("Statistical results to use", list(sources.keys()), key=f"{kp}_source",
                              help="Only results already computed in the Statistics tab are listed.")
@@ -953,7 +963,7 @@ def _render_metabolite_selection(st, sources, method, kp="pa"):
         thr = c3.number_input("P-value ≤", value=0.05, min_value=0.0001, max_value=1.0, step=0.01,
                               format="%.4f", key=f"{kp}_thr_p")
     elif mode == MODE_FDR:
-        thr = c3.number_input(f"{fdr_col} ≤", value=0.25, min_value=0.0001, max_value=1.0, step=0.01,
+        thr = c3.number_input(f"{fdr_col} ≤", value=float(st.session_state.get("fdr_cut_default", 0.25)), min_value=0.0001, max_value=1.0, step=0.01,
                               format="%.4f", key=f"{kp}_thr_fdr")
     else:
         thr = None
@@ -976,10 +986,10 @@ def _render_metabolite_selection(st, sources, method, kp="pa"):
             f"{p_col if mode == MODE_P else fdr_col} ≤ {thr:g}")
     st.caption(f"Source: **{src_label}** · criterion: **{crit}**"
                + ("" if direction == "both" else f" · direction: **{direction}**") + ".")
-    with st.expander(f"Selected metabolites ({len(selected)})", expanded=False):
+    with st.expander(_w(f"Selected metabolites ({len(selected)})"), expanded=False):
         st.dataframe(utils.format_df_for_display(selected), width="stretch", height=260)
     if len(selected) == 0:
-        st.warning("No metabolites pass this criterion — relax the threshold or choose another option.")
+        st.warning(_w("No metabolites pass this criterion — relax the threshold or choose another option."))
         return None
     return {"src_label": src_label, "src": src, "stats_df": stats_df, "p_col": p_col, "fdr_col": fdr_col,
             "mode": mode, "thr": thr, "direction": direction, "selected": selected}
@@ -1148,7 +1158,8 @@ def _render_metabolite_umap(st, state, render_single_figure, results, bg_idmap, 
     cached = state.get("mumap_result")
     have = cached is not None and cached[0] == sig
     if st.button("Recompute metabolite-level UMAP" if cached is not None and not have
-                 else "Compute metabolite-level UMAP", key="mumap_compute", disabled=have):
+                 else "Compute metabolite-level UMAP", key="mumap_compute", disabled=have,
+                 help="This takes about a minute."):
         try:
             with st.spinner("Computing metabolite-level UMAP (the first run on a server takes up to a minute)..."):
                 fig, emb_df = metabolite_expression_umap(log2_df, labels, palette=palette_choice,
@@ -1239,16 +1250,18 @@ def _render_msea(st, state, render_single_figure, ctx):
     ref_label = MSEA_REFERENCE_LABEL_DETECTED if restrict_detected else MSEA_REFERENCE_LABEL_LIBRARY
     st.caption(f"Background / reference: **{ref_label}** ({library.name}).")
     r1, r2, r3, r4 = st.columns(4)
-    r1.metric("Detected/measured metabolites", len(bg_idmap))
+    r1.metric(_w("Detected/measured metabolites"), len(bg_idmap))
     r2.metric("Detected in library", len(detected))
     r3.metric("Selected in library (n)", len({k for k in sel_in_lib if k}))
     r4.metric("Library sets with ≥ 1 detected member", f"{n_sets_detected} / {len(library)}")
     sel_view = sel_view.assign(In_Selected_Library=np.where(sel_in_lib.values != "", "Yes", "No"))
     not_in_lib = sel_view[sel_view["In_Selected_Library"] == "No"]
     if len(not_in_lib):
-        st.warning(f"**{len(not_in_lib)} of {len(sel_view)} selected metabolites are not in the {library.name} "
-                   "library** and cannot contribute to this enrichment.")
-        with st.expander(f"Selected metabolites not in the library ({len(not_in_lib)})", expanded=False):
+        st.warning(_w(f"**{len(not_in_lib)} of {len(sel_view)} selected metabolites are not in the {library.name} "
+                   "library** and cannot contribute to this enrichment."))
+        if "KEGG" in str(library.name) and _w("metabolite") == "lipid":
+            st.caption("KEGG covers few lipid species, so most lipids cannot be matched. This is expected for lipidomics.")
+        with st.expander(_w(f"Selected metabolites not in the library ({len(not_in_lib)})"), expanded=False):
             st.dataframe(not_in_lib[["Metabolite", "HMDB_ID", "KEGG_ID", "Match_Method"]], width="stretch",
                          height=min(300, 38 + 35 * len(not_in_lib)), hide_index=True)
     labels = getattr(library, "member_labels", {}) or {}

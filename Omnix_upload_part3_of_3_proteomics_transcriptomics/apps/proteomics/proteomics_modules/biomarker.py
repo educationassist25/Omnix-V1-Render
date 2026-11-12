@@ -7,7 +7,7 @@ import pandas as pd
 
 
 def discover_biomarkers(stats_table: pd.DataFrame, criterion: str = "combined",
-                         p_cutoff: float = 0.05, fdr_cutoff: float = 0.25,
+                         p_cutoff: float = 0.05, fdr_cutoff: float = 0.05,
                          fc_col: str = "Log2FC"):
     """
     criterion: 'pvalue' | 'fdr' | 'combined'

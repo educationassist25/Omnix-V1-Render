@@ -229,6 +229,7 @@ for key, default in [
     ("log2_data", None), ("dds", None), ("dds_design_factors", None), ("size_factors", None),
     ("norm_counts", None),
     ("stats_result", None), ("stats_group_col", None), ("stats_contrast_label", None),
+    ("stats_result_twogroup", None),
     ("stats_all_contrasts", None), ("stats_result_groups", None), ("stats_result_group_col", None),
     ("anova_result", None), ("posthoc_result", None), ("anova_groups_used", None),
     ("volcano_settings", None), ("gsea_method_used", None), ("gsea_library_meta", None),
@@ -247,7 +248,7 @@ def reset_downstream_state():
     for k in ("filtered_counts", "filter_report", "cleaned_logcpm",
               "log2_data", "dds", "dds_design_factors",
               "size_factors", "norm_counts", "qc_outliers", "pca_before_after",
-              "stats_result", "stats_group_col", "stats_transformed_result",
+              "stats_result", "stats_group_col", "stats_transformed_result", "stats_result_twogroup",
               "stats_multi_deseq_contrasts",
               "stats_contrast_label", "stats_all_contrasts", "stats_result_groups",
               "stats_result_group_col", "anova_result", "posthoc_result", "anova_groups_used",
@@ -385,6 +386,28 @@ st.markdown(
 )
 
 st.divider()
+
+
+def _go_to(page_title, key):
+    """A 'Go to <page>' button under a 'complete <page> first' note."""
+    if st.button(f"Go to {page_title}", key=key):
+        for _g, _pgs in NAV_GROUPS:
+            if page_title in dict(_pgs):
+                st.session_state.nav_group, st.session_state.nav_page = _g, page_title
+                st.rerun()
+
+
+def _next_page_footer():
+    """'Next: <page>' button at the bottom of a page, following the sidebar order."""
+    single = st.session_state.get("data_mode", "single") != "multi"
+    order = [(g, p) for g, pgs in NAV_GROUPS for p, _ in pgs if not (single and "Multi-Dataset" in p)]
+    cur = (st.session_state.nav_group, st.session_state.nav_page)
+    if cur in order and order.index(cur) + 1 < len(order):
+        g, p = order[order.index(cur) + 1]
+        st.divider()
+        if st.button(f"Next: {p} →", key="next_page_footer"):
+            st.session_state.nav_group, st.session_state.nav_page = g, p
+            st.rerun()
 
 ACTIVE_PAGE = dict(active_pages)[st.session_state.nav_page]
 
@@ -588,7 +611,9 @@ if ACTIVE_PAGE == 1:
 # TAB 3 — QC VALIDATION
 # ===========================================================================
 if ACTIVE_PAGE == 2:
-    st.header("Quality Control Validation")
+    st.header("Quality Control (QC) Validation")
+    st.caption("Check library size, detected genes and sample correlation. Samples flagged below as potential "
+               "outliers are worth reviewing before normalization.")
     if st.session_state.raw_expr_df is None:
         st.info("Load a dataset in the Data Upload page first.")
     elif st.session_state.input_mode == "Raw Counts" and st.session_state.filtered_counts is None:
@@ -915,9 +940,10 @@ if ACTIVE_PAGE == 3:
 # TAB 5 — PCA
 # ===========================================================================
 if ACTIVE_PAGE == 4:
-    st.header("Principal Component Analysis")
+    st.header("PCA Visualization (Biological Samples Only)")
     if st.session_state.log2_data is None:
-        st.info("Run Normalization first.")
+        st.info("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_944")
     else:
         log2_df_full = st.session_state.log2_data
         meta = st.session_state.meta
@@ -1033,9 +1059,10 @@ if ACTIVE_PAGE == 4:
 # TAB 6 — STATISTICS
 # ===========================================================================
 if ACTIVE_PAGE == 5:
-    st.header("Statistics")
+    st.header("Statistical Comparison")
     if st.session_state.log2_data is None:
-        st.info("Run Normalization first.")
+        st.info("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_1062")
     else:
         log2_df = st.session_state.log2_data
         meta = st.session_state.meta
@@ -1476,6 +1503,14 @@ if ACTIVE_PAGE == 5:
                     # significance. An omnibus test has no single fold change, so Log2FC/Linear_FC are
                     # left empty (not 0 / 1, which would look like "no change"); Volcano, Biomarker
                     # Discovery and GSEA ask for a two-group comparison instead.
+                    # Keep the last two-group result (as Metabolomics and Proteomics do): Volcano, Biomarker
+                    # Discovery and Pathway Enrichment keep using it while the Heatmap uses the ANOVA.
+                    if (st.session_state.stats_result is not None and
+                            not str(st.session_state.get("stats_contrast_label") or "").startswith("ANOVA")):
+                        st.session_state.stats_result_twogroup = (
+                            st.session_state.stats_result, st.session_state.get("stats_contrast_label"),
+                            st.session_state.get("stats_result_groups"),
+                            st.session_state.get("stats_result_group_col"))
                     stats_view = anova_table.rename(columns={"ANOVA p-value": "p-value"}).copy()
                     stats_view["Log2FC"] = np.nan
                     stats_view["Linear_FC"] = np.nan
@@ -1524,18 +1559,38 @@ if ACTIVE_PAGE == 5:
 # ===========================================================================
 # TAB 7 — VOLCANO PLOT
 # ===========================================================================
+def _two_group_view():
+    """The result the fold-change pages use: the current Statistics result, or, when that is an ANOVA, the last
+    two-group comparison run before it. Returns (result, label, groups, group column, from_earlier_run)."""
+    ss = st.session_state
+    lbl = str(ss.get("stats_contrast_label") or "")
+    if lbl.startswith("ANOVA") and ss.get("stats_result_twogroup") is not None:
+        r, l2, g, gc = ss.stats_result_twogroup
+        return r, l2, g, gc, True
+    return ss.stats_result, lbl, ss.get("stats_result_groups"), ss.get("stats_result_group_col"), False
+
+
+def _note_earlier(earlier, groups):
+    if earlier and groups:
+        st.caption(f"Uses the last two-group comparison ({groups[0]} over {groups[1]}); the ANOVA result is used "
+                   "by the Heatmap.")
+
+
 if ACTIVE_PAGE == 6:
     st.header("Volcano Plot")
-    if st.session_state.stats_result is None:
-        st.info("Run a two-group statistical comparison in the Statistics page first.")
-    elif str(st.session_state.get("stats_contrast_label") or "").startswith("ANOVA"):
+    _SR, _LBL, _GRP, _GCOL, _EARLIER = _two_group_view()
+    if _SR is None:
+        st.info("Run a two-group comparison on the Statistics page first.")
+        _go_to("Statistics", key="goto_stats_1583")
+    elif str(_LBL or "").startswith("ANOVA"):
         st.info("The current Statistics result is an ANOVA across three or more groups, which has no single "
                 "fold change. The volcano plot needs a two-group comparison: on the Statistics page, run a two-group test "
                 "or a DESeq2 contrast between two groups.")
     else:
-        result = st.session_state.stats_result
-        groups_used = st.session_state.get("stats_result_groups")
-        group_col_used = st.session_state.get("stats_result_group_col") or "Group"
+        _note_earlier(_EARLIER, _GRP)
+        result = _SR
+        groups_used = _GRP
+        group_col_used = _GCOL or "Group"
         if groups_used:
             st.caption(
                 f"Reflects the two {group_col_used} values compared in the Statistics page: "
@@ -1545,7 +1600,7 @@ if ACTIVE_PAGE == 6:
             )
 
         # ---- 1. Thresholds ----
-        with st.expander("1 — Statistical Thresholds", expanded=True):
+        with st.expander("Statistical Thresholds", expanded=True):
             c1, c2, c3, c4 = st.columns(4)
             y_metric_label = c1.radio("Y-axis metric", ["p-value", "FDR"], horizontal=False, key="volc_ymetric_label")
             y_metric = "pvalue" if y_metric_label == "p-value" else "fdr"
@@ -1563,9 +1618,9 @@ if ACTIVE_PAGE == 6:
                                                  key="volc_threshold_style")
 
         # ---- 2 & 3. Colors and point style ----
-        with st.expander("2-3 — Colors & Point Style"):
+        with st.expander("Point Style & Colors"):
             c1, c2 = st.columns(2)
-            palette = c1.selectbox("Color palette (colorblind-friendly options included)",
+            palette = c1.selectbox("Color palette",
                                     list(volcano.COLORBLIND_PALETTES.keys()), key="volc_palette")
             override_colors = c2.checkbox("Override individual colors", value=False, key="volc_override_colors")
             up_color = down_color = ns_color = None
@@ -1592,7 +1647,7 @@ if ACTIVE_PAGE == 6:
                     edge_color = st.color_picker("Point border color", "#000000", key="volcano_edge_color")
 
         # ---- 4. Labels ----
-        with st.expander("4 — Gene Labels"):
+        with st.expander("Gene Labels"):
             label_mode_label = st.radio(
                 "Label mode",
                 ["Top N significant", "All significant", "Manually selected", "None"],
@@ -1622,7 +1677,7 @@ if ACTIVE_PAGE == 6:
             repel_labels = st.checkbox("Repel overlapping labels automatically", value=True, key="volc_repel")
 
         # ---- 5. Legend ----
-        with st.expander("5 — Legend"):
+        with st.expander("Legend"):
             c1, c2 = st.columns(2)
             legend_position = c1.selectbox("Legend position", ["Right", "Left", "Top", "Bottom", "Hidden"],
                                             key="volc_legend_pos")
@@ -1632,7 +1687,7 @@ if ACTIVE_PAGE == 6:
             legend_format_key = "full" if legend_format.startswith("Full") else "short"
 
         # ---- 6 & 7. Axes and title ----
-        with st.expander("6-7 — Axes & Title"):
+        with st.expander("Axes & Title"):
             st.markdown("**Axes**")
             c1, c2, c3 = st.columns(3)
             axis_font_size = c1.slider("Axis font size", 8.0, 20.0, 12.0, 0.5, key="volc_axis_fontsize")
@@ -1668,7 +1723,7 @@ if ACTIVE_PAGE == 6:
             hide_title = c11.checkbox("Hide title", value=False, key="volc_hide_title")
 
         # ---- 8 & 9. Gridlines and threshold line style ----
-        with st.expander("8-9 — Gridlines & Threshold Line Style"):
+        with st.expander("Gridlines & Threshold Lines"):
             c1, c2, c3 = st.columns(3)
             grid_mode = c1.selectbox("Gridlines", ["none", "major", "both"],
                                      format_func=lambda x: {"none": "No grid", "major": "Major only",
@@ -1684,7 +1739,7 @@ if ACTIVE_PAGE == 6:
             threshold_line_width = c5.slider("Threshold line width", 0.2, 3.0, 0.7, 0.1, key="volc_threshold_width")
 
         # ---- 10. Highlight specific genes ----
-        with st.expander("10 — Highlight Specific Genes"):
+        with st.expander("Highlight Specific Genes"):
             highlight_names = st.multiselect(
                 "Search and select genes to highlight (e.g. known markers)",
                 result.index.tolist(), key="volc_highlight_names"
@@ -1697,7 +1752,7 @@ if ACTIVE_PAGE == 6:
                                             key="volc_hl_shape")
 
         # ---- 12 & 13. Background and figure size ----
-        with st.expander("12-13 — Background & Figure Size"):
+        with st.expander("Background & Figure Size"):
             c1, c2 = st.columns(2)
             background_choice = c1.selectbox("Background", ["White", "Transparent", "Gray", "Custom"],
                                               key="volc_bg_choice")
@@ -1706,7 +1761,7 @@ if ACTIVE_PAGE == 6:
                 with c2:
                     background = st.color_picker("Custom background color", "#FFFFFF", key="volcano_bg_color")
             c3, c4 = st.columns(2)
-            size_preset = c3.selectbox("Figure size preset", list(volcano.FIGURE_SIZE_PRESETS.keys()), index=2,
+            size_preset = c3.selectbox("Figure size", list(volcano.FIGURE_SIZE_PRESETS.keys()), index=2,
                                         key="volc_size_preset")
             if size_preset == "Custom":
                 cw, ch = st.columns(2)
@@ -1718,11 +1773,11 @@ if ACTIVE_PAGE == 6:
                 fig_width_in, fig_height_in = volcano.FIGURE_SIZE_PRESETS[size_preset]
 
         # ---- 15. Statistics box, theme ----
-        with st.expander("Statistics Display & Publication Theme"):
+        with st.expander("Statistics Display & Journal Theme"):
             c1, c2 = st.columns(2)
             show_stats_box = c1.checkbox("Show statistics box on figure (total/up/down/cutoffs)", value=False,
                                           key="volc_stats_box")
-            theme_choice = c2.selectbox("Publication theme (stylistic approximation, not an official spec)",
+            theme_choice = c2.selectbox("Journal theme",
                                         list(volcano.THEMES.keys()), key="volc_theme")
 
         fig_volc, annotated = volcano.volcano_plot(
@@ -1801,13 +1856,16 @@ if ACTIVE_PAGE == 6:
 # ===========================================================================
 if ACTIVE_PAGE == 7:
     st.header("Biomarker Discovery")
-    if st.session_state.stats_result is None:
-        st.info("Run a comparison in the Statistics page first.")
-    elif str(st.session_state.get("stats_contrast_label") or "").startswith("ANOVA"):
+    _SR, _LBL, _GRP, _GCOL, _EARLIER = _two_group_view()
+    if _SR is None:
+        st.info("Run a two-group comparison on the Statistics page first.")
+        _go_to("Statistics", key="goto_stats_1860")
+    elif str(_LBL or "").startswith("ANOVA"):
         st.info("The current Statistics result is an ANOVA across three or more groups, which has no single "
                 "fold change. Biomarker Discovery (fold change and direction) needs a two-group comparison: on the Statistics page, run a two-group test "
                 "or a DESeq2 contrast between two groups.")
     else:
+        _note_earlier(_EARLIER, _GRP)
         c1, c2, c3 = st.columns(3)
         # p-value/FDR cutoffs are defined before the criterion selectbox (though laid
         # out in column c1) so the criterion labels below can be built dynamically
@@ -1825,9 +1883,9 @@ if ACTIVE_PAGE == 7:
             format_func=lambda k: criterion_labels[k], key="bio_criterion"
         )
 
-        if st.button("Run Biomarker Discovery", type="primary", key="run_biomarker_btn"):
+        if st.button("Discover Biomarkers", type="primary", key="run_biomarker_btn"):
             st.session_state.biomarkers = biomarker.discover_biomarkers(
-                st.session_state.stats_result, criterion=criterion, p_cutoff=p_cutoff, fdr_cutoff=fdr_cutoff
+                _SR, criterion=criterion, p_cutoff=p_cutoff, fdr_cutoff=fdr_cutoff
             )
             st.session_state.biomarker_criterion_label = criterion_labels[criterion]
 
@@ -1848,7 +1906,7 @@ if ACTIVE_PAGE == 7:
                 merged = bm.join(row_annot[["Pathway"]], how="left")
                 st.caption("Pathway breakdown of candidate biomarkers:")
                 st.bar_chart(merged["Pathway"].value_counts())
-            groups_used = st.session_state.get("stats_result_groups")
+            groups_used = _GRP
             comparison_name = (f"{groups_used[0]}_over_{groups_used[1]}" if groups_used else "Comparison")
             biomarker_filename = f"{comparison_name}_Biomarkers.csv"
             utils.table_download(
@@ -1918,7 +1976,7 @@ if ACTIVE_PAGE == 8:
 
         annotation_colors = {}
         if col_annot_cols or row_annot_cols:
-            with st.expander("🎨 Customize Annotation Track Colors", expanded=False):
+            with st.expander("Annotation Colors", expanded=False):
                 st.caption(
                     "Assign specific colors per category (or a colormap for numeric tracks), per "
                     "annotation track — updates the column/row annotation bars on the heatmap below "
@@ -1967,7 +2025,7 @@ if ACTIVE_PAGE == 8:
         if not metric_options:
             st.error("The current Statistics result has no FDR or p-value column to filter on.")
             st.stop()
-        sig_metric = c1.selectbox("Filter by", metric_options, key="heatmap_sig_metric")
+        sig_metric = c1.selectbox("Significance metric", metric_options, key="heatmap_sig_metric")
         sig_threshold = c2.slider(
             f"{sig_metric} ≤", min_value=0.0, max_value=1.0,
             value=0.05, step=0.01, key="heatmap_sig_threshold"
@@ -1995,7 +2053,7 @@ if ACTIVE_PAGE == 8:
         c6, c7 = st.columns(2)
         use_custom_gradient = c6.checkbox("Use a custom color gradient instead of a preset palette", value=False,
                                            key="heatmap_use_gradient")
-        reverse_cmap = c7.checkbox("Reverse colormap", value=False, key="heatmap_reverse_cmap")
+        reverse_cmap = c7.checkbox("Reverse color gradient", value=False, key="heatmap_reverse_cmap")
 
         if use_custom_gradient:
             gc1, gc2, gc3 = st.columns(3)
@@ -2108,7 +2166,8 @@ if ACTIVE_PAGE == 8:
 if ACTIVE_PAGE == 9:
     st.header("Boxplot of Genes")
     if st.session_state.log2_data is None:
-        st.info("Run Normalization first.")
+        st.info("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_2164")
     else:
         log2_df_full = st.session_state.log2_data
         meta = st.session_state.meta
@@ -2213,6 +2272,7 @@ if ACTIVE_PAGE == 9:
 # ===========================================================================
 if ACTIVE_PAGE == 10:
     st.header("Pathway Enrichment")
+    _SR, _LBL, _GRP, _GCOL, _EARLIER = _two_group_view()
     st.caption(
         "Three statistically-distinct methods: **STRING Enrichment Analysis** (Szklarczyk et "
         "al. 2023) needs only a gene list and computes enrichment server-side against STRING's "
@@ -2225,17 +2285,18 @@ if ACTIVE_PAGE == 10:
         "run fully offline if you upload your own .gmt gene set file."
     )
 
-    if st.session_state.stats_result is None:
+    if _SR is None:
         st.warning("Run a comparison in the Statistics page first — GSEA analyzes the resulting "
                    "Log2FC/p-value/FDR gene list.")
-    elif str(st.session_state.get("stats_contrast_label") or "").startswith("ANOVA"):
+    elif str(_LBL or "").startswith("ANOVA"):
         st.info("The current Statistics result is an ANOVA across three or more groups, which has no single "
                 "fold change. Enrichment analysis needs a two-group comparison: on the Statistics page, run a "
                 "two-group test or a DESeq2 contrast between two groups.")
     else:
-        stats_df = st.session_state.stats_result
-        groups_used = st.session_state.get("stats_result_groups")
-        group_col_used = st.session_state.get("stats_result_group_col") or "Group"
+        _note_earlier(_EARLIER, _GRP)
+        stats_df = _SR
+        groups_used = _GRP
+        group_col_used = _GCOL or "Group"
         if groups_used:
             st.caption(f"Reflects the two {group_col_used} values compared in the Statistics page: "
                        f"**{groups_used[0]}** over **{groups_used[1]}**.")
@@ -2248,7 +2309,7 @@ if ACTIVE_PAGE == 10:
         # ---- Significant-gene selector (shared by STRING and ORA) ----
         c1, c2 = st.columns(2)
         gsea_metric_options = [m for m in ["FDR", "p-value"] if m in stats_df.columns]
-        sig_metric = c1.selectbox("Filter by", gsea_metric_options, key="gsea_sig_metric")
+        sig_metric = c1.selectbox("Significance metric", gsea_metric_options, key="gsea_sig_metric")
         sig_threshold = c2.number_input(f"{sig_metric} <", min_value=0.0, max_value=1.0,
                                          value=0.05, step=0.01,
                                          key="gsea_sig_threshold")
@@ -2566,3 +2627,5 @@ if ACTIVE_PAGE == 10:
                                                       key_prefix="gsea_plot")
                     except enrichment.EnrichmentError as e:
                         st.error(str(e))
+
+_next_page_footer()

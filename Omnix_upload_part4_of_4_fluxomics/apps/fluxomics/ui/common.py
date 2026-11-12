@@ -292,7 +292,7 @@ def download_panel(stem: str, key: str, make_fig=None, default_size=(8.0, 6.0), 
         st.markdown(f"**{title}**")
         if make_fig is not None:
             c = st.columns([1.1, 1.1, 0.9, 0.9, 1.3, 1.9])
-            fmt = c[0].selectbox("Figure format", EXPORT_FORMATS, key=f"{key}_fmt",
+            fmt = c[0].selectbox("Format", EXPORT_FORMATS, key=f"{key}_fmt",
                                  help="PNG, TIFF and JPEG are high-resolution images; SVG, PDF and EPS are vector files "
                                       "(sharp at any size, editable text). The ZIP holds all six.")
             dpi = c[1].selectbox("Resolution (DPI)", DPI_OPTS, index=1, key=f"{key}_dpi",
@@ -303,7 +303,7 @@ def download_panel(stem: str, key: str, make_fig=None, default_size=(8.0, 6.0), 
             w = c[2].number_input("Width (in)", 2.0, 60.0, step=0.5, key=f"{key}_w", **vw)
             h = c[3].number_input("Height (in)", 2.0, 200.0, step=0.5, key=f"{key}_h", **vh)
             c[4].markdown("<div style='height:1.75rem'></div>", unsafe_allow_html=True)
-            if c[4].button("Render figure", key=f"{key}_prep", type="primary"):
+            if c[4].button("Prepare file", key=f"{key}_prep", type="primary"):
                 with st.spinner("Rendering high-resolution figure…"):
                     import matplotlib.pyplot as plt
                     try:
@@ -442,7 +442,7 @@ def sha(b: bytes) -> str:
 
 
 def header(n: int, title: str, desc: str):
-    st.markdown(f"<div class='step-head'><div class='step-kicker'>Step {n} of {N_STEPS}</div>"
+    st.markdown(f"<div class='step-head'><div class='step-kicker'>Step {n} of {len(STEPS)}</div>"
                 f"<div class='step-title'>{title}</div><p class='step-desc'>{desc}</p></div>", unsafe_allow_html=True)
 
 

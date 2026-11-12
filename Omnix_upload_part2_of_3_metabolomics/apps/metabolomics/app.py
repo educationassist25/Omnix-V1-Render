@@ -31,6 +31,12 @@ _plt.rcParams["savefig.bbox"] = "tight"
 # every page and analysis is otherwise identical. Running app.py directly keeps all four.
 # ---------------------------------------------------------------------------
 APP_FAMILY = globals().get("APP_FAMILY", "")          # "Metabolomics", "Lipidomics" or ""
+# Default FDR cutoff: 0.25 in Metabolomics, 0.05 in Lipidomics (the p-values and FDR values themselves are the same).
+FDR_CUT = 0.05 if APP_FAMILY == "Lipidomics" else 0.25
+_M = "lipid" if APP_FAMILY == "Lipidomics" else "metabolite"   # on-screen word only; data columns keep "Metabolite"
+_MS, _M_C, _MS_C = _M + "s", _M.capitalize(), _M.capitalize() + "s"
+st.session_state["_feature_word"] = _M
+st.session_state["fdr_cut_default"] = FDR_CUT
 ALL_DATA_TYPES = ["Untargeted Metabolomics", "Targeted Metabolomics", "Untargeted Lipidomics", "Targeted Lipidomics"]
 DATA_TYPES = [t for t in ALL_DATA_TYPES if not APP_FAMILY or t.endswith(APP_FAMILY)]
 APP_NAME = APP_FAMILY or "Metabolomics"
@@ -342,12 +348,9 @@ UNBIASED_DATA_TYPES = {"Untargeted Metabolomics", "Untargeted Lipidomics"}
 
 
 def current_fdr_label() -> str:
-    if st.session_state.data_mode == "multi":
-        types = {ds["data_type"] for ds in st.session_state.datasets.values()} if st.session_state.datasets else set()
-        if types and types.issubset(UNBIASED_DATA_TYPES):
-            return "BH P Value"
-        return "FDR"
-    return "BH P Value" if st.session_state.data_type in UNBIASED_DATA_TYPES else "FDR"
+    """The adjusted p-value is called "FDR" in every Omnix platform (it used to be "BH P Value" for untargeted
+    data; the Benjamini-Hochberg calculation is the same)."""
+    return "FDR"
 
 
 def stats_fdr_label(stats_df) -> str:
@@ -545,7 +548,7 @@ def page_data_upload():
                        "selectable grouping/coloring variables in PCA, Statistics, Heatmap, and Boxplot.")
             meta_file = st.file_uploader("Upload metadata table (CSV/XLSX)", type=["csv", "xlsx"], key="meta_upload")
 
-        st.subheader("Metabolite Row Annotations (optional)")
+        st.subheader(f"{_M_C} Row Annotations (optional)")
         st.caption("Columns: Metabolite, then any annotation columns (e.g. Method, Pathway) — enables "
                    "the Heatmap page's row annotation tracks. Not required for PCA/Statistics/Volcano/"
                    "Biomarker/Boxplot.")
@@ -656,7 +659,7 @@ def page_data_upload():
             "Data source", ["Demo Data", "Real Data"], horizontal=True, key="multi_data_source"
         )
 
-        st.subheader("Metabolite Row Annotations (optional)")
+        st.subheader(f"{_M_C} Row Annotations (optional)")
         st.caption("Columns: Metabolite, then any annotation columns (e.g. Method, Pathway) — enables "
                    "the Heatmap page's row annotation tracks. Matches either the full prefixed name "
                    "(e.g. `Targeted Metabolomics::Glucose`) or the plain name.")
@@ -1374,7 +1377,7 @@ def _render_istd_step(base_df, data_type, key_prefix, state, detected, required)
     m2.metric("ISTD QC CV", f"{cv:.1f}%" if pd.notna(cv) else "—",
               help=None if pd.notna(cv) else "Confirm QC (QC Validation) to see the ISTD's QC CV.")
     m3.metric("Zero/missing ISTD values", int(summary["Zero/missing samples"].iloc[0]))
-    with st.expander(f"Metabolite → ISTD ({len(mapping)} features)"):
+    with st.expander(f"{_M_C} → ISTD ({len(mapping)} features)"):
         st.dataframe(utils.format_df_for_display(mapping[["ISTD", "Annotated ISTD"]]), width='stretch', height=300)
         utils.table_download(
             st,
@@ -1659,7 +1662,7 @@ def page_combined_normalized():
         st.warning("Load datasets on the Data Upload page first.")
     else:
         st.caption(
-            "Combines every dataset's normalized matrix into one table (metabolite names "
+            f"Combines every dataset's normalized matrix into one table ({_M} names "
             "prefixed by dataset, e.g. `Targeted Metabolomics::Glucose`) — the single input for "
             "every downstream page."
         )
@@ -1761,15 +1764,19 @@ def page_combined_normalized():
 # ===========================================================================
 def page_statistics():
     st.header("Statistical Comparison")
+    st.caption("Compares two groups (t-test) or three or more (ANOVA) on the normalized log2 data. Fold change is "
+               "Case over Control; positive means higher in the Case.")
     if st.session_state.log2_data is None:
         st.warning(
-            "Complete Normalization (strict log2(x) transformation) first."
+            "Complete the Normalization page first."
             if st.session_state.data_mode == "single" else
             "Complete Normalization for every dataset, then click **🔗 Generate Combined "
             "Normalized Data** first — that combined table is what every "
             "downstream page (PCA, Statistics, Volcano, Biomarker Discovery, Heatmap, "
             "Boxplot) analyzes."
         )
+        if st.session_state.data_mode == "single":
+            _go_to("Normalization", key="goto_norm_0")
     else:
         if st.session_state.data_mode == "multi":
             st.caption("Analyzing the **combined normalized data** across all datasets.")
@@ -1810,14 +1817,14 @@ def page_statistics():
                 st.session_state.stats_result_groups = (group_a, group_b)
                 st.session_state.stats_result_group_col = grouping_var
                 n_significant = int(
-                    ((result["p-value"] < 0.05) & (result[fdr_label] < 0.25)).sum()
+                    ((result["p-value"] < 0.05) & (result[fdr_label] < FDR_CUT)).sum()
                 )
                 st.session_state.processing_notes.append(
                     f"Statistical comparison ({grouping_var}): {group_b} over {group_a} using {method} "
                     f"(Benjamini-Hochberg p.adjust(method=\"BH\") correction, shown as '{fdr_label}'); "
-                    f"{n_significant} significant metabolites (p<0.05 & {fdr_label}<0.25)."
+                    f"{n_significant} significant {_MS} (p<0.05 & {fdr_label}<{FDR_CUT:g})."
                 )
-                st.success(f"Test complete: {n_significant} significant metabolites found.")
+                st.success(f"Test complete: {n_significant} significant {_MS} found.")
 
             if st.session_state.stats_result is not None and st.session_state.stats_result_groups is not None:
                 result = st.session_state.stats_result
@@ -1850,19 +1857,19 @@ def page_statistics():
                     group_map = group_map[group_map.index.isin(log2_df.columns)]
                     anova_table, posthoc_results = stats_analysis.anova_test(
                         log2_df[group_map.index], group_map, posthoc=posthoc_method,
-                        fdr_label=fdr_label
+                        fdr_label=fdr_label, fdr_cutoff=FDR_CUT
                     )
                     st.session_state.anova_result = anova_table
                     st.session_state.posthoc_result = posthoc_results
                     st.session_state.anova_groups_used = list(anova_groups)
                     st.session_state.stats_result_group_col = grouping_var
-                    n_sig_anova = int((anova_table[fdr_label] < 0.25).sum())
+                    n_sig_anova = int((anova_table[fdr_label] < FDR_CUT).sum())
                     st.session_state.processing_notes.append(
                         f"One-way ANOVA across {len(anova_groups)} selected {grouping_var} values "
                         f"({', '.join(anova_groups)}) with {posthoc_method} post-hoc; "
-                        f"{n_sig_anova} significant metabolites ({fdr_label}<0.25)."
+                        f"{n_sig_anova} significant {_MS} ({fdr_label}<{FDR_CUT:g})."
                     )
-                    st.success(f"ANOVA complete: {n_sig_anova} significant metabolites ({fdr_label}<0.25).")
+                    st.success(f"ANOVA complete: {n_sig_anova} significant {_MS} ({fdr_label}<{FDR_CUT:g}).")
 
                 if st.session_state.anova_result is not None:
                     anova_table = st.session_state.anova_result
@@ -1904,12 +1911,14 @@ def page_pca():
     st.header("PCA Visualization (Biological Samples Only)")
     if st.session_state.log2_data is None:
         st.warning(
-            "Complete Normalization (strict log2(x) transformation) first."
+            "Complete the Normalization page first."
             if st.session_state.data_mode == "single" else
             "Complete Normalization for every dataset, then click **🔗 Generate Combined "
             "Normalized Data** first — that combined table is what every "
             "downstream page analyzes."
         )
+        if st.session_state.data_mode == "single":
+            _go_to("Normalization", key="goto_norm_1")
     else:
         if st.session_state.data_mode == "multi":
             st.caption("Analyzing the **combined normalized data** across all datasets.")
@@ -1968,7 +1977,7 @@ def page_pca():
                  "download_name": "PCA_Variance_Plot", "key_prefix": "pca_var"},
             ])
 
-            st.subheader("Top Contributing Metabolites (Loadings)")
+            st.subheader(f"Top Contributing {_MS_C} (Loadings)")
             st.dataframe(utils.format_df_for_display(top_loadings), width='stretch')
 
             st.divider()
@@ -1976,7 +1985,7 @@ def page_pca():
             st.caption(
                 "The underlying data behind the plots above: sample scores per principal "
                 "component (with group assignment), % variance explained per component, "
-                "the metabolite loadings, and the exact normalized data matrix PCA was run on."
+                f"the {_M} loadings, and the exact normalized data matrix PCA was run on."
             )
             explained_var_df = pd.DataFrame({
                 "Component": [f"PC{i+1}" for i in range(len(pca.explained_variance_ratio_))],
@@ -2021,7 +2030,8 @@ def page_pca():
 def page_volcano():
     st.header("Volcano Plot")
     if st.session_state.stats_result is None:
-        st.warning("Run a two-group statistical comparison in Statistics first.")
+        st.warning("Run a two-group comparison on the Statistics page first.")
+        _go_to("Statistics", key="goto_stats_2033")
     else:
         result = st.session_state.stats_result
         fdr_label = stats_fdr_label(result)
@@ -2057,23 +2067,23 @@ def page_volcano():
             fig_width_in, fig_height_in = volcano.FIGURE_SIZE_PRESETS[size_preset]
 
         # ---- Statistical thresholds ----
-        with st.expander("🎯 Statistical Thresholds", expanded=True):
+        with st.expander("Statistical Thresholds", expanded=True):
             c1, c2, c3, c4 = st.columns(4)
             y_metric_label = c1.radio("Y-axis metric", ["p-value", fdr_label], horizontal=False)
             y_metric = "pvalue" if y_metric_label == "p-value" else "fdr"
-            sig_cutoff = c2.number_input("Significance cutoff", value=0.05 if y_metric == "pvalue" else 0.25,
+            sig_cutoff = c2.number_input("Significance cutoff", value=0.05 if y_metric == "pvalue" else FDR_CUT,
                                           min_value=0.0001, max_value=1.0, step=0.01)
             fc_threshold = c3.number_input("Fold change threshold (log2 units)", value=0.0,
                                             min_value=0.0, max_value=5.0, step=0.1)
             use_fdr_secondary = c4.checkbox(f"Also require {fdr_label} <", value=False)
-            fdr_cutoff = c4.number_input(f"Secondary {fdr_label} cutoff", value=0.25, min_value=0.0001, max_value=1.0,
+            fdr_cutoff = c4.number_input(f"Secondary {fdr_label} cutoff", value=FDR_CUT, min_value=0.0001, max_value=1.0,
                                           step=0.01, disabled=not use_fdr_secondary) if use_fdr_secondary else None
             c5, c6 = st.columns(2)
             use_fc_axis = c5.checkbox("Show linear FC on x-axis instead of log2FC", value=False)
             threshold_line_style = c6.selectbox("Threshold line style", list(volcano.LINE_STYLES.keys()))
 
         # ---- Point style & color overrides ----
-        with st.expander("⚫ Point Style & Color Overrides"):
+        with st.expander("Point Style & Colors"):
             override_colors = st.checkbox("Override individual colors (default: follow the palette above)",
                                            value=False)
             up_color = down_color = ns_color = None
@@ -2091,7 +2101,7 @@ def page_volcano():
             edge_color = c7.color_picker("Point border color", "#333333") if edge_width > 0 else "none"
 
         # ---- Labels ----
-        with st.expander("🏷️ Metabolite Labels"):
+        with st.expander(f"{_M_C} Labels"):
             label_mode_label = st.radio(
                 "Label mode",
                 ["Top N significant", "All significant", "Manually selected", "None"],
@@ -2102,12 +2112,12 @@ def page_volcano():
             top_label_n = 10
             manual_labels = []
             if label_mode == "top_n":
-                top_label_n = st.number_input("Label top N metabolites", value=10, min_value=0, max_value=100, step=1)
+                top_label_n = st.number_input(f"Label top N {_MS}", value=10, min_value=0, max_value=100, step=1)
             elif label_mode == "manual":
-                manual_labels = st.multiselect("Search and select metabolites to label by name",
+                manual_labels = st.multiselect(f"Search and select {_MS} to label by name",
                                                 result.index.tolist())
                 st.caption("Note: labeling by HMDB ID isn't available — this dataset identifies "
-                           "metabolites by name only (no compound-database annotation).")
+                           f"{_MS} by name only (no compound-database annotation).")
             c1, c2, c3 = st.columns(3)
             label_font_size = c1.slider("Label font size", 5.0, 16.0, 7.5, 0.5)
             label_bold = c2.checkbox("Bold labels", value=False)
@@ -2118,13 +2128,13 @@ def page_volcano():
             repel_labels = st.checkbox("Repel overlapping labels automatically", value=True)
 
         # ---- Legend label format (position is set above, under Quick Style) ----
-        with st.expander("📋 Legend Label Format"):
+        with st.expander("Legend"):
             legend_format = st.radio("Legend label format",
                                       ["Full (\"Significantly Upregulated (n=5)\")", "Short (\"Up (5)\")"], horizontal=False)
             legend_format_key = "full" if legend_format.startswith("Full") else "short"
 
         # ---- Axes and title ----
-        with st.expander("📐 Axes & Title"):
+        with st.expander("Axes & Title"):
             st.markdown("**Axes**")
             c1, c2, c3 = st.columns(3)
             axis_font_size = c1.slider("Axis font size", 8.0, 20.0, 12.0, 0.5)
@@ -2157,7 +2167,7 @@ def page_volcano():
             hide_title = c11.checkbox("Hide title", value=False)
 
         # ---- Gridlines and threshold line style ----
-        with st.expander("▦ Gridlines & Threshold Line Style"):
+        with st.expander("Gridlines & Threshold Lines"):
             c1, c2, c3 = st.columns(3)
             grid_mode = c1.selectbox("Gridlines", ["none", "major", "both"],
                                      format_func=lambda x: {"none": "No grid", "major": "Major only",
@@ -2169,9 +2179,9 @@ def page_volcano():
             threshold_line_width = c5.slider("Threshold line width", 0.2, 3.0, 0.7, 0.1)
 
         # ---- Highlight specific metabolites ----
-        with st.expander("⭐ Highlight Specific Metabolites"):
+        with st.expander(f"Highlight Specific {_MS_C}"):
             highlight_names = st.multiselect(
-                "Search and select metabolites to highlight (e.g. known markers)",
+                f"Search and select {_MS} to highlight (e.g. known markers)",
                 result.index.tolist()
             )
             c1, c2, c3 = st.columns(3)
@@ -2180,14 +2190,14 @@ def page_volcano():
             highlight_shape = c3.selectbox("Highlight shape", ["Star", "Circle", "Triangle", "Square", "Diamond"])
 
         # ---- Background (figure size is set above, under Quick Style) ----
-        with st.expander("🖼️ Background"):
+        with st.expander("Background"):
             background_choice = st.selectbox("Background", ["White", "Transparent", "Gray", "Custom"])
             background = {"White": "white", "Transparent": "transparent", "Gray": "gray"}.get(background_choice)
             if background_choice == "Custom":
                 background = st.color_picker("Custom background color", "#FFFFFF")
 
         # ---- Statistics overlay (theme is set above, under Quick Style) ----
-        with st.expander("📊 Statistics Overlay"):
+        with st.expander("Statistics Overlay"):
             show_stats_box = st.checkbox("Show statistics box on figure (total/up/down/cutoffs)", value=False)
 
         fig_volc, annotated = volcano.volcano_plot(
@@ -2256,7 +2266,8 @@ def page_volcano():
 def page_biomarker():
     st.header("Biomarker Discovery")
     if st.session_state.stats_result is None:
-        st.warning("Run a two-group statistical comparison in Statistics first.")
+        st.warning("Run a two-group comparison on the Statistics page first.")
+        _go_to("Statistics", key="goto_stats_2268")
     else:
         result = st.session_state.stats_result
         fdr_label = stats_fdr_label(result)
@@ -2272,11 +2283,11 @@ def page_biomarker():
                 "re-run the two-group test."
             )
         c1, c2, c3 = st.columns(3)
-        criterion = c1.selectbox("Filtering criterion", ["combined", "pvalue", "fdr"],
-                                  format_func=lambda x: {"combined": f"p<0.05 AND {fdr_label}<0.25",
-                                                          "pvalue": "p<0.05 only", "fdr": f"{fdr_label}<0.25 only"}[x])
+        criterion = c1.selectbox("Selection criterion", ["combined", "pvalue", "fdr"],
+                                  format_func=lambda x: {"combined": f"p<0.05 AND {fdr_label}<{FDR_CUT:g}",
+                                                          "pvalue": "p<0.05 only", "fdr": f"{fdr_label}<{FDR_CUT:g} only"}[x])
         p_cutoff = c2.number_input("p-value cutoff", value=0.05, min_value=0.0001, max_value=1.0, step=0.01)
-        fdr_cutoff = c3.number_input(f"{fdr_label} cutoff", value=0.25, min_value=0.0001, max_value=1.0, step=0.01)
+        fdr_cutoff = c3.number_input(f"{fdr_label} cutoff", value=FDR_CUT, min_value=0.0001, max_value=1.0, step=0.01)
 
         if st.button("Discover Biomarkers", type="primary", icon="🎯"):
             biomarkers = biomarker.discover_biomarkers(result, criterion=criterion,
@@ -2305,7 +2316,7 @@ def page_heatmap():
     if st.session_state.stats_result is None:
         st.warning(
             "Run a two-group comparison in Statistics first — the heatmap needs "
-            "that result to know which metabolites are significant."
+            f"that result to know which {_MS} are significant."
         )
     else:
         log2_df_full = utils.with_display_feature_names(st.session_state.log2_data)
@@ -2353,19 +2364,19 @@ def page_heatmap():
             msea_ctx["stats_id"] == id(st.session_state.get(k)) for k in ("stats_result", "anova_result"))
         msea_col = None
         if row_annotations is not None or msea_current:
-            st.subheader("Row (Metabolite) Annotation")
+            st.subheader(f"Row ({_M_C}) Annotation")
         if msea_current:
             msea_col = "MSEA pathway"
-            with st.expander("🧭 Pathway track from MSEA", expanded=False):
-                st.caption(f"Adds a row track with each metabolite's top enriched pathway from your latest MSEA "
-                           f"run ({msea_ctx['library'].name} · {msea_ctx['source']}). A metabolite in several of the "
-                           "shown pathways is labeled with the best-ranked one; metabolites in none of them, or in a "
+            with st.expander("Pathway track from MSEA", expanded=False):
+                st.caption(f"Adds a row track with each {_M}'s top enriched pathway from your latest MSEA "
+                           f"run ({msea_ctx['library'].name} · {msea_ctx['source']}). A {_M} in several of the "
+                           f"shown pathways is labeled with the best-ranked one; {_MS} in none of them, or in a "
                            "pathway with too few detected members, are labeled 'Other'.")
                 pc1, pc2, pc3 = st.columns(3)
                 pw_rank = pc1.selectbox("Rank pathways by", ["FDR", "P-value", "Holm"], key="heatmap_msea_rank")
                 pw_top = pc2.number_input("Pathways shown", min_value=1, max_value=15, value=8, step=1,
                                           key="heatmap_msea_top")
-                pw_min = pc3.number_input("Min metabolites per pathway", min_value=1, max_value=20, value=3,
+                pw_min = pc3.number_input(f"Min {_MS} per pathway", min_value=1, max_value=20, value=3,
                                           step=1, key="heatmap_msea_min")
             labels = pathway_analysis.assign_metabolite_pathway_labels(
                 msea_ctx["bg_idmap"], msea_ctx["in_lib"], msea_ctx["library"], msea_ctx["results"],
@@ -2392,8 +2403,8 @@ def page_heatmap():
                 if heatmap_module.classify_annotation_series(row_annotations[c]) == "categorical"
             ]
             group_rows_by_choice = st.selectbox(
-                "🧩 Group metabolites into module bands by:", group_by_options,
-                help="Instead of one global dendrogram, bands metabolites into contiguous, "
+                f"🧩 Group {_MS} into module bands by:", group_by_options,
+                help=f"Instead of one global dendrogram, bands {_MS} into contiguous, "
                      "labeled blocks by this category (e.g. pathway/class — all Lipids together, "
                      "all Amino acids together, ...) — a 'metabolic fingerprint × clinical feature "
                      "matrix' style view. Rows still cluster within each block if row clustering "
@@ -2434,7 +2445,7 @@ def page_heatmap():
             st.session_state.heatmap_annotation_colors_applied = {}
 
         if all_annotation_tracks:
-            with st.expander("🎨 Annotation Colors", expanded=False):
+            with st.expander("Annotation Colors", expanded=False):
                 n_tracks = len(all_annotation_tracks)
                 chunk_size = min(6, max(2, n_tracks)) if n_tracks <= 6 else 3
                 annotation_colors_live = {}
@@ -2480,21 +2491,21 @@ def page_heatmap():
 
         CUTOFF_OPTIONS = {
             f"{fdr_label} ≤ 1 (no filter)": (fdr_label, 1.0),
-            f"{fdr_label} ≤ 0.25": (fdr_label, 0.25),
+            f"{fdr_label} ≤ {FDR_CUT:g}": (fdr_label, FDR_CUT),
             "P-value ≤ 1 (no filter)": ("p-value", 1.0),
             "P-value ≤ 0.05": ("p-value", 0.05),
         }
 
         st.subheader("Feature Selection")
         c1, c2 = st.columns(2)
-        cutoff_label = c1.selectbox("Significant feature cutoff", list(CUTOFF_OPTIONS.keys()), index=1)
+        cutoff_label = c1.selectbox("Significance cutoff", list(CUTOFF_OPTIONS.keys()), index=1)
         col_preview, cutoff_preview = CUTOFF_OPTIONS[cutoff_label]
         n_preview = (result[col_preview] <= cutoff_preview).sum()
         with c2:
-            st.metric("Metabolites at this cutoff", n_preview)
+            st.metric(f"{_MS_C} at this cutoff", n_preview)
         if n_preview > heatmap_module.HIDE_ROW_LABELS_ABOVE:
             st.warning(
-                f"{n_preview} metabolites selected — beyond {heatmap_module.HIDE_ROW_LABELS_ABOVE}, "
+                f"{n_preview} {_MS} selected — beyond {heatmap_module.HIDE_ROW_LABELS_ABOVE}, "
                 f"row labels become unreadable and will be hidden automatically. Tighten the cutoff "
                 f"above for a labeled figure, or proceed for an unlabeled overview heatmap."
             )
@@ -2509,8 +2520,8 @@ def page_heatmap():
 
         st.subheader("Color Scale Customization")
         c6, c7 = st.columns(2)
-        use_custom_gradient = c6.checkbox("Use a custom color chart instead of a preset palette", value=False)
-        reverse_cmap = c7.checkbox("Reverse color chart", value=False)
+        use_custom_gradient = c6.checkbox("Use a custom color gradient instead of a preset palette", value=False)
+        reverse_cmap = c7.checkbox("Reverse color gradient", value=False)
 
         if use_custom_gradient:
             gc1, gc2, gc3 = st.columns(3)
@@ -2589,7 +2600,7 @@ def page_heatmap():
                     for note in notes:
                         st.info(f"ℹ️ {note}")
                     render_single_figure(fig_heat, width_ratio=(1, 8, 1))
-                    st.caption(f"{len(sig_feats)} metabolites shown ({cutoff_label}), "
+                    st.caption(f"{len(sig_feats)} {_MS} shown ({cutoff_label}), "
                                f"{len(heat_cols)} samples across {len(selected_heat_groups)} selected group(s), "
                                f"row-scaled (z-score).")
 
@@ -2621,15 +2632,17 @@ def page_heatmap():
 # TAB 12 — BOXPLOT OF METABOLITES
 # ===========================================================================
 def page_boxplot():
-    st.header("Boxplot of Metabolites")
+    st.header(f"Boxplot of {_MS_C}")
     if st.session_state.log2_data is None:
         st.warning(
-            "Complete Normalization (strict log2(x) transformation) first."
+            "Complete the Normalization page first."
             if st.session_state.data_mode == "single" else
             "Complete Normalization for every dataset, then click **🔗 Generate Combined "
             "Normalized Data** in Normalization first — that combined table is what "
             "every downstream page analyzes."
         )
+        if st.session_state.data_mode == "single":
+            _go_to("Normalization", key="goto_norm_2")
     else:
         if st.session_state.data_mode == "multi":
             st.caption("Analyzing the **combined normalized data** across all datasets.")
@@ -2637,9 +2650,9 @@ def page_boxplot():
         log2_df_full = utils.with_display_feature_names(st.session_state.log2_data)
         meta = st.session_state.meta
 
-        st.subheader("Select Metabolites & Groups")
+        st.subheader(f"Select {_MS_C} & Groups")
         selected_metabolites = st.multiselect(
-            "Search and select one or more metabolites",
+            f"Search and select one or more {_MS}",
             log2_df_full.index.tolist()
         )
         box_cat_cols = utils.get_categorical_metadata_columns(meta, log2_df_full.columns)
@@ -2659,7 +2672,7 @@ def page_boxplot():
             st.caption(
                 f"Statistics computed on log2-transformed data: {test_name} "
                 f"across the {len(selected_box_groups)} selected group(s). {fdr_label} here is corrected "
-                f"across only the {len(selected_metabolites)} metabolite(s) shown, not the full feature "
+                f"across only the {len(selected_metabolites)} {_M}(s) shown, not the full feature "
                 f"panel — for a panel-wide {fdr_label}, use Statistics."
             )
 
@@ -2691,7 +2704,7 @@ def page_boxplot():
                     group_colors[g] = st.color_picker(f"Color: {g}", default_c, key=f"boxcolor_{g}")
 
         if not selected_metabolites:
-            st.info("Select at least one metabolite above to generate a boxplot.")
+            st.info(f"Select at least one {_M} above to generate a boxplot.")
         elif len(selected_box_groups) < 2:
             st.warning("Select at least 2 groups to compare.")
         else:
@@ -2766,7 +2779,7 @@ def _rewiring_annotations(orig_index, display_index, row_annotations):
 def page_rewiring():
     st.header("Correlation Rewiring Map")
     st.markdown(
-        "Finds metabolite pairs whose **relationship** changes between two groups, even when their levels "
+        f"Finds {_M} pairs whose **relationship** changes between two groups, even when their levels "
         "don't. Couplings can be *lost*, *gained* or *flipped*. Pairs are linked to the enzymatic reactions that "
         "connect them (Human-GEM), pathways are tested as sets with the same libraries as MSEA, and the hypothesis "
         "cards check each module for robustness and suggest the experiment that would test it."
@@ -2928,4 +2941,28 @@ st.markdown(
 
 st.divider()
 
+
+def _go_to(page_title, key):
+    """A 'Go to <page>' button under a 'complete <page> first' note."""
+    if st.button(f"Go to {page_title}", key=key):
+        for _g, _pgs in NAV_GROUPS:
+            if page_title in dict(_pgs):
+                st.session_state.nav_group, st.session_state.nav_page = _g, page_title
+                st.rerun()
+
+
+def _next_page_footer():
+    """'Next: <page>' button at the bottom of a page, following the sidebar order."""
+    single = st.session_state.get("data_mode", "single") != "multi"
+    order = [(g, p) for g, pgs in NAV_GROUPS for p, _ in pgs if not (single and "Multi-Dataset" in p)]
+    cur = (st.session_state.nav_group, st.session_state.nav_page)
+    if cur in order and order.index(cur) + 1 < len(order):
+        g, p = order[order.index(cur) + 1]
+        st.divider()
+        if st.button(f"Next: {p} →", key="next_page_footer"):
+            st.session_state.nav_group, st.session_state.nav_page = g, p
+            st.rerun()
+
+
 dict(active_pages)[st.session_state.nav_page]()
+_next_page_footer()

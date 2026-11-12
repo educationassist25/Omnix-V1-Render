@@ -94,6 +94,7 @@ def _cd_route(s):
         cd_example = st.button("Load Compound Discoverer example (RP_Pos + HILIC_Neg templates; GeneKD over shControl, "
                                "12 / 18 / 40 h)", key="cd_example", disabled=not all(f.exists() for f in CD_TEMPLATES),
                                help="Processes the two template workbooks exactly like uploaded exports.")
+        st.caption("This takes about a minute.")
     s.min_area = float(st.number_input(
         "Minimum value in labeled samples", 0.0, 1e9, float(s.min_area), 100.0, key="min_area_in",
         help="An isotopologue with a value below this in ANY labeled sample is removed; if M+0 is below it, the "

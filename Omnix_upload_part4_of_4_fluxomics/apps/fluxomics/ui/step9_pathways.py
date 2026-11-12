@@ -16,7 +16,7 @@ CONF_HELP = ("**High** exact name + formula · **Medium** same compound ignoring
 
 
 def render():
-    C.header(7, "Pathway mapping",
+    C.header(9, "Pathway mapping",
              "One pathway at a time, drawn as a curated pathway map. Every detected metabolite is a card with a "
              "Z-score heatmap of its isotopologue channels (row-wise Z-score from the intensity dataset in the "
              "sidebar, the same data as the Heatmap step). Rows = M+0 … M+n, columns = groups × time points. "
@@ -60,8 +60,8 @@ def selection(s, A):
                           help="Detected metabolites of the matching annotation pathway(s) that are not on this "
                                "drawing.")
         vic = d[2].toggle("Print values in cells", False, key="pm_vals")
-        z_cmap = d[3].selectbox("Z-score colours", list(pmap.DIV_CMAPS), key="pm_z_cmap")
-        zlim = d[4].number_input("Z-score colour limit ±", 0.5, 10.0, 2.0, 0.5, key="pm_zlim")
+        z_cmap = d[3].selectbox("Z-score colors", list(pmap.DIV_CMAPS), key="pm_z_cmap")
+        zlim = d[4].number_input("Z-score color limit ±", 0.5, 10.0, 2.0, 0.5, key="pm_zlim")
     gsel = [g for g in groups if g in gsel]
     cols = [(g, h) for g in gsel for h in sorted(tsel)]
     return dict(key=key, groups=gsel, times=sorted(tsel), cols=cols, panels=["z"], m0=m0, extra=ext, vic=vic,

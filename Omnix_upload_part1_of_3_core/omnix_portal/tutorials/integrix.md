@@ -57,11 +57,11 @@ Four section cards sit above the results: **Results**, **Networks & targets**, *
 - **Overview**: metric cards, key findings, layer concordance across the top pathways and the reaction classification.
 - **Reactions**: the pattern map (enzyme evidence E against metabolite balance M) and the reaction table with label, topology and balance q-values. Patterns include *Throughput-consistent*, *Candidate bottleneck*, *Constrained step*, *Non-abundance regulation* and *Compensated*.
 - **Cascade**: enzyme → reaction → metabolite ribbons for a pathway, the top reactions or one enzyme.
-- **Pathways**: IPA-style canonical pathways (Fisher's exact test, bars coloured by a directional z-score) and pathway activity per layer, classed as shared-concordant, shared-discordant or omics-specific.
+- **Pathways**: IPA-style canonical pathways (Fisher's exact test, bars colored by a directional z-score) and pathway activity per layer, classed as shared-concordant, shared-discordant or omics-specific.
 
 ## Networks & targets
 
-- **Pathway maps & network**: IPA-style pathway maps (molecule shapes, measured red / green, predicted orange / blue, relationship-coloured edges, subcellular bands) and a network studio with 14 style presets (IPA classic, KEGG map, Cytoscape, journal minimal, dark, colour-blind safe, greyscale print, module map, hub focus, chord, hive plot, arc diagram and more). Exports: Cytoscape (.cyjs), GraphML, node and edge tables.
+- **Pathway maps & network**: IPA-style pathway maps (molecule shapes, measured red / green, predicted orange / blue, relationship-colored edges, subcellular bands) and a network studio with 14 style presets (IPA classic, KEGG map, Cytoscape, journal minimal, dark, colour-blind safe, greyscale print, module map, hub focus, chord, hive plot, arc diagram and more). Exports: Cytoscape (.cyjs), GraphML, node and edge tables.
 - **Targets**: enzymes ranked by robust rank aggregation of reaction coherence, mRNA–protein agreement, choke-point status and network propagation. Targets are hypotheses for experimental follow-up.
 
 ## Advanced

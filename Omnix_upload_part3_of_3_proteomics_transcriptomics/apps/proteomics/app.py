@@ -409,6 +409,28 @@ st.markdown(
 
 st.divider()
 
+
+def _go_to(page_title, key):
+    """A 'Go to <page>' button under a 'complete <page> first' note."""
+    if st.button(f"Go to {page_title}", key=key):
+        for _g, _pgs in NAV_GROUPS:
+            if page_title in dict(_pgs):
+                st.session_state.nav_group, st.session_state.nav_page = _g, page_title
+                st.rerun()
+
+
+def _next_page_footer():
+    """'Next: <page>' button at the bottom of a page, following the sidebar order."""
+    single = st.session_state.get("data_mode", "single") != "multi"
+    order = [(g, p) for g, pgs in NAV_GROUPS for p, _ in pgs if not (single and "Multi-Dataset" in p)]
+    cur = (st.session_state.nav_group, st.session_state.nav_page)
+    if cur in order and order.index(cur) + 1 < len(order):
+        g, p = order[order.index(cur) + 1]
+        st.divider()
+        if st.button(f"Next: {p} →", key="next_page_footer"):
+            st.session_state.nav_group, st.session_state.nav_page = g, p
+            st.rerun()
+
 ACTIVE_PAGE = dict(active_pages)[st.session_state.nav_page]
 
 # ===========================================================================
@@ -1035,7 +1057,8 @@ if ACTIVE_PAGE == 3:
 if ACTIVE_PAGE == 5:
     st.header("Statistical Comparison")
     if st.session_state.log2_data is None:
-        st.warning("Complete the Normalization page (Log2 transform) first.")
+        st.warning("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_1059")
     else:
         log2_df = st.session_state.log2_data
         meta = st.session_state.meta
@@ -1076,7 +1099,7 @@ if ACTIVE_PAGE == 5:
                 st.session_state.processing_notes.append(
                     f"Statistical comparison ({grouping_var}): {group_a} over {group_b} using {method} "
                     f"(BH-FDR correction); {result['Significant'].sum()} significant proteins "
-                    f"(p<0.05 & FDR<0.25)."
+                    f"(p<0.05 & FDR<0.05)."
                 )
                 st.success(f"Test complete: {result['Significant'].sum()} significant proteins found.")
 
@@ -1121,9 +1144,9 @@ if ACTIVE_PAGE == 5:
                     st.session_state.processing_notes.append(
                         f"One-way ANOVA across {len(anova_groups)} selected {grouping_var} values "
                         f"({', '.join(anova_groups)}) with {posthoc_method} post-hoc; "
-                        f"{(anova_table['FDR'] < 0.25).sum()} significant proteins (FDR<0.25)."
+                        f"{(anova_table['FDR'] < 0.05).sum()} significant proteins (FDR<0.05)."
                     )
-                    st.success(f"ANOVA complete: {(anova_table['FDR'] < 0.25).sum()} significant proteins (FDR<0.25).")
+                    st.success(f"ANOVA complete: {(anova_table['FDR'] < 0.05).sum()} significant proteins (FDR<0.05).")
 
                 if st.session_state.anova_result is not None:
                     anova_table = st.session_state.anova_result
@@ -1166,7 +1189,8 @@ if ACTIVE_PAGE == 5:
 if ACTIVE_PAGE == 4:
     st.header("PCA Visualization (Biological Samples Only)")
     if st.session_state.log2_data is None:
-        st.warning("Complete the Normalization page (Log2 transform) first.")
+        st.warning("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_1190")
     else:
         log2_df_full = st.session_state.log2_data
         meta = st.session_state.meta
@@ -1286,7 +1310,8 @@ if ACTIVE_PAGE == 4:
 if ACTIVE_PAGE == 6:
     st.header("Volcano Plot")
     if st.session_state.stats_result is None:
-        st.warning("Run a two-group statistical comparison in the Statistics page first.")
+        st.warning("Run a two-group comparison on the Statistics page first.")
+        _go_to("Statistics", key="goto_stats_1313")
     else:
         result = st.session_state.stats_result
         groups_used = st.session_state.get("stats_result_groups")
@@ -1300,25 +1325,25 @@ if ACTIVE_PAGE == 6:
             )
 
         # ---- 1. Thresholds ----
-        with st.expander("1 — Statistical Thresholds", expanded=True):
+        with st.expander("Statistical Thresholds", expanded=True):
             c1, c2, c3, c4 = st.columns(4)
             y_metric_label = c1.radio("Y-axis metric", ["p-value", "FDR"], horizontal=False)
             y_metric = "pvalue" if y_metric_label == "p-value" else "fdr"
-            sig_cutoff = c2.number_input("Significance cutoff", value=0.05 if y_metric == "pvalue" else 0.25,
+            sig_cutoff = c2.number_input("Significance cutoff", value=0.05,
                                           min_value=0.0001, max_value=1.0, step=0.01)
             fc_threshold = c3.number_input("Fold change threshold (log2 units)", value=0.0,
                                             min_value=0.0, max_value=5.0, step=0.1)
             use_fdr_secondary = c4.checkbox("Also require FDR <", value=False)
-            fdr_cutoff = c4.number_input("Secondary FDR cutoff", value=0.25, min_value=0.0001, max_value=1.0,
+            fdr_cutoff = c4.number_input("Secondary FDR cutoff", value=0.05, min_value=0.0001, max_value=1.0,
                                           step=0.01, disabled=not use_fdr_secondary) if use_fdr_secondary else None
             c5, c6 = st.columns(2)
             use_fc_axis = c5.checkbox("Show linear FC on x-axis instead of log2FC", value=False)
             threshold_line_style = c6.selectbox("Threshold line style", list(volcano.LINE_STYLES.keys()))
 
         # ---- 2 & 3. Colors and point style ----
-        with st.expander("2-3 — Colors & Point Style"):
+        with st.expander("Point Style & Colors"):
             c1, c2 = st.columns(2)
-            palette = c1.selectbox("Color palette (colorblind-friendly options included)",
+            palette = c1.selectbox("Color palette",
                                     list(volcano.COLORBLIND_PALETTES.keys()))
             override_colors = c2.checkbox("Override individual colors", value=False)
             up_color = down_color = ns_color = None
@@ -1342,7 +1367,7 @@ if ACTIVE_PAGE == 6:
                     edge_color = st.color_picker("Point border color", "#000000", key="volcano_edge_color")
 
         # ---- 4. Labels ----
-        with st.expander("4 — Protein Labels"):
+        with st.expander("Protein Labels"):
             label_mode_label = st.radio(
                 "Label mode",
                 ["Top N significant", "All significant", "Manually selected", "None"],
@@ -1372,7 +1397,7 @@ if ACTIVE_PAGE == 6:
             repel_labels = st.checkbox("Repel overlapping labels automatically", value=True)
 
         # ---- 5. Legend ----
-        with st.expander("5 — Legend"):
+        with st.expander("Legend"):
             c1, c2 = st.columns(2)
             legend_position = c1.selectbox("Legend position", ["Right", "Left", "Top", "Bottom", "Hidden"])
             legend_format = c2.radio("Legend label format",
@@ -1380,7 +1405,7 @@ if ACTIVE_PAGE == 6:
             legend_format_key = "full" if legend_format.startswith("Full") else "short"
 
         # ---- 6 & 7. Axes and title ----
-        with st.expander("6-7 — Axes & Title"):
+        with st.expander("Axes & Title"):
             st.markdown("**Axes**")
             c1, c2, c3 = st.columns(3)
             axis_font_size = c1.slider("Axis font size", 8.0, 20.0, 12.0, 0.5)
@@ -1413,7 +1438,7 @@ if ACTIVE_PAGE == 6:
             hide_title = c11.checkbox("Hide title", value=False)
 
         # ---- 8 & 9. Gridlines and threshold line style ----
-        with st.expander("8-9 — Gridlines & Threshold Line Style"):
+        with st.expander("Gridlines & Threshold Lines"):
             c1, c2, c3 = st.columns(3)
             grid_mode = c1.selectbox("Gridlines", ["none", "major", "both"],
                                      format_func=lambda x: {"none": "No grid", "major": "Major only",
@@ -1427,7 +1452,7 @@ if ACTIVE_PAGE == 6:
             threshold_line_width = c5.slider("Threshold line width", 0.2, 3.0, 0.7, 0.1)
 
         # ---- 10. Highlight specific proteins ----
-        with st.expander("10 — Highlight Specific Proteins"):
+        with st.expander("Highlight Specific Proteins"):
             highlight_names = st.multiselect(
                 "Search and select proteins to highlight (e.g. known markers)",
                 result.index.tolist()
@@ -1439,7 +1464,7 @@ if ACTIVE_PAGE == 6:
             highlight_shape = c3.selectbox("Highlight shape", ["Star", "Circle", "Triangle", "Square", "Diamond"])
 
         # ---- 12 & 13. Background and figure size ----
-        with st.expander("12-13 — Background & Figure Size"):
+        with st.expander("Background & Figure Size"):
             c1, c2 = st.columns(2)
             background_choice = c1.selectbox("Background", ["White", "Transparent", "Gray", "Custom"])
             background = {"White": "white", "Transparent": "transparent", "Gray": "gray"}.get(background_choice)
@@ -1447,7 +1472,7 @@ if ACTIVE_PAGE == 6:
                 with c2:
                     background = st.color_picker("Custom background color", "#FFFFFF", key="volcano_bg_color")
             c3, c4 = st.columns(2)
-            size_preset = c3.selectbox("Figure size preset", list(volcano.FIGURE_SIZE_PRESETS.keys()), index=2)
+            size_preset = c3.selectbox("Figure size", list(volcano.FIGURE_SIZE_PRESETS.keys()), index=2)
             if size_preset == "Custom":
                 cw, ch = st.columns(2)
                 fig_width_in = cw.number_input("Width (in)", value=7.2, min_value=2.0, max_value=20.0)
@@ -1456,10 +1481,10 @@ if ACTIVE_PAGE == 6:
                 fig_width_in, fig_height_in = volcano.FIGURE_SIZE_PRESETS[size_preset]
 
         # ---- 15. Statistics box, 18. Theme ----
-        with st.expander("Statistics Display & Publication Theme"):
+        with st.expander("Statistics Display & Journal Theme"):
             c1, c2 = st.columns(2)
             show_stats_box = c1.checkbox("Show statistics box on figure (total/up/down/cutoffs)", value=False)
-            theme_choice = c2.selectbox("Publication theme (stylistic approximation, not an official spec)",
+            theme_choice = c2.selectbox("Journal theme",
                                         list(volcano.THEMES.keys()))
 
         fig_volc, annotated = volcano.volcano_plot(
@@ -1538,7 +1563,8 @@ if ACTIVE_PAGE == 6:
 if ACTIVE_PAGE == 7:
     st.header("Biomarker Discovery")
     if st.session_state.stats_result is None:
-        st.warning("Run a two-group statistical comparison in the Statistics page first.")
+        st.warning("Run a two-group comparison on the Statistics page first.")
+        _go_to("Statistics", key="goto_stats_1565")
     else:
         result = st.session_state.stats_result
         groups_used = st.session_state.get("stats_result_groups")
@@ -1551,11 +1577,11 @@ if ACTIVE_PAGE == 7:
                 "re-run the two-group test."
             )
         c1, c2, c3 = st.columns(3)
-        criterion = c1.selectbox("Filtering criterion", ["combined", "pvalue", "fdr"],
-                                  format_func=lambda x: {"combined": "p<0.05 AND FDR<0.25",
-                                                          "pvalue": "p<0.05 only", "fdr": "FDR<0.25 only"}[x])
+        criterion = c1.selectbox("Selection criterion", ["combined", "pvalue", "fdr"],
+                                  format_func=lambda x: {"combined": "p<0.05 AND FDR<0.05",
+                                                          "pvalue": "p<0.05 only", "fdr": "FDR<0.05 only"}[x])
         p_cutoff = c2.number_input("p-value cutoff", value=0.05, min_value=0.0001, max_value=1.0, step=0.01)
-        fdr_cutoff = c3.number_input("FDR cutoff", value=0.25, min_value=0.0001, max_value=1.0, step=0.01)
+        fdr_cutoff = c3.number_input("FDR cutoff", value=0.05, min_value=0.0001, max_value=1.0, step=0.01)
 
         if st.button("Discover Biomarkers"):
             biomarkers = biomarker.discover_biomarkers(result, criterion=criterion,
@@ -1637,7 +1663,7 @@ if ACTIVE_PAGE == 8:
 
         annotation_colors = {}
         if col_annot_cols or row_annot_cols:
-            with st.expander("🎨 Customize Annotation Track Colors", expanded=False):
+            with st.expander("Annotation Colors", expanded=False):
                 st.caption(
                     "Assign specific colors per category (or a colormap for numeric tracks), per "
                     "annotation track — updates the column/row annotation bars on the heatmap below "
@@ -1682,10 +1708,10 @@ if ACTIVE_PAGE == 8:
         st.caption("Dynamically adjust which proteins appear in the heatmap by FDR or p-value — "
                    "the figure below updates immediately as you change the metric or threshold.")
         c1, c2, c3 = st.columns([1.2, 1.5, 1])
-        sig_metric = c1.selectbox("Filter by", ["FDR", "p-value"], key="heatmap_sig_metric")
+        sig_metric = c1.selectbox("Significance metric", ["FDR", "p-value"], key="heatmap_sig_metric")
         sig_threshold = c2.slider(
             f"{sig_metric} ≤", min_value=0.0, max_value=1.0,
-            value=0.25 if sig_metric == "FDR" else 0.05, step=0.01, key="heatmap_sig_threshold"
+            value=0.05, step=0.01, key="heatmap_sig_threshold"
         )
         n_preview = (result[sig_metric] <= sig_threshold).sum()
         with c3:
@@ -1708,7 +1734,7 @@ if ACTIVE_PAGE == 8:
         st.subheader("Color Scale Customization")
         c6, c7 = st.columns(2)
         use_custom_gradient = c6.checkbox("Use a custom color gradient instead of a preset palette", value=False)
-        reverse_cmap = c7.checkbox("Reverse colormap", value=False)
+        reverse_cmap = c7.checkbox("Reverse color gradient", value=False)
 
         if use_custom_gradient:
             gc1, gc2, gc3 = st.columns(3)
@@ -1818,7 +1844,8 @@ if ACTIVE_PAGE == 8:
 if ACTIVE_PAGE == 9:
     st.header("Boxplot of Proteins")
     if st.session_state.log2_data is None:
-        st.warning("Complete the Normalization page (Log2 transform) first.")
+        st.warning("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_1842")
     else:
         log2_df_full = st.session_state.log2_data
         meta = st.session_state.meta
@@ -1963,9 +1990,9 @@ def render_significant_protein_selector(key_prefix: str):
         )
 
     c1, c2 = st.columns(2)
-    metric = c1.selectbox("Filter by", ["FDR", "p-value"], key=f"{key_prefix}_sig_metric")
+    metric = c1.selectbox("Significance metric", ["FDR", "p-value"], key=f"{key_prefix}_sig_metric")
     threshold = c2.number_input(f"{metric} <", min_value=0.0, max_value=1.0,
-                                 value=0.25 if metric == "FDR" else 0.05, step=0.01,
+                                 value=0.05, step=0.01,
                                  key=f"{key_prefix}_sig_threshold")
     sig_df = stats_df[stats_df[metric] < threshold]
     sig_proteins = sig_df.index.tolist()
@@ -2293,10 +2320,9 @@ if ACTIVE_PAGE == 10:
                         st.error(str(e))
 
 # ---------------------------------------------------------------------------
-# Sidebar: processing log, below the navigation (collapsed)
+# Sidebar
 # ---------------------------------------------------------------------------
-with _sidebar_status:
-    if st.session_state.processing_notes:
-        with st.expander("Processing Log"):
-            for note in st.session_state.processing_notes:
-                st.markdown(f"- {note}")
+# (The Processing Log panel was removed so the sidebar is the same in every Omnix platform; the notes are still
+# kept in st.session_state.processing_notes.)
+
+_next_page_footer()

@@ -139,7 +139,7 @@ def test_ipa_canonical(demo_result, kb):
 
 @pytest.mark.parametrize("layout", ["Subcellular (IPA-style)", "Hierarchical flow (top-down)", "Force-directed",
                                     "Shell by molecule type", "Grid by molecule type", "Kamada-Kawai",
-                                    "Radial (focus-centred)", "Bipartite columns (substrates | enzymes | products)"])
+                                    "Radial (focus-centered)", "Bipartite columns (substrates | enzymes | products)"])
 def test_network_layouts_have_no_overlaps(demo_result, kb, layout):
     from trace_core import netview as NV
     o = NV.NetOptions(scope="Pathway", pathway="Glycolysis / Gluconeogenesis", layout=layout, max_reactions=25)

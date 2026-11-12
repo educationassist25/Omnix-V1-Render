@@ -19,7 +19,7 @@ def _values(F, D):
 
 
 def render():
-    C.header(9, "Label arrival",
+    C.header(5, "Label arrival",
              "Every isotopologue of every metabolite (M+1 … M+n, never summed) for every group and time point, side "
              "by side: one panel per group × time point. Labeling describes label appearance in a pool, not "
              "absolute flux.")
@@ -61,7 +61,7 @@ def render():
     C.show_plotly(fig, key="race_anim")
     s.results["race_done"] = True
     st.caption(f"{R.Label.nunique()} isotopologues · columns = {len(gsel)} groups × {len(tsel)} time points · bar "
-               f"colour = pathway · error bar = {unc}.")
+               f"color = pathway · error bar = {unc}.")
     W = R.assign(Column=R.Group + " · " + R.Hours.map(lambda h: f"{h:g} h")).pivot_table(
         index=["Pathway", "Metabolite", "Iso"], columns="Column", values="mean", aggfunc="first")
     W = W[[f"{g} · {h:g} h" for g in gsel for h in tsel if f"{g} · {h:g} h" in W.columns]].reset_index()

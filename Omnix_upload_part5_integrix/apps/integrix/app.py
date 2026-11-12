@@ -147,7 +147,7 @@ def screen_download_panel(key: str, fig, name: str, width_px: int = 1100, pub=No
                                    "are 1 pt smaller (never below 6 pt).")
         hh = c[2].number_input("Height (in, 0 = auto)", 0.0, 30.0, 0.0, 0.25, key=f"{key}_h")
         fmt = c[3].selectbox("Format", list(PX.FORMATS) + ["All formats (ZIP)"], key=f"{key}_fmt")
-        dpi = c[4].selectbox("DPI", [300, 600, 1200], index=1, key=f"{key}_dpi")
+        dpi = c[4].selectbox("Resolution (DPI)", [300, 600, 1200], index=1, key=f"{key}_dpi")
         transp = c[5].checkbox("Transparent background", key=f"{key}_tr",
                                help="PNG, SVG and PDF only; TIFF, JPEG and EPS are always on white.")
         if st.button("Prepare file", key=f"{key}_go", type="secondary"):
@@ -277,14 +277,14 @@ def download_panel(key: str, builder, w: float, h: float | None, fs: float = 7.0
     with box:
         c = st.columns(3) + st.columns(3)          # two rows of three: readable at half-screen width
         fmt = c[0].selectbox("Format", list(PF.FORMATS) + ["All formats (ZIP)"], key=f"{key}_fmt")
-        dpi = c[1].selectbox("DPI", [300, 600, 1200], index=1, key=f"{key}_dpi")
+        dpi = c[1].selectbox("Resolution (DPI)", [300, 600, 1200], index=1, key=f"{key}_dpi")
         font = c[2].selectbox("Font family", _fonts(), key=f"{key}_font")
         ww = c[3].number_input("Width (in)", 2.0, 30.0, float(w), 0.5, key=f"{key}_w")
         hh = c[4].number_input("Height (in, 0 = auto)", 0.0, 30.0, float(h or 0), 0.5, key=f"{key}_h")
         ff = c[5].number_input("Font (pt)", 4.0, 20.0, float(fs), 0.5, key=f"{key}_fs")
         t1, t2 = st.columns([1, 1])
         transp = t1.checkbox("Transparent background", key=f"{key}_tr")
-        if t2.button("Render figure", key=f"{key}_go"):
+        if t2.button("Prepare file", key=f"{key}_go"):
             with st.spinner("Rendering"):
                 PF.style(font, ff)
                 fmts = list(PF.FORMATS.values()) if fmt.startswith("All") else [PF.FORMATS[fmt]]
@@ -407,7 +407,7 @@ Comparisons to try (Study design > Group column, then Case over Reference)
   Group      Cancer Treatment over Cancer Control  the drug effect plus glycolysis partly reversed
   Sex        Female over Male       aromatase (CYP19A1): testosterone down, estrogens up; otherwise quiet
 
-To analyse your own data, upload tables in the same layout (Data > Upload my data > Raw intensities).
+To analyze your own data, upload tables in the same layout (Data > Upload my data > Raw intensities).
 """,
 }
 
@@ -577,7 +577,7 @@ with st.sidebar:
                           on_change=_keep_open, args=("step_data",))
         id_cols = {}
         if source in (SESSION, OMNIX_UP, UPLOAD) and DEMO_ONLY:
-            st.caption(":material/lock: Analysing your own data in Integrix needs an Omnix plan that includes "
+            st.caption(":material/lock: Analyzing your own data in Integrix needs an Omnix plan that includes "
                        "Integrix (Multi-Omics, Lab or Enterprise). The two demo datasets are open to everyone.")
         if source == SESSION:
             _ib = st.session_state.get(INBOX_KEY) or {}
@@ -776,7 +776,7 @@ with st.sidebar:
     st.write("")
     run = st.button("Run analysis", type="primary", icon=":material/play_arrow:", disabled=not ok,
                     width="stretch", key="run_btn")
-    st.caption(f"Knowledge base {kb.version} · Human-GEM {kb.manifest['sources']['Human-GEM'].get('version', '')}  \n"
+    st.caption(f"This takes up to a minute.  \nKnowledge base {kb.version} · Human-GEM {kb.manifest['sources']['Human-GEM'].get('version', '')}  \n"
                "Light / dark: ⋮ menu → Settings")
 
 # ===================================================================================== top bar
@@ -980,7 +980,7 @@ if run:
 if "trace" not in st.session_state:
     draw_topbar(False)
     _own = ("" if (OMNIX and DEMO_ONLY) else
-            " To analyse <b>your own data</b>, open step 1 <b>Data</b> and choose <b>From this Omnix session</b> "
+            " To analyze <b>your own data</b>, open step 1 <b>Data</b> and choose <b>From this Omnix session</b> "
             "(data sent with <b>Send to Integrix</b> from Transcriptomics, Proteomics, Metabolomics or Lipidomics), "
             "<b>Upload Omnix exports</b> or <b>Upload my data</b>.")
     st.markdown('<div class="trace-note">Check the four setup steps in the <b>Analysis setup</b> panel, then press '
@@ -1096,11 +1096,11 @@ def network_ui(prefix: str):
             st.caption("Reactions whose enzyme and metabolite changes agree (label and topology q below the FDR).")
         else:
             st.caption("The highest-ranked targets from Engine C and the reactions around them.")
-    st.selectbox("Style preset (sets layout, shapes, colours and edges at once; fine-tune below)",
+    st.selectbox("Style preset (sets layout, shapes, colors and edges at once; fine-tune below)",
                  ["(custom)"] + list(NV.PRESETS), key=K("preset"), on_change=_preset_cb, args=(prefix,))
-    with st.expander("Layout, colours, labels and edges", expanded=False):
+    with st.expander("Layout, colors, labels and edges", expanded=False):
         with st.form(f"{prefix}_form", border=False):
-            t = st.tabs(["Content", "Layout", "Nodes & colours", "Labels", "Edges", "Canvas"])
+            t = st.tabs(["Content", "Layout", "Nodes & colors", "Labels", "Edges", "Canvas"])
             with t[0]:
                 c = st.columns(2)
                 c[0].slider("Maximum reactions", 5, 120, key=K("max_reactions"))
@@ -1122,10 +1122,10 @@ def network_ui(prefix: str):
                 c[1].checkbox("Shade network modules (communities)", key=K("hulls"))
             with t[2]:
                 c = st.columns(2)
-                c[0].selectbox("Colour by", NV.COLOR_BY, key=K("color_by"))
+                c[0].selectbox("Color by", NV.COLOR_BY, key=K("color_by"))
                 c[1].selectbox("Shape scheme", NV.SHAPES, key=K("shape_scheme"))
                 c[0].selectbox("Palette", list(NV.PALETTES), key=K("palette"))
-                c[1].slider("Colour scale |z| max", 1.0, 8.0, key=K("zmax"), step=0.5)
+                c[1].slider("Color scale |z| max", 1.0, 8.0, key=K("zmax"), step=0.5)
                 c[0].selectbox("Node size by", ["Constant", "|z|", "Degree", "Target score"], key=K("size_mode"))
                 c[1].slider("Node size (pt)", 6.0, 36.0, key=K("node_size"), step=1.0)
                 c[0].checkbox("Predict unmeasured metabolites (MAP-like)", key=K("prediction"))
@@ -1143,8 +1143,8 @@ def network_ui(prefix: str):
                 c[0].checkbox("Hide labels that cannot be placed cleanly", key=K("hide_unplaced"))
             with t[4]:
                 c = st.columns(2)
-                c[0].selectbox("Edge colour", ["IPA relationship", "By relation type", "Single colour"], key=K("edge_color"))
-                c[1].color_picker("Single colour", key=K("edge_single"))
+                c[0].selectbox("Edge color", ["IPA relationship", "By relation type", "Single color"], key=K("edge_color"))
+                c[1].color_picker("Single color", key=K("edge_single"))
                 c[0].selectbox("Routing", NV.ROUTES, key=K("edge_route"))
                 c[1].selectbox("Width by", ["Constant", "|enzyme evidence|"], key=K("edge_width_by"))
                 c[0].slider("Edge width", 0.3, 4.0, key=K("edge_width"), step=0.1)
@@ -1302,7 +1302,7 @@ with tabs[0]:
       g1, g2 = st.columns([1.85, 1])
       with g1.container(border=True):
           st.markdown(UI.card_head("Layer concordance across top pathways",
-                                   "Per-layer pathway activity z (permutation-standardised Stouffer) for the six "
+                                   "Per-layer pathway activity z (permutation-standardized Stouffer) for the six "
                                    "most significant pathways; dashed lines at |z| = 2.", "trend"), unsafe_allow_html=True)
           show(F.layer_bars(pw, 6), "layer_concordance", width_px=720)
       with g2.container(border=True):
@@ -1340,7 +1340,7 @@ with tabs[0]:
                pub=(lambda w, h, fs: PF.pattern_grid(rx, 12, w, h or 4.2, fs), 5.6, 4.2, 7))
       if len(cp_tbl):
           with p2.container(border=True):
-              st.markdown(UI.card_head("Canonical pathways", "Right-tailed Fisher's exact test; colour = directional z.",
+              st.markdown(UI.card_head("Canonical pathways", "Right-tailed Fisher's exact test; color = directional z.",
                                        "branch"), unsafe_allow_html=True)
               show(F.canonical_bars(cp_tbl, 15), "canonical_pathways", notitle=True, width_px=620,
                    pub=(lambda w, h, fs: PF.canonical(cp_tbl, 15, w, h, fs), 7.6, None, 7))
@@ -1381,7 +1381,7 @@ with tabs[2]:
           c[1].metric("Deming slope (protein on mRNA)", f"{cp['beta']:.2f}")
           c[2].metric("Correlation of z-scores", f"{cp['pearson_z']:.2f}")
           c[3].metric("Median within-sample rho", f"{cp.get('median_within_rho', np.nan):.2f}" if "median_within_rho" in cp else "n/a (unpaired)")
-          nl = st.slider("Genes labelled", 0, 40, 15, key="conc_nl")
+          nl = st.slider("Genes labeled", 0, 40, 15, key="conc_nl")
           show(F.concordance(res.concordance, cp["beta"], nl), "concordance",
                pub=(lambda w, h, fs: PF.concordance(res.concordance, cp["beta"], nl, w, h or 4.0, fs), 5.4, 4.0, 7))
           cls = st.multiselect("Show classes", sorted(res.concordance["class"].unique()),
@@ -1396,7 +1396,7 @@ with tabs[3]:
       st.markdown("Each reaction combines **enzyme evidence E** (protein z through the GPR rule) with the "
                   "**metabolite balance M** (products minus substrates). **Coherence C = E × M.** A reaction is "
                   f"called coherent when both label-permutation and topology q < {res.params['alpha']}.")
-      nl = st.slider("Enzymes labelled", 0, 40, 14, key="rx_nl")
+      nl = st.slider("Enzymes labeled", 0, 40, 14, key="rx_nl")
       show(F.pattern_grid(rx, nl), "reaction_patterns",
            pub=(lambda w, h, fs: PF.pattern_grid(rx, nl, w, h or 4.2, fs), 6.0, 4.4, 7))
       c1, c2, c3 = st.columns([1.2, 2, 2])
@@ -1460,7 +1460,7 @@ with tabs[5]:
       c1, c2 = st.columns(2, gap="medium")
       with c1.container(border=True):
           st.markdown(UI.card_head("Canonical pathways (IPA-style)",
-                                   "Bar = −log10 p (right-tailed Fisher's exact) · colour = directional z "
+                                   "Bar = −log10 p (right-tailed Fisher's exact) · color = directional z "
                                    "(orange up, blue down, grey &lt; 4 directional molecules) · line = ratio",
                                    "branch"), unsafe_allow_html=True)
           if len(cp_tbl):
@@ -1470,7 +1470,7 @@ with tabs[5]:
               st.info("No pathway has enough measured molecules.")
       with c2.container(border=True):
           st.markdown(UI.card_head("Pathway activity across layers",
-                                   "Colour = permutation-standardised z · size = −log10 q · tile = class "
+                                   "Color = permutation-standardized z · size = −log10 q · tile = class "
                                    "(shared-concordant, shared-discordant or omics-specific)", "chart"),
                       unsafe_allow_html=True)
           show(F.pathway_dotplot(pw, ntop), "pathway_activity", notitle=True, width_px=620,
@@ -1495,7 +1495,7 @@ with tabs[6]:
   if on(6):
       st.markdown("**Pathway maps and network studio.** Start from an IPA-style pathway map or any other view. "
                   "**Shape** = molecule type; **red / green** = measured up / down; **orange / blue outline** = "
-                  "predicted increase / decrease of unmeasured metabolites; **edge colour** = leads to increase "
+                  "predicted increase / decrease of unmeasured metabolites; **edge color** = leads to increase "
                   "(orange), decrease (blue), inconsistent with the data (yellow) or not predicted (grey). Edges are "
                   "routed around nodes and every label is placed clear of other labels and nodes.")
       network_ui("net")
@@ -1574,7 +1574,7 @@ with tabs[9]:
               c[1].metric("Balanced accuracy", f"{s['balanced_accuracy']:.2f}")
               c[2].metric("Permutation p", f"{s['p_perm']:.3f}")
               c[3].metric("Features per block", s["keepX"])
-              st.markdown('<div class="trace-warn">Cross-validated performance on one cohort is optimistic for '
+              st.markdown('<div class="trace-warn">Cross-validated performance on one cohort is optimiztic for '
                           'clinical use. Validate the panel in an independent cohort.</div>', unsafe_allow_html=True)
               a, b = st.columns(2)
               with a:
@@ -1615,7 +1615,7 @@ with tabs[10]:
                                "be made on this server right now).")
       c = st.columns(3)
       fmts = c[0].multiselect("Formats", list(PF.FORMATS), default=["PNG", "PDF", "SVG"], key="all_fmts")
-      dpi = c[1].selectbox("DPI", [300, 600, 1200], index=1, key="all_dpi")
+      dpi = c[1].selectbox("Resolution (DPI)", [300, 600, 1200], index=1, key="all_dpi")
       font = c[2].selectbox("Font family (charts drawn for print: targets, cascade, pathway maps)", _fonts(),
                             key="all_font")
 
@@ -1716,7 +1716,7 @@ with tabs[11]:
   if on(11):
       st.markdown(R.methods_text(res, kb, extras))
       st.markdown("**IPA-style displays.** Canonical-pathway bars, molecule shapes, measured (red/green) and predicted "
-                  "(orange/blue) colours, relationship-coloured edges and subcellular layouts follow the visual "
+                  "(orange/blue) colors, relationship-colored edges and subcellular layouts follow the visual "
                   "conventions of Ingenuity Pathway Analysis. They are computed from Integrix statistics and the "
                   "Human-GEM knowledge base; they do not use IPA's proprietary knowledge base or its activation "
                   "z-score algorithm.")

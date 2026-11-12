@@ -35,9 +35,9 @@ def _long(src, comp, F, An, S=None):
 
 
 def render():
-    C.header(5, "Dynamic bar plots",
+    C.header(7, "Dynamic bar plots",
              "Each metabolite in one plot: isotope incorporation (%), every isotopologue fraction (%) or every "
-             "isotopologue's intensity (x = M+0 … M+n); one bar per group × time point (group colour, lighter = earlier time). Bar = mean of the biological replicates, "
+             "isotopologue's intensity (x = M+0 … M+n); one bar per group × time point (group color, lighter = earlier time). Bar = mean of the biological replicates, "
              "error bar = SD or SEM, dots = individual replicates.")
     if not C.require("upload", "design", "normalize"):
         return

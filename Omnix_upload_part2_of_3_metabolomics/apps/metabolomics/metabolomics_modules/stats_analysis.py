@@ -352,7 +352,8 @@ def anova_test(
     data_log2: pd.DataFrame,
     group_map: pd.Series,
     posthoc: str = "tukey",
-    fdr_label: str = "FDR"
+    fdr_label: str = "FDR",
+    fdr_cutoff: float = 0.25
 ):
     """
     One-way ANOVA across >=3 groups.
@@ -510,7 +511,7 @@ def anova_test(
     # -------------------------------------------------------------
 
     sig_features = anova_table[
-        anova_table[fdr_label] < 0.25
+        anova_table[fdr_label] < fdr_cutoff
     ].index.tolist()
 
     posthoc_results = {}

@@ -176,7 +176,7 @@ def compute_layout(G, name, kinds: dict, band_of: dict | None = None, bands: lis
             nc = int(np.ceil(np.sqrt(len(mem))))
             for j, n in enumerate(mem):
                 pos[n] = np.array([ci + (j % nc) / (nc + 1), -(j // nc)])
-    elif name == "Radial (focus-centred)":
+    elif name == "Radial (focus-centered)":
         pos = radial(G, focus or [])
     elif name.startswith("Bipartite columns"):
         pos = bipartite_columns(G, kinds)
@@ -386,7 +386,7 @@ def remove_overlaps_rect(P: np.ndarray, w: np.ndarray, h: np.ndarray, off: np.nd
 
 # ------------------------------------------------------------------------------------------- special layouts
 SPECIAL = {"Circular (edge-bundled chord)", "Hive plot (axes by molecule type)", "Arc diagram"}
-LAYOUTS += ["Radial (focus-centred)", "Bipartite columns (substrates | enzymes | products)",
+LAYOUTS += ["Radial (focus-centered)", "Bipartite columns (substrates | enzymes | products)",
             "Circular (edge-bundled chord)", "Hive plot (axes by molecule type)", "Arc diagram"]
 
 

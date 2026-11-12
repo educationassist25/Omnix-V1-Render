@@ -138,7 +138,7 @@ def methods_text(res, kb, extras: dict) -> str:
         "integrated on a common scale."
         + (" Gene-protein concordance was assessed by orthogonal (Deming) regression "
            "of protein on mRNA z-scores and a per-gene discordance statistic; within-sample coupling was the "
-           "Spearman correlation of group-centred mRNA and protein levels." if res.concordance is not None else ""))
+           "Spearman correlation of group-centered mRNA and protein levels." if res.concordance is not None else ""))
     t.append("")
     t.append(
         f"Genes, proteins and metabolites were mapped to the Human-GEM genome-scale metabolic model "
@@ -161,12 +161,12 @@ def methods_text(res, kb, extras: dict) -> str:
         f"associations, not causal mechanisms.")
     t.append("")
     t.append(
-        "Pathway activity per layer was the Stouffer sum of member z-scores standardised against the label "
+        "Pathway activity per layer was the Stouffer sum of member z-scores standardized against the label "
         "permutations; layers were combined by a weighted Stouffer test, heterogeneity was assessed by "
         "Cochran's Q and I2, and pathways were classified as shared-concordant, shared-discordant or "
         "omics-specific. Pathways with fewer than "
-        f"{P['min_set']} measured members in a layer were labelled not assessable in that layer. Reporter "
-        "metabolites (Patil & Nielsen 2005) summarised the coherence of reactions around each metabolite.")
+        f"{P['min_set']} measured members in a layer were labeled not assessable in that layer. Reporter "
+        "metabolites (Patil & Nielsen 2005) summarized the coherence of reactions around each metabolite.")
     if extras.get("targets") is not None:
         t += ["", "Targets were prioritised by robust rank aggregation (Kolde et al. 2012) of reaction coherence, "
               "mRNA-protein consistency, choke-point status (Yeh et al. 2004) and network propagation (random "

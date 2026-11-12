@@ -11,7 +11,7 @@ TRACERS = {"[U-¹³C₆]-glucose": 6, "[U-¹³C₅]-glutamine": 5}
 
 def render():
     C.header(2, "Experimental design",
-             "Define groups, treatments, labeling time points and replicates, choose the samples to analyse, and "
+             "Define groups, treatments, labeling time points and replicates, choose the samples to analyze, and "
              "describe the tracer and natural-isotope correction. Groups (group × treatment) and time points drive "
              "every comparison downstream.")
     if not C.require("upload"):
@@ -94,7 +94,7 @@ def render():
         corr.setdefault(k_, v_)
     opts = {"already": "Data already corrected by the vendor software (use as supplied)",
             "apply": "Apply natural-abundance correction here (data not yet corrected)",
-            "none": "No correction (analyse uncorrected data)"}
+            "none": "No correction (analyze uncorrected data)"}
     # the user decides; nothing is corrected automatically (Compound Discoverer corrects against the 12C reference)
     corr["mode"] = st.radio("Correction", list(opts), format_func=opts.get,
                             index=list(opts).index(corr["mode"]) if corr["mode"] in opts else 0, key="corr_mode")

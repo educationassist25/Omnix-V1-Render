@@ -5,7 +5,7 @@
 - **Label-Free Proteomics**: each sample is acquired separately and normalized across samples.
 - **TMT Proteomics**: samples are multiplexed, usually with a pooled/bridge reference channel, and every other channel can be normalized as a ratio to that reference.
 
-The sidebar lists the workflow steps in order: **Setup**, **Preprocessing**, **Normalization**, **Statistical Analysis**, **Exploratory Analysis**, **Biomarker Discovery** and **Pathway Analysis**. Click a step and its pages appear as a row of buttons at the top of the main area. Once you start working, a collapsible **Processing Log** appears under the navigation. It records every step you applied, with its settings, which is useful for writing methods sections.
+The sidebar lists the workflow steps in order: **Setup**, **Preprocessing**, **Normalization**, **Statistical Analysis**, **Exploratory Analysis**, **Biomarker Discovery** and **Pathway Analysis**. Click a step and its pages appear as a row of buttons at the top of the main area.
 
 Every figure has the same download row: **Format** (PNG, TIFF, JPEG, SVG, PDF, EPS, or all six as one ZIP) and **Resolution (DPI)** of 300, 600 (the default) or 1200. PNG, TIFF and JPEG are high-resolution images; SVG, PDF and EPS are vector files with editable text. Every table downloads as both CSV and Excel. Sample names are written in full in every figure, and every sample is labelled; to shorten long names, use **Sample names in figures** in the side panel (tables keep the full names).
 
@@ -158,13 +158,12 @@ Changing the method clears any earlier normalized result, so results are never m
 
 1. Pick the **Case** (the group of interest), the **Control (reference)** and a **Method**: **Welch's t-test** (unequal variances) or **Wilcoxon rank-sum**.
    - In the current version, the results table is always computed with an unequal-variance (Welch) t-test, whichever Method you pick.
-   - The Method you selected is still written to the Processing Log.
 2. Click **Run Two-Group Test**. The table contains:
    - **Log2FC**: mean of the case minus mean of the control on the normalized log2 data (case over control). Positive means higher in the case.
    - **p-value**.
    - **FDR**: Benjamini-Hochberg.
-   - **Significant**: true when p < 0.05 and FDR < 0.25.
-3. Download **<GroupA>_vs_<GroupB>_Statistics.csv**.
+   - **Significant**: true when p < 0.05 and FDR < 0.05.
+3. Download **<Case>_over_<Control>_Statistics.csv**.
 
 This two-group result drives the Volcano Plot, Heatmap, Biomarker Discovery and Pathway Enrichment pages.
 
@@ -176,7 +175,7 @@ This two-group result drives the Volcano Plot, Heatmap, Biomarker Discovery and 
    - **dunnett**: t-tests of each group against the first group, with BH correction.
    - **pairwise**: all pairs by t-test, with BH correction.
 3. Click **Run ANOVA**. You get F-statistic, ANOVA p-value and FDR for each protein.
-4. Post-hoc results are computed only for proteins with FDR < 0.25. Use **View post-hoc results for feature:** to inspect one protein.
+4. Post-hoc results are computed only for proteins with FDR < 0.05. Use **View post-hoc results for feature:** to inspect one protein.
 
 **Downloads:** ANOVA table, post-hoc results for one protein, and post-hoc results for all proteins.
 
@@ -199,7 +198,7 @@ This page uses the normalized matrix, biological samples only.
 Run a two-group test in Statistics first.
 
 1. **1 — Statistical Thresholds**:
-   - **Y-axis metric**: **p-value** (cutoff default 0.05) or **FDR** (cutoff default 0.25).
+   - **Y-axis metric**: **p-value** (cutoff default 0.05) or **FDR** (cutoff default 0.05).
    - **Fold change threshold (log2 units)**: default 0.
    - Optional **Also require FDR <**.
    - **Show linear FC on x-axis instead of log2FC**.
@@ -219,7 +218,7 @@ This page requires the two-group Statistics result.
 2. **Column (Sample) Annotation**: pick any metadata columns as annotation tracks.
 3. **Row (Protein) Annotation**: shown only if you loaded row annotations. The caption reports how many proteins matched.
 4. Optionally open **Customize Annotation Track Colors**.
-5. **Feature Selection**: **Filter by** FDR (default ≤ 0.25) or p-value (default ≤ 0.05). **Proteins at this cutoff** updates live; above 150 proteins, row labels are hidden.
+5. **Feature Selection**: **Significance metric**: FDR (default ≤ 0.05) or p-value (default ≤ 0.05). **Proteins at this cutoff** updates live; above 150 proteins, row labels are hidden.
 6. **Clustering Options**: **Clustering** (**Rows only** by default, **Both rows and columns**, **Columns only** or **No clustering**), **Distance metric** (euclidean or correlation) and **Linkage method** (ward, average or complete).
 7. **Color Scale Customization**: a preset palette or custom low/mid/high gradient, and **Z-score minimum**/**Z-score maximum** (default −2.5 and 2.5). **Figure Size** and **Title & Font Size** adjust the layout.
 
@@ -242,10 +241,10 @@ The heatmap shows row-scaled z-scores.
 
 ### Biomarker Discovery
 
-1. Choose the **Filtering criterion**: **p<0.05 AND FDR<0.25**, **p<0.05 only** or **FDR<0.25 only**.
-2. Adjust the **p-value cutoff** (default 0.05) and **FDR cutoff** (default 0.25). The criterion you choose decides which cutoffs apply.
+1. Choose the **Selection criterion**: **p<0.05 AND FDR<0.05**, **p<0.05 only** or **FDR<0.05 only**.
+2. Adjust the **p-value cutoff** (default 0.05) and **FDR cutoff** (default 0.05). The criterion you choose decides which cutoffs apply.
 3. Click **Discover Biomarkers**. The table lists p-value, FDR, Log2FC and **Direction** (Up/Down), sorted by p-value.
-4. Download **<GroupA>_vs_<GroupB>_Biomarkers.csv**.
+4. Download **<Case>_over_<Control>_Biomarkers.csv**.
 
 ## Pathway Analysis
 
@@ -253,7 +252,7 @@ The heatmap shows row-scaled z-scores.
 
 This page uses the two-group Statistics result. If a Gene column was provided, protein IDs are translated to gene symbols.
 
-1. Set **Filter by** (FDR or p-value) and a threshold. The defaults are FDR < 0.25 and p < 0.05. This builds the significant list used by STRING and ORA; GSEA ranks all proteins instead.
+1. Set **Significance metric** (FDR or p-value) and a threshold. The defaults are FDR < 0.05 and p < 0.05. This builds the significant list used by STRING and ORA; GSEA ranks all proteins instead.
 2. Choose an **Analysis type**.
 
 **STRING Enrichment Analysis** (needs internet)

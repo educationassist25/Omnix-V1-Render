@@ -81,7 +81,7 @@ def render():
         can_sep = not (scope == "pw" and layout == "each")
         sep_on = c[0].toggle("Separate rows by pathway", scope == "pw", key=f"hm_pw_sep_{scope}",
                              disabled=not can_sep,
-                             help="Each pathway is its own block of rows (never mixed), labelled on the left with "
+                             help="Each pathway is its own block of rows (never mixed), labeled on the left with "
                                   "a vertical line and the pathway name. Clustering orders rows only within a "
                                   "pathway. A metabolite in two selected pathways appears in both blocks. "
                                   "Entire dataset: each metabolite's first assigned pathway, plus “Other / not "
@@ -139,7 +139,7 @@ def render():
                              format_func={"hide": "Hide (significant only)",
                                           "show": "Show, marked “(n.s.)”"}.get,
                              help="Show: every channel is kept; channels that do not meet the criterion in any "
-                                  "selected comparison are labelled e.g. “M+2 (n.s.)” (on screen and in the "
+                                  "selected comparison are labeled e.g. “M+2 (n.s.)” (on screen and in the "
                                   "export).") == "show"
         ns_mark = ns_show and mode == "sig" and sig_set is not None
         pick_box = st.container()
@@ -184,12 +184,12 @@ def render():
     base_tracks = [t for t in ["Group", "Time", "Treatment", "Replicate"] if t in ci0.columns
                    and ci0[t].astype(str).str.strip().replace({"0": "", "nan": ""}).ne("").any()]
     meta_tracks = [t for t in ci0.columns if t.startswith("Meta: ")]
-    with st.expander("Column annotations, clustering and colours", expanded=False):
+    with st.expander("Column annotations, clustering and colors", expanded=False):
         rl = st.columns([2, 1, 1])
         row_style = rl[0].radio("Row label style", ["full", "grouped"], horizontal=True, key="hm_row_style",
                                 format_func={"full": "Metabolite | M+i", "grouped": "Grouped by metabolite"}.get,
                                 help="Grouped by metabolite: the rows of each metabolite stay together (M+0, M+1 …), "
-                                     "labelled M+i; the metabolite name sits in its own column, joined to its rows "
+                                     "labeled M+i; the metabolite name sits in its own column, joined to its rows "
                                      "by a plain vertical line. Metabolites follow the clustering order (no row "
                                      "dendrogram, since clustering single rows would split a metabolite apart).")
         row_labels = rl[1].toggle("Show row labels", True, key="hm_rl")
@@ -203,10 +203,10 @@ def render():
         k = st.columns(3)
         metric = k[0].selectbox("Distance", list(hm.DISTANCES), format_func=hm.DISTANCES.get, key="hm_dist")
         method = k[1].selectbox("Linkage", list(hm.LINKAGES), format_func=hm.LINKAGES.get, key="hm_link")
-        cmap = k[2].selectbox("Colour scale", list(hm.CMAPS), key="hm_cmap")
+        cmap = k[2].selectbox("Color scale", list(hm.CMAPS), key="hm_cmap")
         ap = st.columns(3)
-        auto = ap[0].toggle("Automatic colour limits", True, key="hm_auto")
-        lim = ap[1].number_input("Colour limit ±", 0.1, 100.0, 3.0, 0.5, key="hm_lim", disabled=auto)
+        auto = ap[0].toggle("Automatic color limits", True, key="hm_auto")
+        lim = ap[1].number_input("Color limit ±", 0.1, 100.0, 3.0, 0.5, key="hm_lim", disabled=auto)
     grouped = row_style == "grouped"
 
     n0 = max(len(prepared[0][1]), 2)
@@ -251,7 +251,7 @@ def render():
             col=f2[3].number_input("Column labels (pt)", 3.0, 24.0, hm.DEFAULT_FONTS["col"], 0.5, key="hm_fs_col"),
             ann=f2[4].number_input("Annotations & legend (pt)", 3.0, 24.0, hm.DEFAULT_FONTS["ann"], 0.5,
                                    key="hm_fs_ann"),
-            scale=f2[5].number_input("Colour scale (pt)", 3.0, 24.0, hm.DEFAULT_FONTS["scale"], 0.5,
+            scale=f2[5].number_input("Color scale (pt)", 3.0, 24.0, hm.DEFAULT_FONTS["scale"], 0.5,
                                      key="hm_fs_scale"),
             section=sec_fs)
         st.caption("Sizes in points apply to the exported figure; the on-screen heatmap uses the same family and "

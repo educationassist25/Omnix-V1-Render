@@ -126,11 +126,11 @@ Internal-standard rows are left out of the untargeted pipeline, since they are n
 2. Pick the **Case** (the group of interest) and the **Control (reference)**, and a **Method**: **Welch's t-test** or **Wilcoxon rank-sum**.
 3. Click **Run Two-Group Test**. The results table has four columns:
    - **p-value**
-   - the Benjamini–Hochberg adjusted p-value, labelled **BH P Value** for untargeted data and **FDR** for targeted data
+   - the Benjamini–Hochberg adjusted p-value, labeled **FDR**
    - **Log2FC**: mean log2 of B minus mean log2 of A, so a positive value means higher in B
    - **Linear_FC**
 
-   The success message counts metabolites with p < 0.05 and an adjusted p < 0.25. Download `<A>_vs_<B>_Statistics.csv`.
+   The success message counts metabolites with p < 0.05 and an adjusted p < 0.25. Download `<Case>_over_<Control>_Statistics.csv`.
 
 The Volcano Plot, Heatmap and Biomarker Discovery pages use the latest two-group result.
 
@@ -173,7 +173,7 @@ This page needs a two-group result.
 This page needs a two-group result, which decides which metabolites are shown.
 
 1. Choose **Filter samples by:** and the groups. Add **Column annotation tracks:**. If you uploaded row annotations, you can also add row tracks and **Group metabolites into module bands by:** a category. To change track colors, open **Annotation Colors** and click **Apply Colors** (or **Reset Colors**).
-2. **Significant feature cutoff**: adjusted p ≤ 0.25 (default), adjusted p ≤ 1, P-value ≤ 0.05, or P-value ≤ 1. Row labels are hidden above 150 metabolites.
+2. **Significance cutoff**: adjusted p ≤ 0.25 (default), adjusted p ≤ 1, P-value ≤ 0.05, or P-value ≤ 1. Row labels are hidden above 150 metabolites.
 3. **Clustering**: Rows only (default), Both rows and columns, Columns only, or No clustering. Also choose a **Distance metric** (euclidean or correlation) and a **Linkage method** (ward, average or complete).
 4. Set the palette or a custom gradient, and **Z-score minimum** / **Z-score maximum** (default −2.5 to 2.5). Values are z-scored per metabolite.
 5. Download the figure with the standard download row (any format, 300–1200 DPI). The cells are drawn as an image, so the DPI also sets their sharpness in PDF, SVG and EPS. The **Z-score Data Table** also downloads (CSV or Excel).
@@ -190,9 +190,9 @@ This page needs a two-group result, which decides which metabolites are shown.
 
 This page needs a two-group result.
 
-1. Choose a **Filtering criterion**: **p<0.05 AND FDR<0.25** (default), **p<0.05 only**, or **FDR<0.25 only**. For untargeted data, "FDR" reads "BH P Value". You can adjust both cutoffs.
+1. Choose a **Selection criterion**: **p<0.05 AND FDR<0.25** (default), **p<0.05 only**, or **FDR<0.25 only**. You can adjust both cutoffs.
 2. Click **Discover Biomarkers**. The table shows p-value, adjusted p, Linear_FC, Log2FC and Direction (Up/Down).
-3. Download `<A>_vs_<B>_Biomarkers.csv`.
+3. Download `<Case>_over_<Control>_Biomarkers.csv`.
 
 ## Pathway Analysis
 
@@ -293,7 +293,7 @@ This page finds metabolite pairs whose correlation changes between two groups: a
 
 ## Glossary
 
-- **Adjusted p-value (FDR q-value / BH P Value):** the p-value corrected for testing many metabolites at once (Benjamini–Hochberg). It is labelled "BH P Value" for untargeted data and "FDR" for targeted data; the calculation is the same.
+- **Adjusted p-value (FDR):** the p-value corrected for testing many metabolites at once (Benjamini–Hochberg). It is labeled "FDR" in every Omnix platform.
 - **Log2 FC:** mean log2 in the case minus the control (case over control). +1 means twice as high in the case. **Linear_FC** = 2^Log2FC.
 - **CV (coefficient of variation):** SD ÷ mean × 100 across QC injections. The app uses 20% as its cutoff.
 - **QC sample:** a repeated pooled-QC injection, flagged in **IsQC** and excluded from analysis.

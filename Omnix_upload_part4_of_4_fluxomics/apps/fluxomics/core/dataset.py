@@ -324,7 +324,7 @@ def read_generic(table_src, table_name: str, meta_src=None, meta_name: str | Non
         S["Sample"] = samples
         S = S.drop(columns="_f")
         S["Treatment"] = ""
-        log.append("No metadata file: groups and times were read from the sample names (edit them in Step 2).")
+        log.append("No metadata file: groups and times were read from the sample names (edit them on the Experimental design page).")
     keep = [c for c in ["Compound", "Formula", "Method", "n", "i", "Channel"]] + list(S.Sample)
     CT = CT[keep]
     full = CT.copy()                     # every isotopologue M+0…M+n as supplied (labeling denominator)

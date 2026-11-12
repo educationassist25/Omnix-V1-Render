@@ -108,7 +108,7 @@ Click **Run statistics**. Every result table lists the p value and the Benjamini
 
 ### Dynamic bar plots
 
-One plot per metabolite (up to 8 at a time): **Values** = isotope incorporation (%), every isotopologue fraction (%) or every isotopologue's intensity (active dataset). One bar per group × time point (group colour, lighter = earlier time), bar = mean of the biological replicates, error bar **SD**, **SEM** or none, dots = replicates (**Show replicates**). Choose the groups and time points, and **Hide M+0** if needed.
+One plot per metabolite (up to 8 at a time): **Values** = isotope incorporation (%), every isotopologue fraction (%) or every isotopologue's intensity (active dataset). One bar per group × time point (group color, lighter = earlier time), bar = mean of the biological replicates, error bar **SD**, **SEM** or none, dots = replicates (**Show replicates**). Choose the groups and time points, and **Hide M+0** if needed.
 
 ### Heatmaps
 
@@ -116,7 +116,7 @@ Clustered heatmaps of isotopologue channels (row-wise Z-score, one column per sa
 
 1. **Conditions, time points and pathways:** choose any conditions and time points (the Z-score is recomputed across the samples shown), and either the **Entire dataset** or **Selected pathways** (one combined heatmap or one per pathway). With **Separate rows by pathway**, each pathway is its own block of rows with its name on the left; the gap between blocks is adjustable.
 2. **Rows:** by significance from Statistics (FDR, default ≤ 0.25; P value, default ≤ 0.05; or both), by variance, or all. Non-significant rows can be hidden or shown marked "(n.s.)". **Highlight rows** marks chosen channels.
-3. **Column annotations, clustering and colours:** sample annotation tracks, clustering, colour scale, and row labels as *Metabolite | M+i* or *Grouped by metabolite*.
+3. **Column annotations, clustering and colors:** sample annotation tracks, clustering, color scale, and row labels as *Metabolite | M+i* or *Grouped by metabolite*.
 4. **Proportions:** *Balanced* (default), fixed cell size or a custom figure size, plus font sizes for row labels, metabolite names and pathway names.
 
 ## Pathway Analysis
