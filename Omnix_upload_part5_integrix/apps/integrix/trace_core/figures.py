@@ -34,7 +34,7 @@ def _repel_annotations(fig, x, y, labels, all_x, all_y, xr, yr, W_px=1000, H_px=
     O = O[np.isfinite(O).all(1)]
     pt = fs * 0.75
     sizes = np.array([text_size(s_, pt) for s_ in labels]) if len(labels) else np.zeros((0, 2))
-    C, placed, lead = place_labels(A, sizes, O, np.full(len(O), 0.045), np.zeros((0, 2)), W, H,
+    C, placed, lead = place_labels(A, sizes, O, np.full(len(O), 0.045), np.zeros((0, 2)), W, H, hide_unplaced=True,
                                    anchor_r=np.full(len(A), 0.05), margin=0.0)
     for i, lab in enumerate(labels):
         if not placed[i]:
@@ -58,7 +58,7 @@ def _layout(fig, title, h=520, **kw):
         cut = title.rfind(":", 0, 60)
         cut = cut + 1 if cut > 10 else title.rfind(" ", 0, 50)
         title = title[:cut].strip() + "<br><sup>" + title[cut:].strip() + "</sup>"
-    fig.update_layout(title=dict(text=title, x=0.01, y=1, yref="container", yanchor="top", pad=dict(t=12),
+    fig.update_layout(title=dict(text=title, x=0.01, y=1, yref="container", yanchor="top", pad=dict(t=16),
                                  font=dict(size=16)), font=FONT, height=h, autosize=True,
                       template="simple_white", **kw)
     fig.update_xaxes(automargin=True)
@@ -405,11 +405,12 @@ def perm_hist(sig: dict):
 def panel_bars(panel: pd.DataFrame):
     d = panel.sort_values("selection_frequency")
     cmap = {"mRNA": "#2C6FB7", "protein": TEAL, "metabolite": ORANGE}
-    fig = go.Figure(go.Bar(x=d["selection_frequency"], y=[f"{a} ({b})" for a, b in zip(d["label"], d["layer"])],
+    fig = go.Figure(go.Bar(x=d["selection_frequency"], y=[_wrap(f"{a} ({b})", 32, 2) for a, b in zip(d["label"], d["layer"])],
                            orientation="h", marker_color=[cmap.get(l, "#888") for l in d["layer"]]))
     fig.add_vline(x=0.7, line_dash="dot", line_color="#555")
-    fig.update_xaxes(title="Selection frequency across outer folds", range=[0, 1.02])
-    return _layout(fig, "Stability-selected integrated panel", max(320, 24 * len(d) + 120))
+    fig.update_xaxes(title="Selection frequency<br>across outer folds", range=[0, 1.02])
+    row = 38 if any("<br>" in str(v) for v in fig.data[0].y) else 24     # two-line names need two-line rows
+    return _layout(fig, "Stability-selected integrated panel", max(320, row * len(d) + 130))
 
 
 def targets_bar(tg: pd.DataFrame, top: int = 20):

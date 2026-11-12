@@ -74,3 +74,15 @@ def test_eps_of_a_heatmap_colour_bar():
     f = go.Figure(go.Heatmap(z=[[1, 2], [3, 4]], colorbar=dict(title="v")))
     eps = PX.figure_bytes(PX.screen_figure(f), "eps", 300, 4, 3)
     assert eps.startswith(b"%!PS") and len(eps) < 2e6
+
+
+def test_wrap_never_exceeds_its_width():
+    """Long names (and long single words) wrap within the width; overflow ends with an ellipsis."""
+    from trace_core import printfig as PRT
+    long_name = ("Beta oxidation of unsaturated fatty acids (n-9) (mitochondrial) and associated "
+                 "mitochondrial/peroxisomal transport and regulatory reactions ACADM_ISOFORM_LONGNAME_X1")
+    for width, pt, lines in ((1.0, 7, 3), (1.6, 8, 2), (0.6, 10, 4)):
+        out = PRT.wrap(long_name, width, pt, lines)
+        parts = out.split("<br>")
+        assert len(parts) <= lines and all(PRT.text_w_in(p, pt) <= width + 1e-6 for p in parts)
+    assert PRT.wrap("Short", 2, 8, 3) == "Short"

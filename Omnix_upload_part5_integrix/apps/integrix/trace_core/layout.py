@@ -254,7 +254,11 @@ def remove_overlaps(P: np.ndarray, r: np.ndarray, W: float, H: float, iters: int
 # ------------------------------------------------------------------------------------------- labels
 def text_size(text: str, fontsize_pt: float) -> tuple[float, float]:
     """Approximate rendered size (inches) of a single-line label."""
-    w = 0.56 * fontsize_pt / 72 * max(1, len(text)) + 0.06
+    try:                                    # exact width from the font outlines (as for the print figures)
+        from .printfig import text_w_in
+        w = text_w_in(text, fontsize_pt) + 0.06
+    except Exception:
+        w = 0.56 * fontsize_pt / 72 * max(1, len(text)) + 0.06
     h = 1.30 * fontsize_pt / 72 + 0.04
     return w, h
 

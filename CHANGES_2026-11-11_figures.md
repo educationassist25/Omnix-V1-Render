@@ -94,3 +94,23 @@ around the chart. New `trace_core/printfig.py` keeps the chart (data, marks, col
 - **EPS:** gradient colour bars are converted to 64 solid bands, so heatmap EPS files work and stay vector.
 - **Checked:** every chart in all six formats, at the default and at the narrowest width with 10 pt text. No
   blank files, no clipped or overlapping text.
+
+## Integrix: no overlapping text with long names
+Every chart was stress-tested with very long names (110-character pathways, 27-character enzyme and gene
+names, 50-character group names, long panel features) and with the demo names: 288 renderings (every width,
+7 / 8 / 10 / 12 pt, and the screen charts at half and full width). An automatic check measured every text
+element (rotation included). Result: no overlaps and no text outside the figure.
+- **Exact text widths:** measured from the font outlines (Liberation Sans / Arial) instead of a character-count
+  estimate.
+- **Long names:** wrapped within their column, breaking long words at - _ / . when needed. When a name needs
+  more than the allowed lines (3 for pathways), the last line ends with "…". Before, the overflow was merged
+  into one overlong line.
+- **Scatter maps:** gene and enzyme labels are placed again for each print size, with the quadrant captions
+  treated as occupied. A label that cannot be placed cleanly is left out rather than drawn over another; the
+  screen charts follow the same rule.
+- **Bar charts with wrapped names:** every row gets the height of the tallest name.
+- **Legends and axis titles:** legend entries and long axis titles wrap to the figure width.
+- **Dot plot headers:** the column headers stand vertical when 45 degrees would let them touch.
+- **Narrow widths:** the factor variance heatmap is offered at 1.5 and double column only.
+- **Screen charts:** two-line chart titles are no longer clipped at the top. The panel chart wraps long feature
+  names and its axis title.

@@ -33,6 +33,7 @@ DEFAULT_WIDTH = {"layer_concordance": 7.2, "reaction_classification": 3.5, "reac
                  "signature_panel": 3.5}
 # widths a chart can be set at without its labels colliding (dense charts need the wider columns)
 ALLOWED = {"reaction_patterns": (5.5, 7.2), "concordance": (5.5, 7.2), "layer_concordance": (7.2,),
+           "factor_variance": (5.5, 7.2),
            "pathway_activity": (5.5, 7.2), "canonical_pathways": (3.5, 5.5, 7.2)}
 MIN_PT = 6.0
 
@@ -47,26 +48,77 @@ def px(pt: float) -> float:
     return pt * 4.0 / 3.0
 
 
+_FONT_PROP = None
+
+
+def _font():
+    """The font used to measure text: Arial or its metric twin Liberation Sans when installed (the server's
+    Chrome uses the same), otherwise DejaVu Sans, which is ~8 % wider, so the layout errs on the safe side."""
+    global _FONT_PROP
+    if _FONT_PROP is None:
+        from matplotlib import font_manager as fm
+        have = {f.name for f in fm.fontManager.ttflist}
+        fam = next((n for n in ("Arial", "Liberation Sans", "Helvetica", "Arimo") if n in have), "DejaVu Sans")
+        _FONT_PROP = fm.FontProperties(family=fam)
+    return _FONT_PROP
+
+
+@__import__("functools").lru_cache(maxsize=20000)
+def _measure(s: str, pt: float) -> float:
+    try:
+        from matplotlib.textpath import TextPath
+        tp = TextPath((0, 0), s, size=pt, prop=_font())
+        return (tp.get_extents().width + 0.25 * pt) / 72.0             # + side bearings
+    except Exception:
+        return 0.56 * pt / 72.0 * len(s)
+
+
 def text_w_in(s: str, pt: float) -> float:
-    """Width of one line of Arial text (inches); average advance 0.53 em, a little generous on purpose."""
-    s = re.sub(r"<[^>]+>", "", str(s))
-    return 0.53 * pt / 72.0 * len(s)
+    """Width (inches) of the longest line of `s` (Plotly <br> lines) at `pt` points, from the font outlines."""
+    lines = re.split(r"<br\s*/?>", str(s))
+    return max(_measure(re.sub(r"<[^>]+>", "", ln).strip(), round(float(pt), 2)) for ln in lines) * 1.03
+
+
+def _split_word(w: str, max_in: float, pt: float) -> list:
+    """A word longer than a line: break after - _ / . or, failing that, at the last character that fits."""
+    out, cur = [], ""
+    for ch in w:
+        if cur and text_w_in(cur + ch, pt) > max_in:
+            cut = max((cur.rfind(c) for c in "-_/."), default=-1)
+            if cut > len(cur) // 3:
+                out.append(cur[:cut + 1])
+                cur = cur[cut + 1:] + ch
+            else:
+                out.append(cur)
+                cur = ch
+        else:
+            cur += ch
+    out.append(cur)
+    return out
 
 
 def wrap(s: str, max_in: float, pt: float, max_lines: int = 3) -> str:
-    """Word-wrap `s` (Plotly <br>) so every line fits in max_in inches; never truncates a word."""
-    words = re.sub(r"<br>", " ", str(s)).split()
-    per = max(8, int(max_in / (0.53 * pt / 72.0)))
+    """Wrap `s` into lines (Plotly <br>) that each fit in max_in inches at `pt`. Long words are broken; if the
+    text needs more than max_lines lines, the last line ends with an ellipsis. Nothing is ever wider than
+    max_in, so neighbouring labels cannot run into each other."""
+    words = []
+    for w in re.sub(r"<br\s*/?>", " ", str(s)).split():
+        words += _split_word(w, max_in, pt) if text_w_in(w, pt) > max_in else [w]
     lines, cur = [], ""
     for w in words:
-        if cur and len(cur) + 1 + len(w) > per:
+        cand = f"{cur} {w}" if cur else w
+        if cur and text_w_in(cand, pt) > max_in:
             lines.append(cur)
             cur = w
         else:
-            cur = f"{cur} {w}" if cur else w
-    lines.append(cur)
-    if len(lines) > max_lines:                    # keep every word: merge the tail into the last line
-        lines = lines[:max_lines - 1] + [" ".join(lines[max_lines - 1:])]
+            cur = cand
+    if cur:
+        lines.append(cur)
+    if len(lines) > max_lines:
+        last = lines[max_lines - 1]
+        while last and text_w_in(last + "…", pt) > max_in:
+            last = last[:-1].rstrip()
+        lines = lines[:max_lines - 1] + [last + "…"]
     return "<br>".join(lines)
 
 
@@ -74,15 +126,18 @@ def _n_lines(s) -> int:
     return str(s).count("<br>") + 1
 
 
-def _legend_rows(names, W_in: float, pt: float, symbol_in: float = 0.28) -> int:
-    """Lines a horizontal legend needs at width W_in (Plotly packs entries left to right)."""
-    rows, used = 1, 0.0
+def _legend_rows(names, W_in: float, pt: float, symbol_in: float = 0.45) -> int:
+    """Text lines a horizontal legend needs at width W_in (Plotly packs entries left to right; an entry whose
+    name has several lines makes its row that tall)."""
+    lines, used, row_max = 0, 0.0, 1
     for n in names:
         w = text_w_in(n, pt) + symbol_in + 0.12
         if used and used + w > W_in:
-            rows, used = rows + 1, 0.0
+            lines += row_max
+            used, row_max = 0.0, 1
         used += w
-    return rows
+        row_max = max(row_max, _n_lines(n))
+    return lines + row_max
 
 
 def _base(fig, W_in: float, pt: float):
@@ -159,6 +214,9 @@ def typeset(fig, name: str, W_in: float | None = None, pt: float = 8.0, H_in: fl
     if ok and W_in < min(ok):                       # too narrow for this chart's labels
         W_in = min(ok)
         f.update_layout(width=int(round(W_in * PX_PER_IN)))
+    for t in f.data:                                # legend entries never wider than the figure
+        if t.name and t.showlegend is not False and text_w_in(t.name, small) > W_in - 0.7:
+            t.name = wrap(t.name, W_in - 0.7, small, 3)
     fn = _LAYOUTS.get(name, _generic)
     h = fn(f, W_in, pt, small, line_in)
     H = float(H_in or h)
@@ -174,7 +232,7 @@ def _wrap_axis_titles(f, W, H, pt):
         t = ax.title.text if ax.title else None
         if not t or "<br>" in t:
             continue
-        room = (W - 1.0) if ax_name.startswith("x") else 0.5 * H      # y: the plot is about half the height
+        room = (0.55 * W) if ax_name.startswith("x") else 0.5 * H      # about the plot's length
         if text_w_in(t, pt) > room:
             ax.title.text = wrap(t, room, pt, 2)
 
@@ -203,9 +261,77 @@ def _xy_scatter(f, W, pt, small, line_in, aspect=0.78):
     names = [t.name for t in f.data if t.name and t.showlegend is not False]
     lh, gap = _legend_below(f, names, W, pt)
     plot_h = (W - 0.75) * aspect
-    f.update_layout(margin=dict(l=4, r=8, t=6, b=int((lh + gap + 0.45) * PX_PER_IN)))
+    ytitle = str(f.layout.yaxis.title.text or "")
+    left_in = 0.42 + _n_lines(wrap(ytitle, 0.5 * (plot_h + 0.45 + lh + gap), pt, 2)) * pt * 1.25 / 72.0
+    f.update_layout(margin=dict(l=int(left_in * PX_PER_IN), r=8, t=6, b=int((lh + gap + 0.45) * PX_PER_IN)))
     f.update_xaxes(title_standoff=2)
+    f.update_yaxes(automargin=False)
+    _relabel(f, W - left_in - 8 / PX_PER_IN, plot_h, min(small, 7.5))
     return plot_h + 0.45 + lh + gap
+
+
+def _xy_points(f):
+    xs, ys = [], []
+    for t in f.data:
+        if t.type in ("scatter", "scattergl") and t.x is not None and t.y is not None and t.mode != "lines":
+            x, y = _arr(t.x), _arr(t.y)
+            if x.ndim and len(x) == len(y):
+                xs.append(x)
+                ys.append(y)
+    if not xs:
+        return np.zeros((0, 2))
+    P = np.c_[np.concatenate(xs), np.concatenate(ys)]
+    return P[np.isfinite(P).all(1)]
+
+
+def _relabel(f, plot_w: float, plot_h: float, lab_pt: float):
+    """Place the gene / enzyme labels again for the print canvas (plot_w x plot_h inches): no label touches
+    another, a quadrant caption or the frame; a label that cannot be placed cleanly is left out."""
+    from .layout import place_labels
+    xr, yr = list(f.layout.xaxis.range or []), list(f.layout.yaxis.range or [])
+    if len(xr) != 2 or len(yr) != 2:
+        return
+    tx = lambda v: (np.asarray(v, float) - xr[0]) / (xr[1] - xr[0]) * plot_w
+    ty = lambda v: (np.asarray(v, float) - yr[0]) / (yr[1] - yr[0]) * plot_h
+    data_ann = [a for a in f.layout.annotations if a.xref in (None, "x") and a.yref in (None, "y")]
+    keep = [a for a in f.layout.annotations if not (a.xref in (None, "x") and a.yref in (None, "y"))]
+    if not data_ann:
+        return
+    anchors = np.array([[a.x, a.y] for a in data_ann], float)
+    texts = [a.text for a in data_ann]
+    A = np.c_[tx(anchors[:, 0]), ty(anchors[:, 1])]
+    hl = lab_pt * 1.25 / 72.0 + 0.03
+    sizes = np.array([[text_w_in(t_, lab_pt) + 0.05, hl] for t_ in texts])
+    P = _xy_points(f)
+    O = np.c_[tx(P[:, 0]), ty(P[:, 1])] if len(P) else np.zeros((0, 2))
+    R = np.full(len(O), 0.03)
+    # quadrant captions and other paper-anchored text: their boxes are occupied
+    occ = []
+    for a in keep:
+        if a.xref == "paper" and a.yref == "paper" and a.text:
+            w_, h_ = text_w_in(a.text, (a.font.size or 10) * 0.75) + 0.06, _n_lines(a.text) * hl + 0.04
+            x0 = a.x * plot_w - (w_ if a.xanchor == "right" else (w_ / 2 if a.xanchor == "center" else 0))
+            y0 = a.y * plot_h - (h_ if a.yanchor == "top" else (h_ / 2 if a.yanchor == "middle" else 0))
+            gx, gy = np.meshgrid(np.arange(x0, x0 + w_ + 0.03, 0.03), np.arange(y0, y0 + h_ + 0.03, 0.03))
+            occ.append(np.c_[gx.ravel(), gy.ravel()])
+    if occ:
+        O = np.r_[O, np.concatenate(occ)]
+        R = np.r_[R, np.full(len(O) - len(R), 0.02)]
+    C, placed, lead = place_labels(A, sizes, O, R, np.zeros((0, 2)), plot_w, plot_h, hide_unplaced=True,
+                                   margin=0.02, anchor_r=np.full(len(A), 0.04))
+    f.layout.annotations = keep
+    for i, txt in enumerate(texts):
+        if not placed[i]:
+            continue
+        cx = xr[0] + C[i, 0] / plot_w * (xr[1] - xr[0])
+        cy = yr[0] + C[i, 1] / plot_h * (yr[1] - yr[0])
+        common = dict(text=txt, font=dict(size=px(lab_pt), family=FAMILY, color="#000000"),
+                      bgcolor="rgba(255,255,255,0.85)", borderpad=0)
+        if lead[i]:
+            f.add_annotation(x=anchors[i, 0], y=anchors[i, 1], ax=cx, ay=cy, axref="x", ayref="y", showarrow=True,
+                             arrowhead=0, arrowwidth=0.75, arrowcolor="#7F8C8D", standoff=2, **common)
+        else:
+            f.add_annotation(x=cx, y=cy, showarrow=False, **common)
 
 
 def _pattern(f, W, pt, small, line_in):
@@ -227,9 +353,9 @@ def _canonical(f, W, pt, small, line_in):
             t.y = labs
             t.marker.size = 4
             t.line.width = 1
-    lines = sum(_n_lines(l) for l in labs)
     pitch = small * 1.25 / 72.0
-    rows_h = lines * pitch + len(labs) * pitch * 0.9           # text plus a gap of ~1 line between rows
+    # categories are evenly spaced, so every row gets the height of the tallest label plus a gap
+    rows_h = len(labs) * (max(_n_lines(l) for l in labs) * pitch + 0.9 * pitch)
     f.update_layout(bargap=0.28)
     f.update_yaxes(range=[-0.6, len(labs) - 0.4], autorange=False)
     f.update_xaxes(title_standoff=2)
@@ -244,7 +370,7 @@ def _panel(f, W, pt, small, line_in):
     labs = [wrap(y, 0.45 * W, small, 2) for y in bar.y]
     f.data[0].y = labs
     pitch = small * 1.25 / 72.0
-    rows_h = sum(_n_lines(l) for l in labs) * pitch + len(labs) * pitch * 0.8
+    rows_h = len(labs) * (max(_n_lines(l) for l in labs) * pitch + 0.8 * pitch)
     f.update_layout(bargap=0.3)
     return rows_h + (pt * 1.25 + small * 1.25) / 72 + 0.2
 
@@ -266,7 +392,9 @@ def _dotplot(f, W, pt, small, line_in):
     two = any("<br>" in l for l in labs)
     cell = max(cell, (2 if two else 1) * small * 1.2 / 72.0 + 0.04)
     grid_w = units * cell
-    col_top = max(text_w_in(t, small) for t in xa.ticktext) * math.sin(math.radians(45)) + 0.12
+    # angled headers at 45 degrees only when neighbours stay a full line apart (pitch x sin 45 >= line height)
+    ang = 45 if cell * math.sin(math.radians(45)) >= small * 1.3 / 72.0 else 90
+    col_top = max(text_w_in(t, small) for t in xa.ticktext) * math.sin(math.radians(ang)) + 0.12
     plot_h = (ya.range[1] - ya.range[0]) * cell
 
     # ---- key entries: class tiles present in the chart, then the three size circles
@@ -294,7 +422,7 @@ def _dotplot(f, W, pt, small, line_in):
     right = max(4, int((W - lab_w - grid_w) * PX_PER_IN) - 2)
     top, bottom = int(col_top * PX_PER_IN), int(key_h * PX_PER_IN)
     f.update_yaxes(ticktext=labs, tickfont=dict(size=px(small)), automargin=False)
-    f.update_xaxes(tickfont=dict(size=px(small)), automargin=False, constrain="range")
+    f.update_xaxes(tickfont=dict(size=px(small)), automargin=False, constrain="range", tickangle=-ang)
     f.update_layout(margin=dict(l=left, r=right, t=top, b=bottom), showlegend=False)
     for a in f.layout.annotations or ():
         a.font.size = px(small)
