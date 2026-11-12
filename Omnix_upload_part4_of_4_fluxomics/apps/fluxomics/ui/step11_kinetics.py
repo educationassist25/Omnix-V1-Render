@@ -78,3 +78,4 @@ def render():
     st.caption("The exported figure is laid out in inches: the label column, title, group headers, time labels, "
                "axis label and legend each get their own band, and every row ≥ 0.15 in, so no text overlaps a bar "
                "or another label at any size (height grows automatically when needed).")
+    C.next_button("stats", "Statistics")

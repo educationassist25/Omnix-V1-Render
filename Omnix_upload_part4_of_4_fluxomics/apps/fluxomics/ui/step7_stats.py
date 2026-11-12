@@ -86,7 +86,7 @@ def render():
     cur = st.selectbox("Result set", keys, index=keys.index(s.get("stats_current")) if s.get("stats_current") in keys
                        else len(keys) - 1, key="st_cur")
     _show(s.stats[cur], cur, crit, alpha)
-    C.next_button("pathways", "Pathway mapping")
+    C.next_button("boxplots", "Dynamic bar plots")
 
 
 def _pairs(an, ga, gb, h):

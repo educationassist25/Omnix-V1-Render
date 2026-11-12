@@ -390,7 +390,7 @@ def render():
                         tables={"Z-score matrix (as plotted)": Tz, f"{info['unit']} values of these rows": Tv})
     if shown:
         s.results["heatmap_done"] = True
-    C.next_button("kinetics", "Label arrival")
+    C.next_button("pathways", "Pathway mapping")
 
 
 PX_PER_IN = 96

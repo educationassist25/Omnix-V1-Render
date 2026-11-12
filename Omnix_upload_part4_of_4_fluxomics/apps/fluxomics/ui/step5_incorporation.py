@@ -110,4 +110,4 @@ def render():
         C.download_panel("Isotope_incorporation", "inc_dl",
                          tables={"Per sample": by_s, "Group × time (mean, SD, n)": by_c},
                          workbook={"Per_sample": by_s, "Group_x_time": by_c, "Definitions": notes})
-    C.next_button("boxplots", "Dynamic bar plots")
+    C.next_button("kinetics", "Label arrival")

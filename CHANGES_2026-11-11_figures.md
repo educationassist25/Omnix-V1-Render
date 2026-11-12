@@ -114,3 +114,9 @@ element (rotation included). Result: no overlaps and no text outside the figure.
 - **Narrow widths:** the factor variance heatmap is offered at 1.5 and double column only.
 - **Screen charts:** two-line chart titles are no longer clipped at the top. The panel chart wraps long feature
   names and its axis title.
+
+## Fluxomics: "Continue" buttons follow the sidebar order
+The Continue buttons still followed the old step order, so Isotope incorporation jumped to Dynamic bar plots
+and skipped Label arrival and Statistics (the Heatmaps page selects rows from a Statistics result). They now
+follow the sidebar: Incorporation → Label arrival → Statistics → Dynamic bar plots → Heatmaps → Pathway mapping
+(the last page has no Continue button).

@@ -92,4 +92,4 @@ def render():
     if len(sel) > 8:
         st.caption("Showing the first 8 metabolites.")
     s.results["box_done"] = True
-    C.next_button("stats", "Statistics")
+    C.next_button("heatmap", "Heatmaps")

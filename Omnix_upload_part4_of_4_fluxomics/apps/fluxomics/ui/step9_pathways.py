@@ -33,7 +33,6 @@ def render():
         map_tab(s, A, sel)
     with st.expander("Metabolite annotation (identifiers, pathways, confidence) — edit if needed", expanded=False):
         annotation_tab(s, A)
-    C.next_button("heatmap", "Heatmaps")
 
 
 # ---------------------------------------------------------------------------
