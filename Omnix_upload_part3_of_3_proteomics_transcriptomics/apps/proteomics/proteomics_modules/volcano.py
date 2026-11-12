@@ -24,6 +24,17 @@ import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib.lines import Line2D
 
+
+def _agg_renderer(fig):
+    """Renderer for measuring text. Some servers give a figure a plain canvas with no renderer
+    ('FigureCanvasBase' has no attribute 'get_renderer'); then an Agg canvas is attached for it."""
+    if not hasattr(fig.canvas, "get_renderer"):
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+        FigureCanvasAgg(fig)
+    fig.canvas.draw()
+    return fig.canvas.get_renderer()
+
+
 try:
     from adjustText import adjust_text
     HAS_ADJUST_TEXT = True
@@ -125,7 +136,7 @@ def wrap_label(text, max_chars: int, max_lines: int = 3) -> str:
 
 def _text_width_in(text: str, fontsize: float) -> float:
     tmp_fig = plt.figure()
-    renderer = tmp_fig.canvas.get_renderer()
+    renderer = _agg_renderer(tmp_fig)
     t = tmp_fig.text(0, 0, text, fontsize=fontsize)
     width_in = t.get_window_extent(renderer=renderer).width / tmp_fig.dpi
     plt.close(tmp_fig)
@@ -137,8 +148,7 @@ def _measure_legend_size_in(legend_handles, title, fontsize=9.5, title_fontsize=
     leg = tmp_fig.legend(handles=legend_handles, loc="center left", fontsize=fontsize,
                          frameon=False, title=title, title_fontsize=title_fontsize,
                          alignment="left", ncol=ncol)
-    tmp_fig.canvas.draw()
-    renderer = tmp_fig.canvas.get_renderer()
+    renderer = _agg_renderer(tmp_fig)
     bbox = leg.get_window_extent(renderer=renderer)
     size_in = (bbox.width / tmp_fig.dpi, bbox.height / tmp_fig.dpi)
     plt.close(tmp_fig)

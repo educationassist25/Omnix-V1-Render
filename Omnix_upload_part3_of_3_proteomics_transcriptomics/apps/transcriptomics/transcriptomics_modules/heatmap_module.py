@@ -50,7 +50,7 @@ def _text_width_in(text: str, fontsize: float) -> float:
     using a throwaway Agg canvas. Used to size margins dynamically so long labels never
     collide with the legend or get clipped."""
     tmp_fig = plt.figure()
-    renderer = tmp_fig.canvas.get_renderer()
+    renderer = _agg_renderer(tmp_fig)
     t = tmp_fig.text(0, 0, text, fontsize=fontsize)
     bbox = t.get_window_extent(renderer=renderer)
     width_in = bbox.width / tmp_fig.dpi
@@ -60,6 +60,17 @@ def _text_width_in(text: str, fontsize: float) -> float:
 
 from transcriptomics_modules.utils import build_colormap  # re-exported for backward compatibility
 from transcriptomics_modules.sample_labels import column_label_fontsize, display as display_names
+
+
+def _agg_renderer(fig):
+    """Renderer for measuring text. Some servers give a figure a plain canvas with no renderer
+    ('FigureCanvasBase' has no attribute 'get_renderer'); then an Agg canvas is attached for it."""
+    if not hasattr(fig.canvas, "get_renderer"):
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+        FigureCanvasAgg(fig)
+    fig.canvas.draw()
+    return fig.canvas.get_renderer()
+
 
 
 ANNOTATION_MISSING_LABEL = "(missing)"

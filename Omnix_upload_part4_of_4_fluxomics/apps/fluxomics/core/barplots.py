@@ -12,6 +12,17 @@ import pandas as pd
 
 from .style import INK, INK2, GRID, group_colors
 
+
+def _agg_renderer(fig):
+    """Renderer for measuring text. Some servers give a figure a plain canvas with no renderer
+    ('FigureCanvasBase' has no attribute 'get_renderer'); then an Agg canvas is attached for it."""
+    if not hasattr(fig.canvas, "get_renderer"):
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+        FigureCanvasAgg(fig)
+    fig.canvas.draw()
+    return fig.canvas.get_renderer()
+
+
 FONT = dict(family="Inter, Segoe UI, Helvetica, Arial, sans-serif", size=12, color=INK)
 ERRORS = {"SD": "SD", "SEM": "SEM", "none": "No error bar"}
 
@@ -156,8 +167,7 @@ def iso_bar_mpl(X: pd.DataFrame, arms: list, times: list, isos: list, ylab: str,
     t2 = fig.text(0.5, 1, "\n".join(textwrap.wrap(sub, int(max_ch * 1.2))), ha="center", va="top", fontsize=8.5,
                   color="black")
     # ---- measure the text, then place everything in inches
-    fig.canvas.draw()
-    r = fig.canvas.get_renderer()
+    r = _agg_renderer(fig)
     dpi = fig.dpi
     inch = lambda bb: (bb.width / dpi, bb.height / dpi)
     lw_, lh_ = inch(leg.get_window_extent(r))
