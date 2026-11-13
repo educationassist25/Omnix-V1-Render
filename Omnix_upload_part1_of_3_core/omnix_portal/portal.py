@@ -81,6 +81,15 @@ def _slug(text):
 def go(page):
     """Button callback: open a page (runs before the next script run, so it renders at once)."""
     st.session_state.omnix_page = page
+    st.session_state["omnix_nav_n"] = st.session_state.get("omnix_nav_n", 0) + 1
+
+
+def _fresh_menu():
+    """Streamlit 1.52 keeps a pop-up menu open after one of its items is clicked and cannot close it from
+    code. After every navigation the menus below move by one invisible element, so the browser draws them
+    as new, closed menus."""
+    if st.session_state.get("omnix_nav_n", 0) % 2:
+        st.markdown("<span class='omx-shift'></span>", unsafe_allow_html=True)
 
 
 def _current_page():
@@ -453,7 +462,17 @@ def _frame_css(in_app):
     P = '[data-testid="stPopover"] button'
     portal = "" if in_app else f"""
 /* portal pages: one centred column, no side panel */
-.stApp .stMainBlockContainer {{ max-width: 1280px !important; margin: 0 auto !important; }}
+.stApp .stMainBlockContainer {{ max-width: min(1600px, 94vw) !important; margin: 0 auto !important; }}
+/* full-width bands: the background runs edge to edge, the content stays in the centre column
+   (box-shadow paints the band; clip-path keeps it to the band's own height; no sideways scrolling) */
+[data-testid="stHeader"] {{ display: none !important; }}
+.stApp .stMain .stMainBlockContainer {{ padding-top: 0 !important; }}
+[class*="st-key-omxtb_bar"] {{ border: none !important; border-radius: 0 !important; margin-bottom: 0 !important;
+  box-shadow: 0 0 0 100vmax #FFFFFF, 0 1px 0 100vmax {LINE} !important; clip-path: inset(-100vmax -100vmax -1px -100vmax); }}
+[class*="st-key-omxh_hero"] {{ border: none !important; border-radius: 0 !important;
+  box-shadow: 0 0 0 100vmax #FFFFFF !important; clip-path: inset(0 -100vmax); margin-top: calc(1px - 1rem); }}
+[class*="st-key-omnix_footer"] {{ border-radius: 0 !important; background: #00574D !important; box-shadow: 0 0 0 100vmax #00574D !important;
+  clip-path: inset(0 -100vmax -100vmax -100vmax); }}
 [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [data-testid="stExpandSidebarButton"] {{ display: none !important; }}
 """
     side = "" if not in_app else f"""
@@ -559,6 +578,8 @@ def _frame_css(in_app):
   .stApp [class*="st-key-omxtb_menu"] {P} p {{ display: none; }}
 }}
 
+/* the invisible element that makes menus redraw closed after a page change */
+[data-testid="stElementContainer"]:has(.omx-shift), [data-testid="element-container"]:has(.omx-shift) {{ display: none !important; }}
 /* ---- pop-up menus (drawn outside .stApp): the same colours in every state, on every platform ---- */
 [data-testid="stPopoverBody"] [data-testid="stButton"] button,
 [data-testid="stPopoverBody"] [data-testid="stButton"] button:focus,
@@ -849,6 +870,7 @@ def topbar(page, in_app):
             st.button(f"{config.BRAND}™", key="omxtb_brandbtn", on_click=go, args=("home",), help="Omnix home")
         if in_app:
             with st.container(key=f"omxtb_switch_{_slug(page)}", width="content"):   # one per page: opens fresh
+                _fresh_menu()
                 with st.popover(config.PLATFORMS[page]["name"]):
                     st.markdown('<div class="omx-menu-title">Switch platform</div>', unsafe_allow_html=True)
                     _platform_menu("omxtb_sw")
@@ -859,10 +881,12 @@ def topbar(page, in_app):
                 st.button("Data preparation", key="omxtb_l_prep", on_click=go, args=("data-preparation",))
             else:
                 with st.container(key=f"omxtb_pop_platforms_{_slug(page)}", width="content"):
+                    _fresh_menu()
                     with st.popover("Platforms"):
                         _platform_menu("omxtb_pl")
                 st.button("Pricing", key="omxtb_l_pricing", on_click=go, args=("subscription",))
                 with st.container(key=f"omxtb_pop_help_{_slug(page)}", width="content"):
+                    _fresh_menu()
                     with st.popover("Help"):
                         st.markdown('<div class="omx-menu-title">Tutorials</div>', unsafe_allow_html=True)
                         for k in APPS:
@@ -886,11 +910,13 @@ def topbar(page, in_app):
                     st.button("Subscribe", key="omxtb_subscribe", on_click=go, args=("subscription",))
             elif not in_app and not subscribed:
                 with st.container(key=f"omxtb_ctapop_{_slug(page)}", width="content"):
+                    _fresh_menu()
                     with st.popover("Try a demo"):
                         st.markdown('<div class="omx-menu-title">Open a platform on its demo data</div>',
                                     unsafe_allow_html=True)
                         _platform_menu("omxtb_demo")
             with st.container(key=f"omxtb_menu_{_slug(page)}", width="content"):      # phones and narrow windows
+                _fresh_menu()
                 with st.popover("Menu", icon=":material/menu:"):
                     st.markdown('<div class="omx-menu-title">Platforms</div>', unsafe_allow_html=True)
                     _platform_menu("omxtb_m")
@@ -925,6 +951,7 @@ def page_home():
                         "fluxomics in one guided workflow, plus Integrix to connect them.</p>", unsafe_allow_html=True)
             with st.container(key="omxh_ctas", horizontal=True, gap="small"):
                 with st.container(key="omxh_demo", width="content"):
+                    _fresh_menu()
                     with st.popover("Try a demo, free"):
                         st.markdown('<div class="omx-menu-title">Open a platform on its demo data</div>',
                                     unsafe_allow_html=True)
@@ -983,6 +1010,7 @@ def page_home():
                     "Subscribe when you are ready to analyze your own data.</p></div>", unsafe_allow_html=True)
         with st.container(key="omxh_bandbtns", horizontal=True, gap="small", width="content"):
             with st.container(key="omxh_demo2", width="content"):
+                _fresh_menu()
                 with st.popover("Start a demo"):
                     _platform_menu("omxh_demo2")
             with st.container(key="omxh_pricing2", width="content"):
