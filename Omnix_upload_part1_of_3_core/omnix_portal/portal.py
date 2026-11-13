@@ -61,7 +61,8 @@ def _img_uri(name):
     if not os.path.isfile(path):
         return ""
     with open(path, "rb") as fh:
-        mime = "image/jpeg" if name.lower().endswith((".jpg", ".jpeg")) else "image/png"
+        mime = ("image/jpeg" if name.lower().endswith((".jpg", ".jpeg")) else
+                "image/svg+xml" if name.lower().endswith(".svg") else "image/png")
         return f"data:{mime};base64," + base64.b64encode(fh.read()).decode()
 
 
@@ -581,14 +582,23 @@ def _frame_css(in_app):
 .stApp [class*="st-key-omxh_pricing"] {B} p, .stApp [class*="st-key-omxh_pricing"] {B}:focus:not(:active) p {{
   color: {TEAL} !important; font-size: 17px !important; font-weight: 600 !important; }}
 .omxh-note {{ font-size: 15px; color: {INK2}; margin-top: 12px; }}
-.omxh-figs {{ position: relative; padding-bottom: 30%; }}
+.omxh-figs {{ position: relative; }}
 .omxh-figs figure {{ margin: 0; background: #FFFFFF; border: 1px solid {LINE}; border-radius: 14px; padding: 12px; }}
 .omxh-figs figure img {{ width: 100%; height: auto; display: block; border-radius: 6px; }}
 .omxh-figs figcaption {{ font-size: 14px; color: {INK2}; margin-top: 6px; }}
 .omxh-figs figure.v figcaption {{ max-width: 52%; }}
-.omxh-figs figure.v {{ width: 88%; }}
+.omxh-figs figure.v {{ width: 100%; box-shadow: 0 10px 30px rgba(17,24,22,0.08); }}
 .omxh-figs figure.h {{ position: absolute; right: 0; bottom: 0; width: 40%; box-shadow: 0 12px 32px rgba(17,24,22,0.16); }}
 .omxh-sec {{ margin: 56px 0 18px 0; }}
+/* figure gallery: one tidy row of equal, compact cards (2 per row on tablets and phones) */
+.omxh-gallery {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }}
+@media (max-width: 1000px) {{ .omxh-gallery {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
+.omxh-gallery figure {{ margin: 0; background: #FFFFFF; border: 1px solid {LINE}; border-radius: 12px; padding: 10px 10px 8px 10px;
+  display: flex; flex-direction: column; }}
+.omxh-gallery img {{ width: 100%; height: 170px; object-fit: contain; display: block; }}
+@media (max-width: 640px) {{ .omxh-gallery img {{ height: 120px; }} }}
+.omxh-gallery figcaption {{ font-size: 14px; font-weight: 600; color: #2C3836; margin-top: 6px; text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
 .stApp .stMainBlockContainer .omxh-sec h2 {{ font-family: 'Sora', system-ui, sans-serif !important; font-weight: 700 !important;
   font-size: clamp(28px, 3vw, 40px) !important; margin: 0 0 6px 0 !important; padding: 0 !important; color: {INK}; }}
 .omxh-sec p {{ font-size: 19px !important; color: #3E4B48; margin: 0 !important; max-width: 760px; }}
@@ -905,14 +915,11 @@ def page_home():
             st.markdown(f"<div class='omxh-note'>No sign-up for the built-in demo datasets{from_price}</div>",
                         unsafe_allow_html=True)
         with right:
-            vol, heat = _img_uri("home_volcano.jpg"), _img_uri("home_heatmap.jpg")
+            vol = _img_uri("home_volcano.svg")
             if vol:
                 st.markdown("<div class='omxh-figs'>"
-                            f"<figure class='v'><img src='{vol}' alt='Volcano plot made in Omnix'>"
-                            "<figcaption>Volcano plot · Proteomics demo data</figcaption></figure>"
-                            + (f"<figure class='h'><img src='{heat}' alt='Clustered heatmap made in Omnix'>"
-                               "<figcaption>Heatmap</figcaption></figure>" if heat else "")
-                            + "</div>", unsafe_allow_html=True)
+                            f"<figure class='v'><img src='{vol}' alt='Volcano plot made with Omnix'></figure>"
+                            "</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='omxh-sec'><h2>Five omics, one integrated view</h2><p>Each platform runs the full "
                 "workflow for its data type. Integrix connects them. Every platform opens on built-in demo data."
@@ -931,6 +938,18 @@ def page_home():
                         f'<div class="chips">{chips}</div><ul>{items}</ul></div>', unsafe_allow_html=True)
             with st.container(key=f"omnix_open_{k}"):
                 st.button(f"Open {p['name']}  →", key=f"omnix_openbtn_{k}", on_click=go, args=(k,))
+
+    gallery = [(n, t) for n, t in (("home_pca.svg", "PCA score plot"), ("home_heatmap.svg", "Heatmap"),
+                                   ("home_pathway_network.svg", "Pathway network"),
+                                   ("home_rewiring.svg", "Rewiring map"))
+               if _img_uri(n)]
+    if gallery:
+        st.markdown("<div class='omxh-sec'><h2>Figures you can publish</h2><p>Every figure downloads as PNG, TIFF, "
+                    "JPEG, SVG, PDF or EPS at up to 1200 DPI, with the same layout as on screen.</p></div>"
+                    "<div class='omxh-gallery'>"
+                    + "".join(f"<figure><img src='{_img_uri(n)}' alt='{html.escape(t)} made with Omnix' loading='lazy'>"
+                              f"<figcaption>{html.escape(t)}</figcaption></figure>" for n, t in gallery)
+                    + "</div>", unsafe_allow_html=True)
 
     steps = [("Upload or pick a demo", "Use your export, or start on built-in data. Data preparation guides show the format."),
              ("Check quality and normalize", "QC-based filtering, imputation and normalization, each step shown."),
