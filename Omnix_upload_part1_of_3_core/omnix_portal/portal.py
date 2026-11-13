@@ -587,7 +587,7 @@ def _frame_css(in_app):
 .omxh-figs figure img {{ width: 100%; height: auto; display: block; border-radius: 6px; }}
 .omxh-figs figcaption {{ font-size: 14px; color: {INK2}; margin-top: 6px; }}
 .omxh-figs figure.v figcaption {{ max-width: 52%; }}
-.omxh-figs figure.v {{ width: 100%; box-shadow: 0 10px 30px rgba(17,24,22,0.08); }}
+.omxh-figs figure.v {{ width: 100%; max-width: 520px; margin: 0 auto; box-shadow: 0 10px 30px rgba(17,24,22,0.08); }}
 .omxh-figs figure.h {{ position: absolute; right: 0; bottom: 0; width: 40%; box-shadow: 0 12px 32px rgba(17,24,22,0.16); }}
 .omxh-sec {{ margin: 56px 0 18px 0; }}
 /* figure gallery: one tidy row of equal, compact cards (2 per row on tablets and phones) */
@@ -915,10 +915,10 @@ def page_home():
             st.markdown(f"<div class='omxh-note'>No sign-up for the built-in demo datasets{from_price}</div>",
                         unsafe_allow_html=True)
         with right:
-            vol = _img_uri("home_volcano.svg")
+            vol = _img_uri("home_rewiring.svg")
             if vol:
                 st.markdown("<div class='omxh-figs'>"
-                            f"<figure class='v'><img src='{vol}' alt='Volcano plot made with Omnix'></figure>"
+                            f"<figure class='v'><img src='{vol}' alt='Correlation rewiring map made with Omnix'></figure>"
                             "</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='omxh-sec'><h2>Five omics, one integrated view</h2><p>Each platform runs the full "
@@ -939,9 +939,8 @@ def page_home():
             with st.container(key=f"omnix_open_{k}"):
                 st.button(f"Open {p['name']}  →", key=f"omnix_openbtn_{k}", on_click=go, args=(k,))
 
-    gallery = [(n, t) for n, t in (("home_pca.svg", "PCA score plot"), ("home_heatmap.svg", "Heatmap"),
-                                   ("home_pathway_network.svg", "Pathway network"),
-                                   ("home_rewiring.svg", "Rewiring map"))
+    gallery = [(n, t) for n, t in (("home_volcano.svg", "Volcano plot"), ("home_pca.svg", "PCA score plot"), ("home_heatmap.svg", "Heatmap"),
+                                   ("home_pathway_network.svg", "Pathway network"))
                if _img_uri(n)]
     if gallery:
         st.markdown("<div class='omxh-sec'><h2>Figures you can publish</h2><p>Every figure downloads as PNG, TIFF, "
