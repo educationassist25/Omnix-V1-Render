@@ -559,6 +559,25 @@ def _frame_css(in_app):
   .stApp [class*="st-key-omxtb_menu"] {P} p {{ display: none; }}
 }}
 
+/* ---- pop-up menus (drawn outside .stApp): the same colours in every state, on every platform ---- */
+[data-testid="stPopoverBody"] [data-testid="stButton"] button,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:focus,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:focus:not(:active),
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:active {{
+  background: transparent !important; border: none !important; box-shadow: none !important; transform: none !important;
+  justify-content: flex-start !important; }}
+[data-testid="stPopoverBody"] [data-testid="stButton"] button p,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:focus p,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:focus:not(:active) p,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:active p {{
+  color: {TEAL_DARK} !important; font-family: 'IBM Plex Sans', system-ui, sans-serif !important; font-weight: 600 !important;
+  font-size: 17px !important; text-align: left !important; }}
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:hover {{ background: #E3F2EF !important; }}
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:hover p,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:focus:not(:active):hover p {{ color: {TEAL_DARK} !important; }}
+[data-testid="stPopoverBody"] [data-testid="stButton"] button > div {{ justify-content: flex-start !important; }}
+[data-testid="stPopoverBody"] .omx-menu-title {{ color: {INK2} !important; }}
+
 /* ---- demo banner ---- */
 [class*="st-key-omnix_demo_banner"] {{ background: #FFF4E5 !important; border: 1px solid #F3D3AD !important; border-radius: 10px !important;
   padding: 8px 16px !important; margin-bottom: 12px !important; flex-wrap: wrap !important; }}
@@ -829,7 +848,7 @@ def topbar(page, in_app):
                 st.markdown(_logo("tb"), unsafe_allow_html=True, width="content")
             st.button(f"{config.BRAND}™", key="omxtb_brandbtn", on_click=go, args=("home",), help="Omnix home")
         if in_app:
-            with st.container(key="omxtb_switch", width="content"):
+            with st.container(key=f"omxtb_switch_{_slug(page)}", width="content"):   # one per page: opens fresh
                 with st.popover(config.PLATFORMS[page]["name"]):
                     st.markdown('<div class="omx-menu-title">Switch platform</div>', unsafe_allow_html=True)
                     _platform_menu("omxtb_sw")
@@ -839,11 +858,11 @@ def topbar(page, in_app):
                 st.button("Help", key="omxtb_l_help", on_click=go, args=(f"help-{page}",))
                 st.button("Data preparation", key="omxtb_l_prep", on_click=go, args=("data-preparation",))
             else:
-                with st.container(key="omxtb_pop_platforms", width="content"):
+                with st.container(key=f"omxtb_pop_platforms_{_slug(page)}", width="content"):
                     with st.popover("Platforms"):
                         _platform_menu("omxtb_pl")
                 st.button("Pricing", key="omxtb_l_pricing", on_click=go, args=("subscription",))
-                with st.container(key="omxtb_pop_help", width="content"):
+                with st.container(key=f"omxtb_pop_help_{_slug(page)}", width="content"):
                     with st.popover("Help"):
                         st.markdown('<div class="omx-menu-title">Tutorials</div>', unsafe_allow_html=True)
                         for k in APPS:
@@ -866,12 +885,12 @@ def topbar(page, in_app):
                 with st.container(key="omxtb_cta", width="content"):
                     st.button("Subscribe", key="omxtb_subscribe", on_click=go, args=("subscription",))
             elif not in_app and not subscribed:
-                with st.container(key="omxtb_ctapop", width="content"):
+                with st.container(key=f"omxtb_ctapop_{_slug(page)}", width="content"):
                     with st.popover("Try a demo"):
                         st.markdown('<div class="omx-menu-title">Open a platform on its demo data</div>',
                                     unsafe_allow_html=True)
                         _platform_menu("omxtb_demo")
-            with st.container(key="omxtb_menu", width="content"):      # phones and narrow windows
+            with st.container(key=f"omxtb_menu_{_slug(page)}", width="content"):      # phones and narrow windows
                 with st.popover("Menu", icon=":material/menu:"):
                     st.markdown('<div class="omx-menu-title">Platforms</div>', unsafe_allow_html=True)
                     _platform_menu("omxtb_m")
