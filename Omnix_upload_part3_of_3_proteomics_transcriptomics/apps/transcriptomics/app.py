@@ -1626,9 +1626,17 @@ if ACTIVE_PAGE == 6:
                 "re-run the two-group test."
             )
 
+        # Layout: what counts as significant on top; figure settings (tabs) beside the plot.
+        _vthr = st.container(border=True, key="omx_volc_thr")
+        _vthr.markdown("**What counts as significant**")
+        _vleft, _vright = st.columns([1.15, 1.85], gap="large")
+        _vleft.markdown("**Customize the figure**")
+        _vt = _vleft.container(key="omx_volc_side").tabs(['Points', 'Labels', 'Axes', 'Legend & grid', 'Highlight', 'Size & theme'])
+
         # ---- 1. Thresholds ----
-        with st.expander("Statistical Thresholds", expanded=True):
-            c1, c2, c3, c4 = st.columns(4)
+        with _vthr:
+            c1, c2, c3, c4, c6 = st.columns([1, 1, 1.25, 1.35, 1.2])
+            c5 = c4
             y_metric_label = c1.radio("Y-axis metric", ["p-value", "FDR"], horizontal=False, key="volc_ymetric_label")
             y_metric = "pvalue" if y_metric_label == "p-value" else "fdr"
             sig_cutoff = c2.number_input("Significance cutoff", value=0.05,
@@ -1639,13 +1647,12 @@ if ACTIVE_PAGE == 6:
             fdr_cutoff = c4.number_input("Secondary FDR cutoff", value=0.05, min_value=0.0001, max_value=1.0,
                                           step=0.01, disabled=not use_fdr_secondary, key="volc_fdr2") \
                 if use_fdr_secondary else None
-            c5, c6 = st.columns(2)
             use_fc_axis = c5.checkbox("Show linear FC on x-axis instead of log2FC", value=False, key="volc_fc_axis")
             threshold_line_style = c6.selectbox("Threshold line style", list(volcano.LINE_STYLES.keys()),
                                                  key="volc_threshold_style")
 
         # ---- 2 & 3. Colors and point style ----
-        with st.expander("Point Style & Colors"):
+        with _vt[0]:
             c1, c2 = st.columns(2)
             palette = c1.selectbox("Color palette",
                                     list(volcano.COLORBLIND_PALETTES.keys()), key="volc_palette")
@@ -1674,7 +1681,7 @@ if ACTIVE_PAGE == 6:
                     edge_color = st.color_picker("Point border color", "#000000", key="volcano_edge_color")
 
         # ---- 4. Labels ----
-        with st.expander("Gene Labels"):
+        with _vt[1]:
             label_mode_label = st.radio(
                 "Label mode",
                 ["Top N significant", "All significant", "Manually selected", "None"],
@@ -1704,7 +1711,7 @@ if ACTIVE_PAGE == 6:
             repel_labels = st.checkbox("Repel overlapping labels automatically", value=True, key="volc_repel")
 
         # ---- 5. Legend ----
-        with st.expander("Legend"):
+        with _vt[3]:
             c1, c2 = st.columns(2)
             legend_position = c1.selectbox("Legend position", ["Right", "Left", "Top", "Bottom", "Hidden"],
                                             key="volc_legend_pos")
@@ -1714,7 +1721,7 @@ if ACTIVE_PAGE == 6:
             legend_format_key = "full" if legend_format.startswith("Full") else "short"
 
         # ---- 6 & 7. Axes and title ----
-        with st.expander("Axes & Title"):
+        with _vt[2]:
             st.markdown("**Axes**")
             c1, c2, c3 = st.columns(3)
             axis_font_size = c1.slider("Axis font size", 8.0, 20.0, 12.0, 0.5, key="volc_axis_fontsize")
@@ -1750,7 +1757,7 @@ if ACTIVE_PAGE == 6:
             hide_title = c11.checkbox("Hide title", value=False, key="volc_hide_title")
 
         # ---- 8 & 9. Gridlines and threshold line style ----
-        with st.expander("Gridlines & Threshold Lines"):
+        with _vt[3]:
             c1, c2, c3 = st.columns(3)
             grid_mode = c1.selectbox("Gridlines", ["none", "major", "both"],
                                      format_func=lambda x: {"none": "No grid", "major": "Major only",
@@ -1766,7 +1773,7 @@ if ACTIVE_PAGE == 6:
             threshold_line_width = c5.slider("Threshold line width", 0.2, 3.0, 0.7, 0.1, key="volc_threshold_width")
 
         # ---- 10. Highlight specific genes ----
-        with st.expander("Highlight Specific Genes"):
+        with _vt[4]:
             highlight_names = st.multiselect(
                 "Search and select genes to highlight (e.g. known markers)",
                 result.index.tolist(), key="volc_highlight_names"
@@ -1779,7 +1786,7 @@ if ACTIVE_PAGE == 6:
                                             key="volc_hl_shape")
 
         # ---- 12 & 13. Background and figure size ----
-        with st.expander("Background & Figure Size"):
+        with _vt[5]:
             c1, c2 = st.columns(2)
             background_choice = c1.selectbox("Background", ["White", "Transparent", "Gray", "Custom"],
                                               key="volc_bg_choice")
@@ -1800,7 +1807,7 @@ if ACTIVE_PAGE == 6:
                 fig_width_in, fig_height_in = volcano.FIGURE_SIZE_PRESETS[size_preset]
 
         # ---- 15. Statistics box, theme ----
-        with st.expander("Statistics Display & Journal Theme"):
+        with _vt[5]:
             c1, c2 = st.columns(2)
             show_stats_box = c1.checkbox("Show statistics box on figure (total/up/down/cutoffs)", value=False,
                                           key="volc_stats_box")
@@ -1837,7 +1844,7 @@ if ACTIVE_PAGE == 6:
             "point_shape": point_shape, "label_mode": label_mode, "legend_position": legend_position,
             "theme": theme_choice, "groups": groups_used,
         }
-        utils.render_figure(st, fig_volc)
+        utils.render_figure(_vright, fig_volc)
 
         volcano_tag = (f"{_safe_tag(groups_used[0])}_over_{_safe_tag(groups_used[1])}"
                        if groups_used else "Comparison")
@@ -1960,179 +1967,185 @@ if ACTIVE_PAGE == 8:
 
         heat_cat_cols = utils.get_categorical_metadata_columns(meta, log2_df_full.columns)
         default_group_col = st.session_state.get("stats_result_group_col") or "Group"
-        heat_group_col = st.selectbox(
+        # Layout: what goes into the heatmap on top, figure settings in tabs, heatmap full width below.
+        _htop = st.container(border=True, key="omx_heat_top")
+        _htop.markdown("**What goes into the heatmap**")
+        _hg1, _hg2 = _htop.columns([1, 3])
+        _hcust = st.container(border=True, key="omx_heat_cust")
+        _hcust.markdown("**Customize the figure**")
+        _ht = _hcust.tabs(["Clustering", "Colors", "Annotations", "Size & font"])
+        heat_group_col = _hg1.selectbox(
             "Filter samples by:", heat_cat_cols,
             index=heat_cat_cols.index(default_group_col) if default_group_col in heat_cat_cols else 0,
             key="heatmap_group_col"
         )
         groups_all_heat = meta.loc[meta.index.intersection(log2_df_full.columns), heat_group_col].dropna().unique().tolist()
-        st.subheader("Select Groups")
-        selected_heat_groups = st.multiselect(
+        selected_heat_groups = _hg2.multiselect(
             f"{heat_group_col} values to include in the heatmap (choose any subset — 2, 3, 4, or more)",
             groups_all_heat, default=groups_all_heat, key="heatmap_group_select"
         )
         heat_cols = [c for c in log2_df_full.columns if meta.loc[c, heat_group_col] in selected_heat_groups]
         log2_df = log2_df_full[heat_cols]
 
-        st.subheader("Column (Sample) Annotation")
-        st.caption(
-            "Pick any number of metadata columns to show as stacked annotation tracks above the "
-            "heatmap — categorical columns (Diagnosis, Gender, Treatment, ...) render as discrete "
-            "color blocks; numeric columns with many distinct values (Age, Body Weight, ...) render "
-            "as a color gradient with its own scale."
-        )
-        col_annot_all_options = [c for c in meta.columns if c != "IsQC"]
-        default_col_annot = [heat_group_col] if heat_group_col in col_annot_all_options else []
-        col_annot_cols = st.multiselect(
-            "Column annotation tracks:", col_annot_all_options, default=default_col_annot,
-            key="heatmap_col_annot_cols"
-        )
-
-        row_annotations = st.session_state.get("row_annotations")
-        row_annot_cols = []
-        if row_annotations is not None:
-            st.subheader("Row (Gene) Annotation")
-            row_annot_cols = st.multiselect(
-                "Row annotation tracks:", list(row_annotations.columns),
-                default=list(row_annotations.columns)[:1], key="heatmap_row_annot_cols"
+        with _ht[2]:
+            st.caption(
+                "Pick any number of metadata columns to show as stacked annotation tracks above the "
+                "heatmap — categorical columns (Diagnosis, Gender, Treatment, ...) render as discrete "
+                "color blocks; numeric columns with many distinct values (Age, Body Weight, ...) render "
+                "as a color gradient with its own scale."
             )
-            if row_annot_cols:
-                n_matched = heatmap_module.count_row_annotation_matches(row_annotations, log2_df_full.index)
-                st.caption(f"{n_matched}/{len(log2_df_full.index)} genes matched to row annotations "
-                           f"by name; unmatched genes show as '(unannotated)' in the row bar(s).")
+            col_annot_all_options = [c for c in meta.columns if c != "IsQC"]
+            default_col_annot = [heat_group_col] if heat_group_col in col_annot_all_options else []
+            col_annot_cols = st.multiselect(
+                "Column annotation tracks:", col_annot_all_options, default=default_col_annot,
+                key="heatmap_col_annot_cols"
+            )
 
-        annotation_colors = {}
-        if col_annot_cols or row_annot_cols:
-            with st.expander("Annotation Colors", expanded=False):
-                st.caption(
-                    "Assign specific colors per category (or a colormap for numeric tracks), per "
-                    "annotation track — updates the column/row annotation bars on the heatmap below "
-                    "dynamically as you change them."
+            row_annotations = st.session_state.get("row_annotations")
+            row_annot_cols = []
+            if row_annotations is not None:
+                st.subheader("Row (Gene) Annotation")
+                row_annot_cols = st.multiselect(
+                    "Row annotation tracks:", list(row_annotations.columns),
+                    default=list(row_annotations.columns)[:1], key="heatmap_row_annot_cols"
                 )
-                MAX_VALUES_FOR_COLOR_UI = 12
+                if row_annot_cols:
+                    n_matched = heatmap_module.count_row_annotation_matches(row_annotations, log2_df_full.index)
+                    st.caption(f"{n_matched}/{len(log2_df_full.index)} genes matched to row annotations "
+                               f"by name; unmatched genes show as '(unannotated)' in the row bar(s).")
 
-                def _annotation_color_controls(col, series, axis_label):
-                    kind = heatmap_module.classify_annotation_series(series)
-                    if kind == "continuous":
-                        st.markdown(f"**{col}** ({axis_label} track, continuous)")
-                        return st.selectbox(
-                            f"Colormap for {col}", heatmap_module.CONTINUOUS_ANNOT_CMAPS,
-                            key=f"heatmap_annotcmap_{axis_label}_{col}"
-                        )
-                    values = list(series.dropna().unique())
-                    if len(values) > MAX_VALUES_FOR_COLOR_UI:
-                        st.caption(f"**{col}** ({axis_label} track) has {len(values)} distinct values — "
-                                   "too many to customize individually; using auto-assigned colors.")
-                        return None
-                    st.markdown(f"**{col}** ({axis_label} track)")
-                    value_cols = st.columns(min(4, len(values)) or 1)
-                    track_colors = {}
-                    for i, v in enumerate(values):
-                        default_c = heatmap_module.GROUP_PALETTE[i % len(heatmap_module.GROUP_PALETTE)]
-                        with value_cols[i % len(value_cols)]:
-                            track_colors[str(v)] = st.color_picker(
-                                str(v), default_c, key=f"heatmap_annotcolor_{axis_label}_{col}_{v}"
+            annotation_colors = {}
+            if col_annot_cols or row_annot_cols:
+                with st.expander("Annotation Colors", expanded=False):
+                    st.caption(
+                        "Assign specific colors per category (or a colormap for numeric tracks), per "
+                        "annotation track — updates the column/row annotation bars on the heatmap below "
+                        "dynamically as you change them."
+                    )
+                    MAX_VALUES_FOR_COLOR_UI = 12
+
+                    def _annotation_color_controls(col, series, axis_label):
+                        kind = heatmap_module.classify_annotation_series(series)
+                        if kind == "continuous":
+                            st.markdown(f"**{col}** ({axis_label} track, continuous)")
+                            return st.selectbox(
+                                f"Colormap for {col}", heatmap_module.CONTINUOUS_ANNOT_CMAPS,
+                                key=f"heatmap_annotcmap_{axis_label}_{col}"
                             )
-                    return track_colors
+                        values = list(series.dropna().unique())
+                        if len(values) > MAX_VALUES_FOR_COLOR_UI:
+                            st.caption(f"**{col}** ({axis_label} track) has {len(values)} distinct values — "
+                                       "too many to customize individually; using auto-assigned colors.")
+                            return None
+                        st.markdown(f"**{col}** ({axis_label} track)")
+                        value_cols = st.columns(min(4, len(values)) or 1)
+                        track_colors = {}
+                        for i, v in enumerate(values):
+                            default_c = heatmap_module.GROUP_PALETTE[i % len(heatmap_module.GROUP_PALETTE)]
+                            with value_cols[i % len(value_cols)]:
+                                track_colors[str(v)] = st.color_picker(
+                                    str(v), default_c, key=f"heatmap_annotcolor_{axis_label}_{col}_{v}"
+                                )
+                        return track_colors
 
-                for col in col_annot_cols:
-                    result_colors = _annotation_color_controls(col, meta.loc[heat_cols, col], "col")
-                    if result_colors:
-                        annotation_colors[col] = result_colors
-                for col in row_annot_cols:
-                    result_colors = _annotation_color_controls(col, row_annotations[col], "row")
-                    if result_colors:
-                        annotation_colors[col] = result_colors
+                    for col in col_annot_cols:
+                        result_colors = _annotation_color_controls(col, meta.loc[heat_cols, col], "col")
+                        if result_colors:
+                            annotation_colors[col] = result_colors
+                    for col in row_annot_cols:
+                        result_colors = _annotation_color_controls(col, row_annotations[col], "row")
+                        if result_colors:
+                            annotation_colors[col] = result_colors
 
-        st.subheader("Feature Selection")
-        st.caption("Dynamically adjust which genes appear in the heatmap by FDR or p-value — "
-                   "the figure below updates immediately as you change the metric or threshold.")
-        c1, c2, c3 = st.columns([1.2, 1.5, 1])
-        metric_options = [m for m in ["FDR", "p-value"] if m in result.columns]
-        if not metric_options:
-            st.error("The current Statistics result has no FDR or p-value column to filter on.")
-            st.stop()
-        sig_metric = c1.selectbox("Significance metric", metric_options, key="heatmap_sig_metric")
-        sig_threshold = c2.slider(
-            f"{sig_metric} ≤", min_value=0.0, max_value=1.0,
-            value=0.05, step=0.01, key="heatmap_sig_threshold"
-        )
-        n_preview = (result[sig_metric] <= sig_threshold).sum()
-        with c3:
-            st.metric("Genes at this cutoff", n_preview)
-        if n_preview > heatmap_module.HIDE_ROW_LABELS_ABOVE:
-            st.warning(
-                f"{n_preview} genes selected — beyond {heatmap_module.HIDE_ROW_LABELS_ABOVE}, "
-                f"row labels become unreadable and will be hidden automatically. Tighten the cutoff "
-                f"above for a labeled figure, or proceed for an unlabeled overview heatmap."
+        with _htop:
+            st.caption("Dynamically adjust which genes appear in the heatmap by FDR or p-value — "
+                       "the figure below updates immediately as you change the metric or threshold.")
+            c1, c2, c3 = st.columns([1.2, 1.5, 1])
+            metric_options = [m for m in ["FDR", "p-value"] if m in result.columns]
+            if not metric_options:
+                st.error("The current Statistics result has no FDR or p-value column to filter on.")
+                st.stop()
+            sig_metric = c1.selectbox("Significance metric", metric_options, key="heatmap_sig_metric")
+            sig_threshold = c2.slider(
+                f"{sig_metric} ≤", min_value=0.0, max_value=1.0,
+                value=0.05, step=0.01, key="heatmap_sig_threshold"
             )
+            n_preview = (result[sig_metric] <= sig_threshold).sum()
+            with c3:
+                st.metric("Genes at this cutoff", n_preview)
+            if n_preview > heatmap_module.HIDE_ROW_LABELS_ABOVE:
+                st.warning(
+                    f"{n_preview} genes selected — beyond {heatmap_module.HIDE_ROW_LABELS_ABOVE}, "
+                    f"row labels become unreadable and will be hidden automatically. Tighten the cutoff "
+                    f"above for a labeled figure, or proceed for an unlabeled overview heatmap."
+                )
 
-        st.subheader("Clustering Options")
-        c3, c4, c5 = st.columns(3)
-        cluster_mode = c3.selectbox("Clustering", ["Rows only", "Both rows and columns", "Columns only",
-                                                     "No clustering"], key="heatmap_cluster_mode")
-        distance = c4.selectbox("Distance metric", ["euclidean", "correlation"], key="heatmap_distance")
-        linkage_m = c5.selectbox("Linkage method", ["ward", "average", "complete"], key="heatmap_linkage")
-        cluster_rows = cluster_mode in ("Both rows and columns", "Rows only")
-        cluster_cols = cluster_mode in ("Both rows and columns", "Columns only")
+        with _ht[0]:
+            c3, c4, c5 = st.columns(3)
+            cluster_mode = c3.selectbox("Clustering", ["Rows only", "Both rows and columns", "Columns only",
+                                                         "No clustering"], key="heatmap_cluster_mode")
+            distance = c4.selectbox("Distance metric", ["euclidean", "correlation"], key="heatmap_distance")
+            linkage_m = c5.selectbox("Linkage method", ["ward", "average", "complete"], key="heatmap_linkage")
+            cluster_rows = cluster_mode in ("Both rows and columns", "Rows only")
+            cluster_cols = cluster_mode in ("Both rows and columns", "Columns only")
 
-        st.subheader("Color Scale Customization")
-        c6, c7 = st.columns(2)
-        use_custom_gradient = c6.checkbox("Use a custom color gradient instead of a preset palette", value=False,
-                                           key="heatmap_use_gradient")
-        reverse_cmap = c7.checkbox("Reverse color gradient", value=False, key="heatmap_reverse_cmap")
+        with _ht[1]:
+            c6, c7 = st.columns(2)
+            use_custom_gradient = c6.checkbox("Use a custom color gradient instead of a preset palette", value=False,
+                                               key="heatmap_use_gradient")
+            reverse_cmap = c7.checkbox("Reverse color gradient", value=False, key="heatmap_reverse_cmap")
 
-        if use_custom_gradient:
-            gc1, gc2, gc3 = st.columns(3)
-            with gc1:
-                color_low = st.color_picker("Low color", "#2166AC", key="heatmap_grad_low")
-            with gc2:
-                color_mid = st.color_picker("Mid color", "#FFFFFF", key="heatmap_grad_mid")
-            with gc3:
-                color_high = st.color_picker("High color", "#B2182B", key="heatmap_grad_high")
-            custom_colors = [color_low, color_mid, color_high]
-            cmap_name = None
-        else:
-            cmap_name = st.selectbox("Predefined color palette", heatmap_module.PREDEFINED_PALETTES,
-                                      key="heatmap_cmap_name")
-            custom_colors = None
+            if use_custom_gradient:
+                gc1, gc2, gc3 = st.columns(3)
+                with gc1:
+                    color_low = st.color_picker("Low color", "#2166AC", key="heatmap_grad_low")
+                with gc2:
+                    color_mid = st.color_picker("Mid color", "#FFFFFF", key="heatmap_grad_mid")
+                with gc3:
+                    color_high = st.color_picker("High color", "#B2182B", key="heatmap_grad_high")
+                custom_colors = [color_low, color_mid, color_high]
+                cmap_name = None
+            else:
+                cmap_name = st.selectbox("Predefined color palette", heatmap_module.PREDEFINED_PALETTES,
+                                          key="heatmap_cmap_name")
+                custom_colors = None
 
-        c8, c9 = st.columns(2)
-        vmin = c8.number_input("Z-score minimum", value=-2.5, step=0.1, key="heatmap_vmin")
-        vmax = c9.number_input("Z-score maximum", value=2.5, step=0.1, key="heatmap_vmax")
+            c8, c9 = st.columns(2)
+            vmin = c8.number_input("Z-score minimum", value=-2.5, step=0.1, key="heatmap_vmin")
+            vmax = c9.number_input("Z-score maximum", value=2.5, step=0.1, key="heatmap_vmax")
 
-        use_breakpoints = st.checkbox("Use custom discrete color breakpoints (instead of a continuous scale)",
-                                       value=False, key="heatmap_use_breakpoints")
-        breakpoints = None
-        if use_breakpoints:
-            bp_text = st.text_input("Comma-separated breakpoints (e.g. -3,-1,0,1,3)",
-                                     value=f"{vmin},{vmin/2:.2g},0,{vmax/2:.2g},{vmax}", key="heatmap_bp_text")
-            try:
-                breakpoints = [float(x.strip()) for x in bp_text.split(",") if x.strip()]
-            except ValueError:
-                st.warning("Couldn't parse breakpoints — using a continuous scale instead.")
-                breakpoints = None
+            use_breakpoints = st.checkbox("Use custom discrete color breakpoints (instead of a continuous scale)",
+                                           value=False, key="heatmap_use_breakpoints")
+            breakpoints = None
+            if use_breakpoints:
+                bp_text = st.text_input("Comma-separated breakpoints (e.g. -3,-1,0,1,3)",
+                                         value=f"{vmin},{vmin/2:.2g},0,{vmax/2:.2g},{vmax}", key="heatmap_bp_text")
+                try:
+                    breakpoints = [float(x.strip()) for x in bp_text.split(",") if x.strip()]
+                except ValueError:
+                    st.warning("Couldn't parse breakpoints — using a continuous scale instead.")
+                    breakpoints = None
 
-        st.subheader("Figure Size")
-        c_size1, c_size2, c_size3 = st.columns(3)
-        use_custom_size = c_size1.checkbox("Customize heatmap panel size", value=False, key="heatmap_custom_size")
-        heatmap_width_in = heatmap_height_in = None
-        if use_custom_size:
-            heatmap_width_in = c_size2.number_input("Width (inches)", value=8.0, min_value=2.0, max_value=30.0,
-                                                      step=0.5, key="heatmap_width")
-            heatmap_height_in = c_size3.number_input("Height (inches)", value=6.0, min_value=2.0, max_value=30.0,
-                                                       step=0.5, key="heatmap_height")
-            st.caption("All other elements (dendrograms, annotation bar, legend, colorbar, labels) "
-                       "scale automatically with the size you set here.")
+        with _ht[3]:
+            c_size1, c_size2, c_size3 = st.columns(3)
+            use_custom_size = c_size1.checkbox("Customize heatmap panel size", value=False, key="heatmap_custom_size")
+            heatmap_width_in = heatmap_height_in = None
+            if use_custom_size:
+                heatmap_width_in = c_size2.number_input("Width (inches)", value=8.0, min_value=2.0, max_value=30.0,
+                                                          step=0.5, key="heatmap_width")
+                heatmap_height_in = c_size3.number_input("Height (inches)", value=6.0, min_value=2.0, max_value=30.0,
+                                                           step=0.5, key="heatmap_height")
+                st.caption("All other elements (dendrograms, annotation bar, legend, colorbar, labels) "
+                           "scale automatically with the size you set here.")
 
-        st.subheader("Title & Font Size")
-        ft1, ft2 = st.columns(2)
-        font_family_ui = ft1.selectbox("Font family", ["sans-serif", "serif", "monospace"], key="heatmap_font_family")
-        font_size_ui = ft2.slider("Base font size", 6, 18, 10, key="heatmap_font_size",
-                                   help="Applied proportionally to the title, tick labels, legend text, "
-                                        "colorbar label, and annotation track labels.")
-        st.caption("Row labels still shrink automatically for very large gene counts, capped at the "
-                   "size chosen above — the cap doesn't force oversized text when hundreds of rows are shown.")
+        with _ht[3]:
+            ft1, ft2 = st.columns(2)
+            font_family_ui = ft1.selectbox("Font family", ["sans-serif", "serif", "monospace"], key="heatmap_font_family")
+            font_size_ui = ft2.slider("Base font size", 6, 18, 10, key="heatmap_font_size",
+                                       help="Applied proportionally to the title, tick labels, legend text, "
+                                            "colorbar label, and annotation track labels.")
+            st.caption("Row labels still shrink automatically for very large gene counts, capped at the "
+                       "size chosen above — the cap doesn't force oversized text when hundreds of rows are shown.")
 
         if len(heat_cols) < 2:
             st.warning("Select at least one group with 2+ samples to build a heatmap.")

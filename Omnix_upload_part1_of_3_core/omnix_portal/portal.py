@@ -518,6 +518,13 @@ def _frame_css(in_app):
 .stApp [class*="st-key-omxdl_"] [data-testid="stMarkdown"], .stApp [class*="st-key-omxdl_"] .stMarkdown,
 .stApp [class*="st-key-omxdl_"] [data-testid="stMarkdownContainer"] {{ margin-bottom: 0 !important; }}
 .stApp [class*="st-key-omxdl_"] [data-testid="stElementContainer"]:has(.omx-dl-t) {{ margin-bottom: 6px !important; }}
+/* Volcano: figure-settings tabs beside the plot wrap onto two lines instead of scrolling */
+.stApp .st-key-omx_volc_side [data-baseweb="tab-list"] {{ flex-wrap: wrap !important; gap: 2px 18px !important; overflow: visible !important; }}
+.stApp .st-key-omx_volc_side [data-baseweb="tab-highlight"], .stApp .st-key-omx_volc_side [data-baseweb="tab-border"] {{ display: none !important; }}
+.stApp .st-key-omx_volc_side [data-baseweb="tab"] {{ height: auto !important; padding: 6px 0 4px 0 !important; border-bottom: 2px solid transparent !important; }}
+.stApp .st-key-omx_volc_side [data-baseweb="tab"] p {{ font-size: 15px !important; }}
+.stApp .st-key-omx_volc_side [data-baseweb="tab"][aria-selected="true"] {{ border-bottom-color: currentColor !important; }}
+.stApp .st-key-omx_volc_side [data-baseweb="tab"][aria-selected="true"] p {{ font-weight: 700 !important; }}
 .omx-dl-t {{ font-weight: 700; font-size: 16px; color: {INK}; line-height: 1.3; }}
 .omx-dl-d {{ font-size: 14px; color: {INK2}; line-height: 1.35; margin-top: 2px; }}
 .omx-dl-f {{ font-size: 12px; color: #6B7774; line-height: 1.3; margin: 3px 0 4px 0; word-break: break-all;
