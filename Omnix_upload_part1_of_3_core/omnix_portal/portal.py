@@ -597,6 +597,14 @@ def _frame_css(in_app):
 [data-testid="stPopoverBody"] [data-testid="stButton"] button:hover p,
 [data-testid="stPopoverBody"] [data-testid="stButton"] button:focus:not(:active):hover p {{ color: {TEAL_DARK} !important; }}
 [data-testid="stPopoverBody"] [data-testid="stButton"] button > div {{ justify-content: flex-start !important; }}
+[data-testid="stPopoverBody"] [data-testid="stVerticalBlock"] {{ gap: 0 !important; }}
+[data-testid="stPopoverBody"] [data-testid="stButton"] button,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:focus,
+[data-testid="stPopoverBody"] [data-testid="stButton"] button:focus:not(:active) {{ padding: 7px 10px !important; min-height: 0 !important;
+  border-radius: 8px !important; width: 100%; }}
+[data-testid="stPopoverBody"] [data-testid="stMarkdownContainer"] {{ margin: 0 !important; }}
+[data-testid="stPopoverBody"] .omx-menu-title {{ margin: 6px 10px 4px 10px !important; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase; }}
 [data-testid="stPopoverBody"] .omx-menu-title {{ color: {INK2} !important; }}
 
 /* ---- demo banner ---- */
@@ -637,7 +645,7 @@ def _frame_css(in_app):
   display: flex; flex-direction: column; }}
 .omxh-gallery img {{ width: 100%; height: 170px; object-fit: contain; display: block; }}
 @media (max-width: 640px) {{ .omxh-gallery img {{ height: 120px; }} }}
-.omxh-gallery figcaption {{ font-size: 14px; font-weight: 600; color: #2C3836; margin-top: 6px; text-align: center;
+.stApp .omxh-gallery figcaption {{ font-size: 14px !important; line-height: 1.3 !important; font-weight: 600; color: #2C3836; margin-top: 6px; text-align: center;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
 .stApp .stMainBlockContainer .omxh-sec h2 {{ font-family: 'Sora', system-ui, sans-serif !important; font-weight: 700 !important;
   font-size: clamp(28px, 3vw, 40px) !important; margin: 0 0 6px 0 !important; padding: 0 !important; color: {INK}; }}
@@ -660,10 +668,14 @@ def _frame_css(in_app):
 .stApp [class*="st-key-omnix_open_integrix"] {B} p, .stApp [class*="st-key-omnix_open_integrix"] {B}:focus:not(:active) p {{ color: #FFFFFF !important; }}
 .stApp [class*="st-key-omnix_open_"] {B}:hover {{ background: transparent !important; }}
 .stApp [class*="st-key-omnix_open_"] {B}:hover p {{ text-decoration: underline; }}
-ol.omxh-steps {{ list-style: none; padding: 0 !important; margin: 0 !important; display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }}
-ol.omxh-steps li {{ display: flex; flex-direction: column; gap: 6px; border-top: 3px solid {TEAL}; padding-top: 14px; margin: 0 !important; }}
-ol.omxh-steps .n {{ font-family: 'Sora', system-ui, sans-serif; font-weight: 700; color: {TEAL}; font-size: 16px; }}
+ol.omxh-steps {{ list-style: none; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column;
+  max-width: 880px; }}
+ol.omxh-steps li {{ display: grid; grid-template-columns: 48px 1fr; column-gap: 18px; row-gap: 2px; align-items: start;
+  padding: 16px 0; margin: 0 !important; border-bottom: 1px solid {LINE}; }}
+ol.omxh-steps li:last-child {{ border-bottom: none; }}
+ol.omxh-steps .n {{ grid-row: span 2; width: 40px; height: 40px; border-radius: 50%; background: {TEAL}; color: #FFFFFF;
+  display: flex; align-items: center; justify-content: center; font-family: 'Sora', system-ui, sans-serif; font-weight: 700;
+  font-size: 18px; }}
 ol.omxh-steps .t {{ font-size: 20px; font-weight: 600; color: {INK}; }}
 ol.omxh-steps .d {{ font-size: 17px; color: #3E4B48; line-height: 1.5; }}
 [class*="st-key-omxh_band"]:not([class*="btns"]) {{ background: #FFFFFF; border: 1px solid {LINE}; border-radius: 16px;
@@ -710,7 +722,7 @@ def _nav():
                 for k in APPS:
                     st.button(f"About {config.PLATFORMS[k]['name']}", key=f"omnix_menu_help_{k}", on_click=go,
                               args=(f"help-{k}",))
-                st.markdown('<div class="omx-menu-title" style="margin-top:10px">Example data</div>',
+                st.markdown('<div class="omx-menu-title" style="margin-top:14px !important">Example data</div>',
                             unsafe_allow_html=True)
                 st.button("Data preparation (Excel demo files)", key="omnix_menu_dataprep", on_click=go,
                           args=("data-preparation",))
@@ -892,7 +904,7 @@ def topbar(page, in_app):
                         for k in APPS:
                             st.button(f"About {config.PLATFORMS[k]['name']}", key=f"omxtb_help_{k}", on_click=go,
                                       args=(f"help-{k}",))
-                        st.markdown('<div class="omx-menu-title" style="margin-top:10px">Example data</div>',
+                        st.markdown('<div class="omx-menu-title" style="margin-top:14px !important">Example data</div>',
                                     unsafe_allow_html=True)
                         st.button("Data preparation (Excel demo files)", key="omxtb_help_prep", on_click=go,
                                   args=("data-preparation",))
@@ -920,7 +932,7 @@ def topbar(page, in_app):
                 with st.popover("Menu", icon=":material/menu:"):
                     st.markdown('<div class="omx-menu-title">Platforms</div>', unsafe_allow_html=True)
                     _platform_menu("omxtb_m")
-                    st.markdown('<div class="omx-menu-title" style="margin-top:10px">Omnix</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="omx-menu-title" style="margin-top:14px !important">Omnix</div>', unsafe_allow_html=True)
                     for label, target in (("Home", "home"), ("Pricing", "subscription"), ("Help", f"help-{page if in_app else APPS[0]}"),
                                           ("Data preparation", "data-preparation"), ("Contact", "contact")):
                         st.button(label, key=f"omxtb_m_{_slug(label)}", on_click=go, args=(target,))
@@ -985,8 +997,10 @@ def page_home():
             with st.container(key=f"omnix_open_{k}"):
                 st.button(f"Open {p['name']}  →", key=f"omnix_openbtn_{k}", on_click=go, args=(k,))
 
-    gallery = [(n, t) for n, t in (("home_volcano.svg", "Volcano plot"), ("home_pca.svg", "PCA score plot"), ("home_heatmap.svg", "Heatmap"),
-                                   ("home_pathway_network.svg", "Pathway network"))
+    gallery = [(n, t) for n, t in (("home_pca.svg", "PCA plot"), ("home_volcano.svg", "Volcano plot"), ("home_heatmap.svg", "Heatmap"),
+                                   ("home_pathway_network.svg", "Pathway network"), ("home_rewiring.svg", "Rewiring map"),
+                                   ("home_enrichment.svg", "Pathway enrichment"), ("home_barplot.svg", "Isotopologue bar plot"),
+                                   ("home_iso_heatmap.svg", "Isotopologue heatmap"))
                if _img_uri(n)]
     if gallery:
         st.markdown("<div class='omxh-sec'><h2>Figures you can publish</h2><p>Every figure downloads as PNG, TIFF, "
