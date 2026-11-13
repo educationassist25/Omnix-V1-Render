@@ -576,6 +576,11 @@ def _frame_css(in_app):
   .stApp [class*="st-key-omxtb_cta"] {B}, .stApp [class*="st-key-omxtb_ctapop"] {P} {{ padding: 8px 12px !important; min-height: 44px !important; }}
   .stApp [class*="st-key-omxtb_cta"] {B} p, .stApp [class*="st-key-omxtb_ctapop"] {P} p {{ font-size: 15px !important; }}
   .stApp [class*="st-key-omxtb_menu"] {P} p {{ display: none; }}
+  .stApp [class*="st-key-omxtb_menu"] {P} {{ padding: 6px 10px !important; min-width: 44px; }}
+  .stApp [class*="st-key-omxtb_menu"] {P} [data-testid="stIconMaterial"]:last-child:not(:first-child),
+  .stApp [class*="st-key-omxtb_menu"] {P} > div > div:last-child:not(:first-child) {{ display: none !important; }}
+  .stApp [class*="st-key-omxtb_bar"] {{ flex-wrap: nowrap !important; padding: 8px 6px !important; }}
+  [class*="st-key-omxtb_right"] {{ column-gap: 4px !important; }}
 }}
 
 /* the invisible element that makes menus redraw closed after a page change */
@@ -606,6 +611,38 @@ def _frame_css(in_app):
 [data-testid="stPopoverBody"] .omx-menu-title {{ margin: 6px 10px 4px 10px !important; font-size: 12px; font-weight: 700;
   letter-spacing: 0.07em; text-transform: uppercase; }}
 [data-testid="stPopoverBody"] .omx-menu-title {{ color: {INK2} !important; }}
+
+/* ---- top bar: larger on computers, stays at the top while scrolling, marks the page you are on ---- */
+div:has(> [class*="st-key-omxtb_bar"]) {{ position: sticky !important; top: 0; z-index: 990; }}
+@media (min-width: 1101px) {{
+  [class*="st-key-omxtb_bar"] {{ padding: 15px 24px !important; column-gap: 26px !important; }}
+  .omx-logo.tb {{ height: 56px; }}
+  .stApp [class*="st-key-omxtb_brand"] {B} p, .stApp [class*="st-key-omxtb_brand"] {B}:focus:not(:active) p {{ font-size: 64px !important; line-height: 1 !important; letter-spacing: -1.5px; }}
+  [class*="st-key-omxtb_links"] {{ column-gap: 8px !important; }}
+  .stApp [class*="st-key-omxtb_links"] {B} p, .stApp [class*="st-key-omxtb_links"] {P} p,
+  .stApp [class*="st-key-omxtb_links"] {B}:focus:not(:active) p {{ font-size: 19px !important; }}
+  .stApp [class*="st-key-omxtb_links"] {B}, .stApp [class*="st-key-omxtb_links"] {P} {{ padding: 10px 14px !important; }}
+  .stApp [class*="st-key-omxtb_signin"] {B} p, .stApp [class*="st-key-omxtb_signin"] {B}:focus:not(:active) p {{ font-size: 18px !important; }}
+  .stApp [class*="st-key-omxtb_me"] {B} {{ padding: 9px 18px !important; }}
+  .stApp [class*="st-key-omxtb_me"] {B} p, .stApp [class*="st-key-omxtb_me"] {B}:focus:not(:active) p {{ font-size: 17px !important; }}
+  .stApp [class*="st-key-omxtb_cta"] {B}, .stApp [class*="st-key-omxtb_ctapop"] {P} {{ min-height: 52px !important; padding: 12px 24px !important; }}
+  .stApp [class*="st-key-omxtb_cta"] {B} p, .stApp [class*="st-key-omxtb_ctapop"] {P} p {{ font-size: 18px !important; }}
+  .stApp [class*="st-key-omxtb_switch"] {P} {{ min-height: 50px !important; padding: 10px 16px !important; }}
+  .stApp [class*="st-key-omxtb_switch"] {P} p {{ font-size: 20px !important; }}
+}}
+@media (min-width: 1101px) {{       /* logo and letters share one top and one bottom line (measured on screen) */
+  .omx-logo.tb {{ position: relative; top: -5px; }}
+  .stApp [class*="st-key-omxtb_brand"] {B} p {{ position: relative; top: 5px; }}
+}}
+@media (min-width: 1101px) and (max-width: 1500px) {{       /* laptops: a step smaller */
+  .omx-logo.tb {{ height: 48px; }}
+  .stApp [class*="st-key-omxtb_brand"] {B} p {{ font-size: 55px !important; }}
+  .stApp [class*="st-key-omxtb_links"] {B} p, .stApp [class*="st-key-omxtb_links"] {P} p {{ font-size: 18px !important; }}
+}}
+.stApp [class*="st-key-omxtb_"][class*="_on"] {B} p, .stApp [class*="st-key-omxtb_"][class*="_on"] {P} p,
+.stApp [class*="st-key-omxtb_"][class*="_on"] {B}:focus:not(:active) p {{ color: {TEAL} !important; font-weight: 600 !important; }}
+.stApp [class*="st-key-omxtb_links"] [class*="_on"] {B}, .stApp [class*="st-key-omxtb_links"] [class*="_on"] {P},
+.stApp [class*="st-key-omxtb_links"][class*="_on"] {B} {{ box-shadow: inset 0 -3px 0 {TEAL} !important; border-radius: 0 !important; }}
 
 /* ---- demo banner ---- */
 [class*="st-key-omnix_demo_banner"] {{ background: #FFF4E5 !important; border: 1px solid #F3D3AD !important; border-radius: 10px !important;
@@ -868,6 +905,11 @@ def _platform_menu(prefix):
         st.button(config.PLATFORMS[k]["name"], key=f"{prefix}_{k}", on_click=go, args=(k,), use_container_width=True)
 
 
+def _here(*targets, page=""):
+    """Key suffix that marks the top-bar link of the page being shown."""
+    return "_on" if any(page == t or (t.endswith("-") and page.startswith(t)) for t in targets) else ""
+
+
 def topbar(page, in_app):
     """One bar on every page: the Omnix logo (home), the menu, and Sign in / Try a demo or the visitor's plan.
     Inside a platform: a platform switcher, Home, Help and Data preparation instead of the site menu."""
@@ -894,8 +936,8 @@ def topbar(page, in_app):
                     _fresh_menu()
                     with st.popover("Platforms"):
                         _platform_menu("omxtb_pl")
-                st.button("Pricing", key="omxtb_l_pricing", on_click=go, args=("subscription",))
-                with st.container(key=f"omxtb_pop_help_{_slug(page)}", width="content"):
+                st.button("Pricing", key="omxtb_l_pricing" + _here("subscription", page=page), on_click=go, args=("subscription",))
+                with st.container(key=f"omxtb_pop_help_{_slug(page)}" + _here("help-", "data-preparation", page=page), width="content"):
                     _fresh_menu()
                     with st.popover("Help"):
                         st.markdown('<div class="omx-menu-title">Tutorials</div>', unsafe_allow_html=True)
@@ -906,15 +948,15 @@ def topbar(page, in_app):
                                     unsafe_allow_html=True)
                         st.button("Data preparation (Excel demo files)", key="omxtb_help_prep", on_click=go,
                                   args=("data-preparation",))
-                st.button("Contact", key="omxtb_l_contact", on_click=go, args=("contact",))
+                st.button("Contact", key="omxtb_l_contact" + _here("contact", page=page), on_click=go, args=("contact",))
                 if access.is_admin():
-                    st.button("Owner console", key="omxtb_l_owner", on_click=go, args=("owner",))
+                    st.button("Owner console", key="omxtb_l_owner" + _here("owner", page=page), on_click=go, args=("owner",))
         with st.container(key="omxtb_right", horizontal=True, vertical_alignment="center", gap="small", width="content"):
             if signed:
                 label = (name or "Account") + (f"  ·  {plan}" if plan else "")
                 st.button(label, key="omxtb_me", on_click=go, args=("account",), icon=":material/account_circle:")
             else:
-                st.button("Sign in", key="omxtb_signin", on_click=go, args=("account",))
+                st.button("Sign in", key="omxtb_signin" + _here("account", page=page), on_click=go, args=("account",))
             if in_app and not access.is_subscriber(page):
                 with st.container(key="omxtb_cta", width="content"):
                     st.button("Subscribe", key="omxtb_subscribe", on_click=go, args=("subscription",))
