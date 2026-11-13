@@ -668,14 +668,12 @@ def _frame_css(in_app):
 .stApp [class*="st-key-omnix_open_integrix"] {B} p, .stApp [class*="st-key-omnix_open_integrix"] {B}:focus:not(:active) p {{ color: #FFFFFF !important; }}
 .stApp [class*="st-key-omnix_open_"] {B}:hover {{ background: transparent !important; }}
 .stApp [class*="st-key-omnix_open_"] {B}:hover p {{ text-decoration: underline; }}
-ol.omxh-steps {{ list-style: none; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column;
-  max-width: 880px; }}
-ol.omxh-steps li {{ display: grid; grid-template-columns: 48px 1fr; column-gap: 18px; row-gap: 2px; align-items: start;
-  padding: 16px 0; margin: 0 !important; border-bottom: 1px solid {LINE}; }}
-ol.omxh-steps li:last-child {{ border-bottom: none; }}
-ol.omxh-steps .n {{ grid-row: span 2; width: 40px; height: 40px; border-radius: 50%; background: {TEAL}; color: #FFFFFF;
-  display: flex; align-items: center; justify-content: center; font-family: 'Sora', system-ui, sans-serif; font-weight: 700;
-  font-size: 18px; }}
+ol.omxh-steps {{ list-style: none; padding: 0 !important; margin: 0 !important; display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }}
+@media (max-width: 1000px) {{ ol.omxh-steps {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
+@media (max-width: 560px) {{ ol.omxh-steps {{ grid-template-columns: 1fr; }} }}
+ol.omxh-steps li {{ display: flex; flex-direction: column; gap: 6px; border-top: 3px solid {TEAL}; padding-top: 14px; margin: 0 !important; }}
+ol.omxh-steps .n {{ font-family: 'Sora', system-ui, sans-serif; font-weight: 700; color: {TEAL}; font-size: 16px; }}
 ol.omxh-steps .t {{ font-size: 20px; font-weight: 600; color: {INK}; }}
 ol.omxh-steps .d {{ font-size: 17px; color: #3E4B48; line-height: 1.5; }}
 [class*="st-key-omxh_band"]:not([class*="btns"]) {{ background: #FFFFFF; border: 1px solid {LINE}; border-radius: 16px;
