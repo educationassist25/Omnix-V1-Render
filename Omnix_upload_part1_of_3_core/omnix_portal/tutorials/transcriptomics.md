@@ -7,7 +7,7 @@ It accepts two kinds of input:
 - **Raw Counts**: integer read counts per gene per sample. These are analyzed with pyDESeq2 (the Python implementation of DESeq2): median-of-ratios size factors, a variance-stabilizing transform (VST), and negative-binomial Wald tests.
 - **Pre-normalized logCPM**: values that are already log2(CPM+1)-style, for example exported from edgeR or limma-voom. These are used as supplied. Two-group tests use a linear-model Wald test, and multi-group tests use one-way ANOVA.
 
-The sidebar lists seven workflow steps. Clicking a step shows its pages as buttons at the top of the main area. Work through the steps in order, because each page uses earlier results. Loading a new dataset clears all downstream results.
+The sidebar lists seven workflow steps, each with its pages underneath. Click a page to open it; the open page is highlighted. Work through the steps in order, because each page uses earlier results. Loading a new dataset clears all downstream results.
 
 Every figure has the same download row: **Format** (PNG, TIFF, JPEG, SVG, PDF, EPS, or all six as one ZIP) and **Resolution (DPI)** of 300, 600 (the default) or 1200. PNG, TIFF and JPEG are high-resolution images; SVG, PDF and EPS are vector files with editable text. Every table downloads as both CSV and Excel. Sample names are written in full in every figure, and every sample is labelled; to shorten long names, use **Sample names in figures** in the side panel (tables keep the full names).
 

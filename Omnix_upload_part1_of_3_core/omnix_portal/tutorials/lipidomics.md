@@ -2,7 +2,7 @@
 
 The Lipidomics app takes LC-MS lipid peak areas and runs them through a fixed pipeline: cleaning and imputation, QC review, normalization, statistics, figures, pathway analysis and correlation-network analysis. It supports two analysis types: **Untargeted Lipidomics** and **Targeted Lipidomics**. It runs the same pipeline as the Metabolomics tab, so every page and option is the same. You can analyze one dataset, or several combined (for example, two methods in positive and negative mode).
 
-The sidebar lists the workflow steps in order. Clicking a step shows its pages as buttons across the top of the main area. Downstream pages need upstream results, and each page warns you when something is missing.
+The sidebar lists every page in order, under its workflow step. Click a page to open it; the open page is highlighted. Downstream pages need upstream results, and each page warns you when something is missing.
 
 Every figure has the same download row: **Format** (PNG, TIFF, JPEG, SVG, PDF, EPS, or all six as one ZIP) and **Resolution (DPI)** of 300, 600 (the default) or 1200. PNG, TIFF and JPEG are high-resolution images; SVG, PDF and EPS are vector files with editable text. Every table downloads as both CSV and Excel. Sample names are written in full in every figure, and every sample is labelled; to shorten long names, use **Sample names in figures** in the side panel (tables keep the full names).
 

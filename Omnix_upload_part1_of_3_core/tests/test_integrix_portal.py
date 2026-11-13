@@ -141,7 +141,7 @@ def test_home_lists_integrix_and_demo_runs():
     _open(at, "integrix")
     assert not at.exception
     assert "Run analysis" in [b.label for b in at.sidebar.button]
-    assert "Subscribe or enter access key" in [b.label for b in at.button]           # demo banner
+    assert "omnix_banner_sub" in [b.key for b in at.button]                          # demo banner
     next(b for b in at.sidebar.button if b.label == "Run analysis").click().run(timeout=600)
     assert not at.exception
     assert "trace" in at.session_state
@@ -268,7 +268,7 @@ def test_same_chart_twice_on_one_page():
     at = _portal()
     _open(at, "integrix")
     next(b for b in at.sidebar.button if b.label == "Run analysis").click().run(timeout=600)
-    next(b for b in at.button if b.key == "secbtn_0").click().run()
+    next(b for b in at.button if b.key == "navtree__sec0__tab0").click().run()      # Results / Overview, side panel
     sb = next((x for x in at.selectbox if x.key == "pw_n"), None)
     if sb is None:
         pytest.skip("this Streamlit draws the Pathways tab only when it is opened, so the charts never meet")

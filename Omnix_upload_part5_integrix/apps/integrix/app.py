@@ -813,7 +813,7 @@ def draw_topbar(done: bool):
         with st.container(key="brandbar"):
             st.markdown(UI.topbar(__version__, LOGO, UI.status_pill(tr is not None, tr.get("seconds") if tr else None),
                                   kb_txt, with_nav=False), unsafe_allow_html=True)
-        if not done:
+        if not done or OMNIX:          # inside Omnix the sections are listed in the side panel
             return
         with st.container(key="seccards"):
             cols = st.columns(4, gap="small")
@@ -1005,6 +1005,15 @@ cp_tbl = S["canonical"]
 SEC = st.session_state.get("nav_sec", 0)
 SEC_IDX = SECTIONS[SEC]
 _tkey = f"tabs_{SEC}"
+if OMNIX:          # the result pages in the side panel, under their section (navigation only)
+    _here = st.session_state.get(_tkey) or TAB_NAMES[SEC_IDX[0]]
+    with st.sidebar.container(key="omx_navtree"):
+        for _si, _nm in enumerate(SECTION_NAMES):
+            st.markdown(f"<div class='omx-navgrp'>{_nm}</div>", unsafe_allow_html=True)
+            for _ti in SECTIONS[_si]:
+                st.button(TAB_NAMES[_ti].split(": ", 1)[-1], key=f"navtree__sec{_si}__tab{_ti}", on_click=_go,
+                          args=(_si, _ti), type="primary" if (_si == SEC and TAB_NAMES[_ti] == _here) else "secondary",
+                          use_container_width=True)
 with st.container(key="pagebar"):
     _pb = st.columns([5, 1], vertical_alignment="center")
     _pb[0].markdown(UI.study_line(res.design.tier_text, res.design.case, res.design.ref, res.params["alpha"]),

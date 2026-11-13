@@ -314,15 +314,37 @@ if st.session_state.get("nav_group") not in _GROUP_BY_NAME:      # also a group 
 if "nav_page" not in st.session_state:
     st.session_state.nav_page = NAV_GROUPS[0][1][0][0]
 
+def _omx_nav_to(group_name, page_title):
+    st.session_state.nav_group, st.session_state.nav_page = group_name, page_title
+
+
+def _omx_nav_tree():
+    """Inside Omnix: every page in the side panel under its group name; the open page is highlighted."""
+    single = st.session_state.get("data_mode", "single") != "multi"
+    with st.sidebar.container(key="omx_navtree"):
+        for group_name, _pages in NAV_GROUPS:
+            shown = [pt for pt, _ in _pages if not (single and "Multi-Dataset" in pt)]
+            if not shown:
+                continue
+            st.markdown(f"<div class='omx-navgrp'>{group_name}</div>", unsafe_allow_html=True)
+            for pt in shown:
+                here = group_name == st.session_state.nav_group and pt == st.session_state.nav_page
+                st.button(pt, key=f"navtree__{_slug(group_name)}__{_slug(pt)}", on_click=_omx_nav_to,
+                          args=(group_name, pt), type="primary" if here else "secondary", use_container_width=True)
+
+
 # --- Sidebar: group names only ---
-st.sidebar.title("Transcriptomics")
-st.sidebar.caption("RNA-seq Differential Expression Analysis")
-with st.sidebar.container(key="nav_group_box"):
-    for group_name, _pages in NAV_GROUPS:
-        if st.button(group_name, key=f"navgrp__{_slug(group_name)}", use_container_width=True):
-            st.session_state.nav_group = group_name
-            st.session_state.nav_page = _pages[0][0]
-            st.rerun()
+if OMNIX:          # inside Omnix: all steps in the side panel (navigation only)
+    _omx_nav_tree()
+else:
+    st.sidebar.title("Transcriptomics")
+    st.sidebar.caption("RNA-seq Differential Expression Analysis")
+    with st.sidebar.container(key="nav_group_box"):
+        for group_name, _pages in NAV_GROUPS:
+            if st.button(group_name, key=f"navgrp__{_slug(group_name)}", use_container_width=True):
+                st.session_state.nav_group = group_name
+                st.session_state.nav_page = _pages[0][0]
+                st.rerun()
 
 # Highlight the active group: solid filled pill, teal (the workflow-step color) —
 # matching MetaboAnalyst's numbered left-hand step list.
@@ -352,13 +374,17 @@ active_pages = _GROUP_BY_NAME[st.session_state.nav_group]
 if st.session_state.nav_page not in dict(active_pages):
     st.session_state.nav_page = active_pages[0][0]
 
-with st.container(key="nav_page_row"):
-    cols = st.columns(len(active_pages))
-    for col, (page_title, _page_idx) in zip(cols, active_pages):
-        with col:
-            if st.button(page_title, key=f"navpg__{_slug(st.session_state.nav_group)}__{_slug(page_title)}", use_container_width=False):
-                st.session_state.nav_page = page_title
-                st.rerun()
+if OMNIX:
+    st.markdown(f"<div class='omx-crumb'>{st.session_state.nav_group} / {st.session_state.nav_page}</div>",
+                unsafe_allow_html=True)
+else:
+    with st.container(key="nav_page_row"):
+        cols = st.columns(len(active_pages))
+        for col, (page_title, _page_idx) in zip(cols, active_pages):
+            with col:
+                if st.button(page_title, key=f"navpg__{_slug(st.session_state.nav_group)}__{_slug(page_title)}", use_container_width=False):
+                    st.session_state.nav_page = page_title
+                    st.rerun()
 
 # Sub-step (page) tabs get the second MetaboAnalyst accent — orange — so the two nav
 # levels (workflow step vs. page within it) read as visually distinct tiers.
@@ -385,7 +411,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.divider()
+if not OMNIX:          # inside Omnix the page title follows the one-line "Group / Page" note
+    st.divider()
 
 
 def _go_to(page_title, key):

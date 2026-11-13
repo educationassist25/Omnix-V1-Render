@@ -41,6 +41,7 @@ ICONS = {
     "fluxomics": '<circle cx="12" cy="12" r="2.2"></circle><ellipse cx="12" cy="12" rx="9.5" ry="4"></ellipse><ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(120 12 12)"></ellipse><circle cx="20.5" cy="9.6" r="1.3" fill="currentColor"></circle>',
     "workflow": '<path d="M4 6h10"></path><path d="M4 12h16"></path><path d="M4 18h7"></path><circle cx="17" cy="6" r="2"></circle><circle cx="14" cy="18" r="2"></circle>',
     "stats": '<path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M3 20h18"></path>',
+    "info": '<circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path>',
     "figure": '<rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M7 14l3-3 3 2 4-5"></path><path d="M8 21h8"></path>',
 }
 
@@ -60,7 +61,8 @@ def _img_uri(name):
     if not os.path.isfile(path):
         return ""
     with open(path, "rb") as fh:
-        return "data:image/png;base64," + base64.b64encode(fh.read()).decode()
+        mime = "image/jpeg" if name.lower().endswith((".jpg", ".jpeg")) else "image/png"
+        return f"data:{mime};base64," + base64.b64encode(fh.read()).decode()
 
 
 def _logo(cls):
@@ -443,6 +445,189 @@ table.omx-spec td code {{ font-size: 13px; }}
     )
 
 
+def _frame_css(in_app):
+    """Styles of the shared frame (top bar, banner, side panel) and the home page. Selectors are scoped to the
+    frame's own keys and carry !important so the platforms' own button styles do not change them."""
+    B = '[data-testid="stButton"] button'
+    P = '[data-testid="stPopover"] button'
+    portal = "" if in_app else f"""
+/* portal pages: one centred column, no side panel */
+.stApp .stMainBlockContainer {{ max-width: 1280px !important; margin: 0 auto !important; }}
+[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [data-testid="stExpandSidebarButton"] {{ display: none !important; }}
+"""
+    side = "" if not in_app else f"""
+/* platform side panel: head, then every step under its group */
+.stApp [data-testid="stSidebar"], .stApp [data-testid="stSidebar"] > div, .stApp [data-testid="stSidebarContent"] {{
+  background: #FFFFFF !important; background-image: none !important; }}
+.stApp [data-testid="stSidebar"] {{ border-right: 1px solid {LINE} !important; }}
+[class*="st-key-omx_navtree"] [data-testid="stElementContainer"]:has(.omx-navgrp) {{ margin: 10px 0 2px 0 !important; }}
+[class*="st-key-omx_navtree"] [data-testid="stMarkdownContainer"] {{ margin-bottom: 0 !important; }}
+.stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button > div,
+.stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button [data-testid="stMarkdownContainer"] {{
+  justify-content: flex-start !important; text-align: left !important; width: 100%; }}
+.omx-phead {{ display: flex; align-items: center; gap: 12px; margin: 0 0 10px 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; }}
+.omx-phead .i {{ width: 46px; height: 46px; flex-shrink: 0; border-radius: 11px; background: #E3F2EF; display: flex;
+  align-items: center; justify-content: center; }}
+.omx-phead .n {{ font-family: 'Sora', system-ui, sans-serif; font-weight: 700; font-size: 21px; color: {INK}; line-height: 1.2; }}
+.omx-phead .s {{ font-size: 14px; color: {INK2}; line-height: 1.35; }}
+.stApp [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] .omx-phead .n {{ color: {INK} !important; }}
+.stApp [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] .omx-phead .s {{ color: {INK2} !important; }}
+[class*="st-key-omx_navtree"] {{ gap: 2px !important; margin-bottom: 14px; }}
+.omx-navgrp {{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: {TEAL_DARK}; margin: 0 0 0 12px; line-height: 1.4; }}
+.stApp [data-testid="stMarkdownContainer"] .omx-navgrp {{ color: {TEAL_DARK} !important; }}
+[class*="st-key-omx_navtree"] [data-testid="stMarkdownContainer"] p {{ margin: 0 !important; }}
+.stApp [class*="st-key-omx_navtree"] {B} {{ background: transparent !important; border: none !important; box-shadow: none !important;
+  border-radius: 8px !important; padding: 6px 12px !important; min-height: 0 !important; justify-content: flex-start !important;
+  transform: none !important; }}
+.stApp [class*="st-key-omx_navtree"] {B} p {{ color: {INK} !important; font-weight: 600 !important; font-size: 17px !important;
+  text-align: left !important; font-family: 'IBM Plex Sans', system-ui, sans-serif !important; white-space: normal !important; }}
+.stApp [class*="st-key-omx_navtree"] {B}:hover {{ background: #E3F2EF !important; }}
+.stApp [class*="st-key-omx_navtree"] {B}:focus:not(:active) p {{ color: {INK} !important; }}
+.stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"],
+.stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:hover,
+.stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:focus {{ background: {TEAL} !important; }}
+.stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"] p,
+.stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:focus:not(:active) p {{ color: #FFFFFF !important; font-weight: 700 !important; }}
+.omx-crumb {{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; color: {INK2}; margin: 0 0 4px 0; }}
+.stApp [data-testid="stMarkdownContainer"] .omx-crumb {{ color: {INK2} !important; }}
+"""
+    return f"""<style>
+{portal}{side}
+/* ---- top bar (every page) ---- */
+.stApp .stMainBlockContainer {{ padding-top: 3.6rem !important; }}
+[class*="st-key-omxtb_bar"] {{ background: #FFFFFF; border: 1px solid {LINE}; border-radius: 14px; padding: 10px 18px !important;
+  margin-bottom: 14px; flex-wrap: nowrap !important; column-gap: 18px !important; }}
+[class*="st-key-omxtb_brand"] {{ flex-shrink: 0; column-gap: 8px !important; }}
+.omx-logo.tb {{ height: 46px; width: auto; display: block; }}
+[class*="st-key-omxtb_brand"] [data-testid="stMarkdownContainer"] p {{ margin: 0 !important; }}
+.stApp [class*="st-key-omxtb_brand"] {B} {{ background: transparent !important; border: none !important; box-shadow: none !important;
+  padding: 0 !important; min-height: 0 !important; transform: none !important; }}
+.stApp [class*="st-key-omxtb_brand"] {B} p, .stApp [class*="st-key-omxtb_brand"] {B}:focus:not(:active) p {{
+  font-family: 'Sora', system-ui, sans-serif !important; font-weight: 800 !important; font-size: 28px !important;
+  color: {INK} !important; letter-spacing: -0.5px; white-space: nowrap !important; }}
+[class*="st-key-omxtb_links"] {{ column-gap: 4px !important; }}
+.stApp [class*="st-key-omxtb_links"] {B}, .stApp [class*="st-key-omxtb_links"] {P},
+.stApp [class*="st-key-omxtb_right"] [class*="st-key-omxtb_signin"] {B}, .stApp [class*="st-key-omxtb_me"] {B} {{
+  background: transparent !important; border: none !important; box-shadow: none !important; transform: none !important;
+  padding: 8px 12px !important; min-height: 0 !important; }}
+.stApp [class*="st-key-omxtb_links"] {B} p, .stApp [class*="st-key-omxtb_links"] {P} p,
+.stApp [class*="st-key-omxtb_links"] {B}:focus:not(:active) p {{
+  font-family: 'IBM Plex Sans', system-ui, sans-serif !important; font-size: 17px !important; font-weight: 500 !important;
+  color: #2C3836 !important; white-space: nowrap !important; }}
+.stApp [class*="st-key-omxtb_links"] {B}:hover p, .stApp [class*="st-key-omxtb_links"] {P}:hover p {{ color: {TEAL} !important; }}
+[class*="st-key-omxtb_right"], [class*="st-key-omxtb_bar"] > div:has(> [class*="st-key-omxtb_right"]) {{ margin-left: auto !important; flex-shrink: 0; }}
+.stApp [class*="st-key-omxtb_signin"] {B} p, .stApp [class*="st-key-omxtb_signin"] {B}:focus:not(:active) p {{
+  font-size: 17px !important; font-weight: 600 !important; color: {TEAL} !important; white-space: nowrap !important; }}
+.stApp [class*="st-key-omxtb_me"] {B} {{ border: 1px solid {LINE} !important; border-radius: 999px !important; padding: 6px 14px !important; }}
+.stApp [class*="st-key-omxtb_me"] {B} p, .stApp [class*="st-key-omxtb_me"] {B}:focus:not(:active) p {{
+  font-size: 15px !important; font-weight: 600 !important; color: {INK} !important; white-space: nowrap !important; }}
+.stApp [class*="st-key-omxtb_cta"] {B}, .stApp [class*="st-key-omxtb_ctapop"] {P},
+.stApp [class*="st-key-omxh_demo"] {P}, .stApp [class*="st-key-omxh_demo2"] {P} {{
+  background: {TEAL} !important; border: none !important; border-radius: 9px !important; box-shadow: none !important;
+  padding: 11px 20px !important; min-height: 46px !important; transform: none !important; }}
+.stApp [class*="st-key-omxtb_cta"] {B} p, .stApp [class*="st-key-omxtb_ctapop"] {P} p,
+.stApp [class*="st-key-omxtb_cta"] {B}:focus:not(:active) p, .stApp [class*="st-key-omxh_demo"] {P} p,
+.stApp [class*="st-key-omxh_demo2"] {P} p {{ color: #FFFFFF !important; font-size: 17px !important; font-weight: 600 !important;
+  white-space: nowrap !important; }}
+.stApp [class*="st-key-omxtb_ctapop"] {P} svg, .stApp [class*="st-key-omxh_demo"] {P} svg {{ color: #FFFFFF !important; fill: #FFFFFF !important; }}
+.stApp [class*="st-key-omxtb_cta"] {B}:hover, .stApp [class*="st-key-omxtb_ctapop"] {P}:hover,
+.stApp [class*="st-key-omxh_demo"] {P}:hover {{ background: {TEAL_DARK} !important; }}
+.stApp [class*="st-key-omxtb_switch"] {P} {{ border: 1px solid {LINE} !important; border-radius: 9px !important; background: #FFFFFF !important;
+  box-shadow: none !important; padding: 8px 14px !important; min-height: 44px !important; }}
+.stApp [class*="st-key-omxtb_switch"] {P} p {{ font-family: 'Sora', system-ui, sans-serif !important; font-weight: 700 !important;
+  font-size: 18px !important; color: {INK} !important; white-space: nowrap !important; }}
+.stApp [class*="st-key-omxtb_menu"] {P} {{ border: 1px solid {LINE} !important; border-radius: 9px !important; background: #FFFFFF !important;
+  box-shadow: none !important; min-height: 44px !important; }}
+.stApp [class*="st-key-omxtb_menu"] {P} p {{ color: {INK} !important; font-size: 16px !important; }}
+[class*="st-key-omxtb_menu"], div:has(> [class*="st-key-omxtb_menu"]) {{ display: none !important; }}
+@media (max-width: 1100px) {{
+  [class*="st-key-omxtb_links"], div:has(> [class*="st-key-omxtb_links"]) {{ display: none !important; }}
+  [class*="st-key-omxtb_menu"], div:has(> [class*="st-key-omxtb_menu"]) {{ display: flex !important; }}
+}}
+@media (max-width: 640px) {{
+  [class*="st-key-omxtb_bar"] {{ padding: 8px 10px !important; column-gap: 8px !important; }}
+  .omx-logo.tb {{ height: 32px; }}
+  .stApp [class*="st-key-omxtb_brand"] {B} p {{ font-size: 21px !important; }}
+  [class*="st-key-omxtb_brand"] {{ column-gap: 4px !important; }}
+  [class*="st-key-omxtb_right"] {{ column-gap: 6px !important; }}
+  [class*="st-key-omxtb_signin"], [class*="st-key-omxtb_switch"], div:has(> [class*="st-key-omxtb_switch"]) {{ display: none !important; }}
+  .stApp [class*="st-key-omxtb_me"] {B} p {{ max-width: 120px; overflow: hidden; text-overflow: ellipsis; }}
+  .stApp [class*="st-key-omxtb_cta"] {B}, .stApp [class*="st-key-omxtb_ctapop"] {P} {{ padding: 8px 12px !important; min-height: 44px !important; }}
+  .stApp [class*="st-key-omxtb_cta"] {B} p, .stApp [class*="st-key-omxtb_ctapop"] {P} p {{ font-size: 15px !important; }}
+  .stApp [class*="st-key-omxtb_menu"] {P} p {{ display: none; }}
+}}
+
+/* ---- demo banner ---- */
+[class*="st-key-omnix_demo_banner"] {{ background: #FFF4E5 !important; border: 1px solid #F3D3AD !important; border-radius: 10px !important;
+  padding: 8px 16px !important; margin-bottom: 12px !important; flex-wrap: wrap !important; }}
+[class*="st-key-omnix_demo_banner"] > div:first-child {{ flex: 1 1 320px; }}
+.omx-banner {{ display: flex; align-items: center; gap: 10px; font-size: 17px !important; }}
+.omx-banner svg {{ flex-shrink: 0; }}
+.stApp [class*="st-key-omnix_demo_banner"] {B} {{ background: transparent !important; border: none !important; box-shadow: none !important;
+  padding: 4px 6px !important; }}
+.stApp [class*="st-key-omnix_demo_banner"] {B} p, .stApp [class*="st-key-omnix_demo_banner"] {B}:focus:not(:active) p {{
+  color: #8A4B08 !important; font-weight: 700 !important; font-size: 17px !important; text-decoration: underline; }}
+
+/* ---- home ---- */
+[class*="st-key-omxh_hero"] {{ background: #FFFFFF; border: 1px solid {LINE}; border-radius: 18px; padding: clamp(24px, 4vw, 56px) !important; }}
+.omxh-eyebrow {{ font-size: 15px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: {TEAL}; margin-bottom: 14px; }}
+.stApp .stMainBlockContainer h1.omxh-h1 {{ font-family: 'Sora', system-ui, sans-serif !important; font-weight: 700 !important;
+  font-size: clamp(34px, 4.2vw, 58px) !important; line-height: 1.1 !important; letter-spacing: -0.02em; color: {INK}; padding: 0 !important; margin: 0 0 18px 0 !important; }}
+.omxh-lead {{ font-size: clamp(18px, 1.5vw, 21px) !important; line-height: 1.55 !important; color: #3E4B48; margin: 0 0 22px 0 !important; }}
+[class*="st-key-omxh_ctas"] {{ flex-wrap: wrap !important; }}
+.stApp [class*="st-key-omxh_pricing"] {B} {{ background: #FFFFFF !important; border: 1px solid {TEAL} !important; border-radius: 9px !important;
+  box-shadow: none !important; padding: 11px 20px !important; min-height: 46px !important; }}
+.stApp [class*="st-key-omxh_pricing"] {B} p, .stApp [class*="st-key-omxh_pricing"] {B}:focus:not(:active) p {{
+  color: {TEAL} !important; font-size: 17px !important; font-weight: 600 !important; }}
+.omxh-note {{ font-size: 15px; color: {INK2}; margin-top: 12px; }}
+.omxh-figs {{ position: relative; padding-bottom: 30%; }}
+.omxh-figs figure {{ margin: 0; background: #FFFFFF; border: 1px solid {LINE}; border-radius: 14px; padding: 12px; }}
+.omxh-figs figure img {{ width: 100%; height: auto; display: block; border-radius: 6px; }}
+.omxh-figs figcaption {{ font-size: 14px; color: {INK2}; margin-top: 6px; }}
+.omxh-figs figure.v figcaption {{ max-width: 52%; }}
+.omxh-figs figure.v {{ width: 88%; }}
+.omxh-figs figure.h {{ position: absolute; right: 0; bottom: 0; width: 40%; box-shadow: 0 12px 32px rgba(17,24,22,0.16); }}
+.omxh-sec {{ margin: 56px 0 18px 0; }}
+.stApp .stMainBlockContainer .omxh-sec h2 {{ font-family: 'Sora', system-ui, sans-serif !important; font-weight: 700 !important;
+  font-size: clamp(28px, 3vw, 40px) !important; margin: 0 0 6px 0 !important; padding: 0 !important; color: {INK}; }}
+.omxh-sec p {{ font-size: 19px !important; color: #3E4B48; margin: 0 !important; max-width: 760px; }}
+.stMainBlockContainer [data-testid="stHorizontalBlock"]:has([class*="st-key-omnix_card_"]) > [data-testid="stColumn"] {{ min-width: min(320px, 100%) !important; }}
+.omx-card-head {{ display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }}
+.omx-card .omx-card-icon {{ margin: 0 !important; flex-shrink: 0; }}
+.stApp .stMainBlockContainer .omx-card h3 {{ margin: 0 !important; padding: 0 !important; font-family: 'Sora', system-ui, sans-serif !important;
+  font-size: 23px !important; font-weight: 700 !important; color: {INK}; }}
+.omx-card .sub {{ font-size: 16px; color: {INK2}; margin: 2px 0 0 0 !important; line-height: 1.35; }}
+.omx-card .chips {{ font-size: 14px; font-weight: 600; color: {TEAL_DARK}; margin: 4px 0 2px 0; }}
+.omx-card ul {{ margin: 8px 0 4px 0 !important; padding-left: 20px; }}
+.omx-card li {{ font-size: 17px !important; color: #2C3836; margin: 6px 0; line-height: 1.4; }}
+[class*="st-key-omnix_card_"][class*="_ix"] {{ background: {TEAL_DARK} !important; border-color: {TEAL_DARK} !important; }}
+.omx-card.dark .omx-card-icon {{ background: rgba(255,255,255,0.14) !important; }}
+.stApp .stMainBlockContainer .omx-card.dark h3, .omx-card.dark li {{ color: #FFFFFF !important; }}
+.omx-card.dark .sub, .omx-card.dark .chips {{ color: #CDE7E2 !important; }}
+.stApp [class*="st-key-omnix_open_"] {B} {{ background: transparent !important; padding: 6px 0 !important; min-height: 0 !important; }}
+.stApp [class*="st-key-omnix_open_"] {B} p, .stApp [class*="st-key-omnix_open_"] {B}:focus:not(:active) p {{ color: {TEAL} !important; font-size: 17px !important; }}
+.stApp [class*="st-key-omnix_open_integrix"] {B} p, .stApp [class*="st-key-omnix_open_integrix"] {B}:focus:not(:active) p {{ color: #FFFFFF !important; }}
+.stApp [class*="st-key-omnix_open_"] {B}:hover {{ background: transparent !important; }}
+.stApp [class*="st-key-omnix_open_"] {B}:hover p {{ text-decoration: underline; }}
+ol.omxh-steps {{ list-style: none; padding: 0 !important; margin: 0 !important; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }}
+ol.omxh-steps li {{ display: flex; flex-direction: column; gap: 6px; border-top: 3px solid {TEAL}; padding-top: 14px; margin: 0 !important; }}
+ol.omxh-steps .n {{ font-family: 'Sora', system-ui, sans-serif; font-weight: 700; color: {TEAL}; font-size: 16px; }}
+ol.omxh-steps .t {{ font-size: 20px; font-weight: 600; color: {INK}; }}
+ol.omxh-steps .d {{ font-size: 17px; color: #3E4B48; line-height: 1.5; }}
+[class*="st-key-omxh_band"]:not([class*="btns"]) {{ background: #FFFFFF; border: 1px solid {LINE}; border-radius: 16px;
+  padding: clamp(22px, 3vw, 40px) !important; margin-top: 56px; flex-wrap: wrap !important; }}
+[class*="st-key-omxh_band"]:not([class*="btns"]) > div:first-child {{ flex: 1 1 420px; }}
+.omxh-cta-t h3 {{ font-family: 'Sora', system-ui, sans-serif !important; font-size: clamp(24px, 2.4vw, 32px) !important; margin: 0 0 6px 0 !important;
+  padding: 0 !important; color: {INK}; }}
+.omxh-cta-t p {{ font-size: 18px !important; color: #3E4B48; margin: 0 !important; }}
+[class*="st-key-omxh_bandbtns"] {{ flex-wrap: wrap !important; }}
+.omx-logo.foot {{ height: 40px; }}
+</style>"""
+
+
+
 # ---------------------------------------------------------------------------
 # header, menus, side panel
 # ---------------------------------------------------------------------------
@@ -551,25 +736,22 @@ def _platform_names(keys):
 
 
 def demo_banner(page):
+    """A slim line under the top bar while a visitor uses a platform on its demo data."""
     if access.is_subscriber(page):
         return
     name = config.PLATFORMS[page]["name"]
     s = access.status()
-    with st.container(key="omnix_demo_banner"):
-        c1, c2 = st.columns([5, 2], vertical_alignment="center")
-        if s["subscribed"]:            # subscribed, but the plan does not include this platform
-            c1.markdown(f"<div class='omx-banner'><b>Demo mode for {html.escape(name)}.</b> Your "
-                        f"{html.escape(s.get('plan') or 'current')} plan covers {html.escape(_platform_names(s['platforms']))}. "
-                        f"Upgrade to Multi-Omics to analyze your own {html.escape(name)} data.</div>",
-                        unsafe_allow_html=True)
-            with c2:
-                st.button("Upgrade your plan", key="omnix_banner_upgrade", on_click=go, args=("subscription",))
-        else:
-            c1.markdown(f"<div class='omx-banner'><b>Demo mode.</b> You can run every {html.escape(name)} analysis on "
-                        "the built-in demo datasets. Uploading your own data requires an Omnix subscription.</div>",
-                        unsafe_allow_html=True)
-            with c2:
-                st.button("Subscribe or enter access key", key="omnix_banner_sub", on_click=go, args=("subscription",))
+    if s["subscribed"]:            # subscribed, but the plan does not include this platform
+        text = (f"Demo mode for {html.escape(name)}: your {html.escape(s.get('plan') or 'current')} plan covers "
+                f"{html.escape(_platform_names(s['platforms']))}. Upgrade to analyze your own {html.escape(name)} data.")
+        label = "Upgrade your plan"
+    else:
+        text = "You are using the built-in demo dataset. Subscribe to upload and analyze your own data."
+        label = "See plans"
+    with st.container(key="omnix_demo_banner", horizontal=True, vertical_alignment="center", gap="small"):
+        st.markdown(f"<div class='omx-banner'>{_svg(ICONS['info'], 20, '#8A4B08')}<span>{text}</span></div>",
+                    unsafe_allow_html=True)
+        st.button(label, key="omnix_banner_sub", on_click=go, args=("subscription",))
 
 
 def footer():
@@ -581,7 +763,7 @@ def footer():
         ("Platforms", [(config.PLATFORMS[k]["name"], k) for k in APPS]),
         ("Product", [("Login" if not account.current_user() else "Account", "account"),
                      ("Pricing", "subscription"), ("Get a quote", "contact"), ("FAQs", "subscription")]),
-        ("Resources", [("About Omnix", "home"), ("Help center", f"help-{APPS[0]}"),
+        ("Resources", [("Home", "home"), ("Help center", f"help-{APPS[0]}"),
                        ("Data preparation", "data-preparation"), ("Contact", "contact")]),
     ]
     with st.container(key="omnix_footer"):
@@ -589,7 +771,7 @@ def footer():
         street, _, city = c.get("address", "").partition(", ")
         lines = "".join(f"<div class='ln'>{html.escape(x).replace('@', '@<wbr>')}</div>"
                         for x in (c.get("email", ""), c.get("phone", "")) if x)
-        addr = "<br>".join(html.escape(x) for x in (street, city) if x)
+        addr = ""                      # the postal address is on the Contact page
         badge = f"<span class='omx-fbadge'>{_logo('foot')}</span>" if _logo("foot") else ""
         left.markdown(f"<div class='omx-fhead-row'>{badge}<div class='omx-fbrand'>{config.BRAND}<sup>™</sup></div></div>"
                       f"<div class='omx-ftag'>{html.escape(config.TAGLINE)}</div>{lines}"
@@ -608,57 +790,166 @@ def footer():
 
 
 # ---------------------------------------------------------------------------
+# frame: top bar on every page, side-panel head inside a platform
+# ---------------------------------------------------------------------------
+def _who():
+    """(signed in or holding a key, short name, plan line) for the top bar."""
+    s = access.status()
+    user = account.current_user()
+    name = (user or {}).get("name") or s.get("name") or ""
+    plan = s.get("plan") or ""
+    if s.get("expires"):
+        plan = f"{plan} · until {s['expires']}" if plan else f"until {s['expires']}"
+    return bool(user) or s["subscribed"], name, plan
+
+
+def _platform_menu(prefix):
+    for k in APPS:
+        st.button(config.PLATFORMS[k]["name"], key=f"{prefix}_{k}", on_click=go, args=(k,), use_container_width=True)
+
+
+def topbar(page, in_app):
+    """One bar on every page: the Omnix logo (home), the menu, and Sign in / Try a demo or the visitor's plan.
+    Inside a platform: a platform switcher, Home, Help and Data preparation instead of the site menu."""
+    signed, name, plan = _who()
+    subscribed = access.status()["subscribed"]
+    with st.container(key="omxtb_bar", horizontal=True, vertical_alignment="center", gap="small"):
+        with st.container(key="omxtb_brand", horizontal=True, vertical_alignment="center", gap="small", width="content"):
+            if _logo("tb"):
+                st.markdown(_logo("tb"), unsafe_allow_html=True, width="content")
+            st.button(f"{config.BRAND}™", key="omxtb_brandbtn", on_click=go, args=("home",), help="Omnix home")
+        if in_app:
+            with st.container(key="omxtb_switch", width="content"):
+                with st.popover(config.PLATFORMS[page]["name"]):
+                    st.markdown('<div class="omx-menu-title">Switch platform</div>', unsafe_allow_html=True)
+                    _platform_menu("omxtb_sw")
+        with st.container(key="omxtb_links", horizontal=True, vertical_alignment="center", gap="small", width="content"):
+            if in_app:
+                st.button("Home", key="omxtb_l_home", on_click=go, args=("home",))
+                st.button("Help", key="omxtb_l_help", on_click=go, args=(f"help-{page}",))
+                st.button("Data preparation", key="omxtb_l_prep", on_click=go, args=("data-preparation",))
+            else:
+                with st.container(key="omxtb_pop_platforms", width="content"):
+                    with st.popover("Platforms"):
+                        _platform_menu("omxtb_pl")
+                st.button("Pricing", key="omxtb_l_pricing", on_click=go, args=("subscription",))
+                with st.container(key="omxtb_pop_help", width="content"):
+                    with st.popover("Help"):
+                        st.markdown('<div class="omx-menu-title">Tutorials</div>', unsafe_allow_html=True)
+                        for k in APPS:
+                            st.button(f"About {config.PLATFORMS[k]['name']}", key=f"omxtb_help_{k}", on_click=go,
+                                      args=(f"help-{k}",))
+                        st.markdown('<div class="omx-menu-title" style="margin-top:10px">Example data</div>',
+                                    unsafe_allow_html=True)
+                        st.button("Data preparation (Excel demo files)", key="omxtb_help_prep", on_click=go,
+                                  args=("data-preparation",))
+                st.button("Contact", key="omxtb_l_contact", on_click=go, args=("contact",))
+                if access.is_admin():
+                    st.button("Owner console", key="omxtb_l_owner", on_click=go, args=("owner",))
+        with st.container(key="omxtb_right", horizontal=True, vertical_alignment="center", gap="small", width="content"):
+            if signed:
+                label = (name or "Account") + (f"  ·  {plan}" if plan else "")
+                st.button(label, key="omxtb_me", on_click=go, args=("account",), icon=":material/account_circle:")
+            else:
+                st.button("Sign in", key="omxtb_signin", on_click=go, args=("account",))
+            if in_app and not access.is_subscriber(page):
+                with st.container(key="omxtb_cta", width="content"):
+                    st.button("Subscribe", key="omxtb_subscribe", on_click=go, args=("subscription",))
+            elif not in_app and not subscribed:
+                with st.container(key="omxtb_ctapop", width="content"):
+                    with st.popover("Try a demo"):
+                        st.markdown('<div class="omx-menu-title">Open a platform on its demo data</div>',
+                                    unsafe_allow_html=True)
+                        _platform_menu("omxtb_demo")
+            with st.container(key="omxtb_menu", width="content"):      # phones and narrow windows
+                with st.popover("Menu", icon=":material/menu:"):
+                    st.markdown('<div class="omx-menu-title">Platforms</div>', unsafe_allow_html=True)
+                    _platform_menu("omxtb_m")
+                    st.markdown('<div class="omx-menu-title" style="margin-top:10px">Omnix</div>', unsafe_allow_html=True)
+                    for label, target in (("Home", "home"), ("Pricing", "subscription"), ("Help", f"help-{page if in_app else APPS[0]}"),
+                                          ("Data preparation", "data-preparation"), ("Contact", "contact")):
+                        st.button(label, key=f"omxtb_m_{_slug(label)}", on_click=go, args=(target,))
+                    if access.is_admin():
+                        st.button("Owner console", key="omxtb_m_owner", on_click=go, args=("owner",))
+
+
+def platform_side_head(key):
+    """Top of a platform's side panel: its icon, name and what it analyzes."""
+    p = config.PLATFORMS[key]
+    st.sidebar.markdown(f"<div class='omx-phead'><span class='i'>{_svg(ICONS.get(key, ICONS['workflow']), 26)}</span>"
+                        f"<div><div class='n'>{html.escape(p['name'])}</div><div class='s'>{html.escape(p['subtitle'])}</div>"
+                        f"</div></div>", unsafe_allow_html=True)
+
+
+# ---------------------------------------------------------------------------
 # home
 # ---------------------------------------------------------------------------
 def page_home():
-    st.markdown("## About Omnix")
-    about = [
-        "Omnix unifies metabolomics, lipidomics, proteomics, transcriptomics, and stable-isotope fluxomics in a single, "
-        "streamlined analysis platform. "
-        "Transform complex datasets into meaningful biological insights through an intuitive, guided workflow—from "
-        "data upload and quality control to normalization, statistical analysis, visualization, and pathway "
-        "interpretation.",
-        "Built for modern life-science research, Omnix makes every analysis transparent, reproducible, and "
-        "publication-ready. Understand what happens at every step, explore your results with confidence, and export "
-        "high-quality figures and tables directly for your research and manuscripts.",
-    ]
-    st.markdown(f"<div class='omx-about'><div class='hl'>One platform. {N_APPS.title()} omics. From data to discovery.</div>"
-                + "".join(f"<p>{html.escape(t)}</p>" for t in about)
-                + "<p class='close'>From raw data to biological discovery—Omnix brings the entire analysis workflow "
-                  "together.</p></div>", unsafe_allow_html=True)
-    features = [
-        ("workflow", "One guided workflow",
-         "A consistent analysis experience across metabolomics, lipidomics, proteomics, transcriptomics, and fluxomics, from data upload "
-         "and quality control to statistics, visualization, and biological interpretation."),
-        ("stats", "Statistics you can report",
-         "QC-based filtering, established normalization methods, statistical testing, multiple-testing correction, "
-         "and clearly documented analysis steps designed for research reporting."),
-        ("figure", "Publication-ready output",
-         "Export high-resolution figures and analysis tables in commonly used formats, making it easy to move from "
-         "results to reports, presentations, and manuscripts."),
-    ]
-    col1, col2, col3 = st.columns(3, gap="medium")
-    for col, (icon, title, text) in zip((col1, col2, col3), features):
-        # one line of HTML: indented multi-line HTML would be shown as a code block by Markdown
-        col.markdown(f'<div class="omx-feature-card"><div class="omx-feature-icon">{_svg(ICONS[icon], 26)}</div>'
-                     f'<h3>{html.escape(title)}</h3><p>{html.escape(text)}</p></div>', unsafe_allow_html=True)
+    prices = [p["monthly"] for p in config.SUBSCRIPTION_PLANS if p.get("monthly")]
+    from_price = f" · Plans from {config.CURRENCY}{min(prices)} a month" if prices else ""
+    with st.container(key="omxh_hero"):
+        left, right = st.columns([1, 1.1], gap="large", vertical_alignment="center")
+        with left:
+            st.markdown("<div class='omxh-eyebrow'>Multi-omics analysis, no code</div>"
+                        "<h1 class='omxh-h1'>From raw omics data to publication-ready results.</h1>"
+                        "<p class='omxh-lead'>Metabolomics, lipidomics, proteomics, transcriptomics and stable-isotope "
+                        "fluxomics in one guided workflow, plus Integrix to connect them.</p>", unsafe_allow_html=True)
+            with st.container(key="omxh_ctas", horizontal=True, gap="small"):
+                with st.container(key="omxh_demo", width="content"):
+                    with st.popover("Try a demo, free"):
+                        st.markdown('<div class="omx-menu-title">Open a platform on its demo data</div>',
+                                    unsafe_allow_html=True)
+                        _platform_menu("omxh_demo")
+                with st.container(key="omxh_pricing", width="content"):
+                    st.button("See pricing", key="omxh_pricingbtn", on_click=go, args=("subscription",))
+            st.markdown(f"<div class='omxh-note'>No sign-up for the built-in demo datasets{from_price}</div>",
+                        unsafe_allow_html=True)
+        with right:
+            vol, heat = _img_uri("home_volcano.jpg"), _img_uri("home_heatmap.jpg")
+            if vol:
+                st.markdown("<div class='omxh-figs'>"
+                            f"<figure class='v'><img src='{vol}' alt='Volcano plot made in Omnix'>"
+                            "<figcaption>Volcano plot · Proteomics demo data</figcaption></figure>"
+                            + (f"<figure class='h'><img src='{heat}' alt='Clustered heatmap made in Omnix'>"
+                               "<figcaption>Heatmap</figcaption></figure>" if heat else "")
+                            + "</div>", unsafe_allow_html=True)
 
-    st.markdown("## Choose an analysis platform")
-    # three cards per row: the five data platforms, then Integrix in the sixth place (beside Fluxomics)
+    st.markdown("<div class='omxh-sec'><h2>Five omics, one integrated view</h2><p>Each platform runs the full "
+                "workflow for its data type. Integrix connects them. Every platform opens on built-in demo data."
+                "</p></div>", unsafe_allow_html=True)
     cards = DATA_APPS + INTEGRATION_APPS
     cols = [c for i in range(0, len(cards), 3) for c in st.columns(3, gap="medium")][:len(cards)]
     for col, k in zip(cols, cards):
         p = config.PLATFORMS[k]
-        with col, st.container(key=f"omnix_card_{k}", border=True, height="stretch"):
-            chips = "".join(f'<span class="omx-chip">{html.escape(c)}</span>' for c in p["chips"])
-            items = "".join(f"<li>{html.escape(h)}</li>" for h in p["highlights"])
-            st.markdown(f'<div class="omx-card"><div class="omx-card-icon">{_svg(ICONS.get(k, ICONS["workflow"]))}</div>'
-                        f'<h2>{p["name"]}</h2><div class="sub">{html.escape(p["subtitle"])}</div>'
-                        f'<div>{chips}</div><ul>{items}</ul></div>', unsafe_allow_html=True)
+        dark = k in INTEGRATION_APPS
+        with col, st.container(key=f"omnix_card_{k}" + ("_ix" if dark else ""), border=True, height="stretch"):
+            items = "".join(f"<li>{html.escape(h)}</li>" for h in p["highlights"][:3])
+            chips = " · ".join(html.escape(c) for c in p["chips"])
+            st.markdown(f'<div class="omx-card{" dark" if dark else ""}"><div class="omx-card-head">'
+                        f'<div class="omx-card-icon">{_svg(ICONS.get(k, ICONS["workflow"]), 28, "#FFFFFF" if dark else TEAL)}</div>'
+                        f'<div><h3>{p["name"]}</h3><div class="sub">{html.escape(p["subtitle"])}</div></div></div>'
+                        f'<div class="chips">{chips}</div><ul>{items}</ul></div>', unsafe_allow_html=True)
             with st.container(key=f"omnix_open_{k}"):
                 st.button(f"Open {p['name']}  →", key=f"omnix_openbtn_{k}", on_click=go, args=(k,))
-    st.markdown("<div class='omx-note'>Try any platform now on its built-in demo datasets. "
-                "A subscription lets you upload and analyze your own data.</div>", unsafe_allow_html=True)
+
+    steps = [("Upload or pick a demo", "Use your export, or start on built-in data. Data preparation guides show the format."),
+             ("Check quality and normalize", "QC-based filtering, imputation and normalization, each step shown."),
+             ("Compare and visualize", "t-test or ANOVA with FDR, PCA, volcano, heatmaps and biomarkers."),
+             ("Interpret and export", "Pathway analysis, then figures in PNG, TIFF, SVG, PDF or EPS and tables in Excel.")]
+    st.markdown("<div class='omxh-sec'><h2>How it works</h2></div><ol class='omxh-steps'>"
+                + "".join(f"<li><span class='n'>{i}</span><span class='t'>{html.escape(t)}</span>"
+                          f"<span class='d'>{html.escape(d)}</span></li>" for i, (t, d) in enumerate(steps, 1))
+                + "</ol>", unsafe_allow_html=True)
+
+    with st.container(key="omxh_band", horizontal=True, vertical_alignment="center", gap="medium"):
+        st.markdown("<div class='omxh-cta-t'><h3>Try every platform on built-in demo data</h3><p>No account needed. "
+                    "Subscribe when you are ready to analyze your own data.</p></div>", unsafe_allow_html=True)
+        with st.container(key="omxh_bandbtns", horizontal=True, gap="small", width="content"):
+            with st.container(key="omxh_demo2", width="content"):
+                with st.popover("Start a demo"):
+                    _platform_menu("omxh_demo2")
+            with st.container(key="omxh_pricing2", width="content"):
+                st.button("See pricing", key="omxh_pricingbtn2", on_click=go, args=("subscription",))
 
 
 # ---------------------------------------------------------------------------
@@ -1300,7 +1591,6 @@ def run_app(key):
             integrix_bridge.sidebar_panel(key, go)     # Send to / Download for Integrix
         if key in DATA_APPS:
             figure_options_panel()
-        access_panel()          # below the platform's own side panel
 
 
 SAMPLE_LABEL_KEY = "omnix_sample_label_max"            # read by each platform's sample_labels.py
@@ -1336,12 +1626,13 @@ def main():
     isolation.activate(page if in_app else None)
     access.set_demo_only(not access.is_subscriber(page if in_app else None))
     _styles(page, portal_page=not in_app)
-    header(compact=in_app)
+    st.markdown(_frame_css(in_app), unsafe_allow_html=True)
+    topbar(page, in_app)
     if in_app:
         demo_banner(page)
+        platform_side_head(page)
         run_app(page)
         return
-    portal_sidebar(page)
     if page == "home":
         page_home()
     elif page == "subscription":

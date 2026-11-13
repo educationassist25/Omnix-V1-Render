@@ -334,15 +334,37 @@ if st.session_state.get("nav_group") not in _GROUP_BY_NAME:      # also a group 
 if "nav_page" not in st.session_state:
     st.session_state.nav_page = NAV_GROUPS[0][1][0][0]
 
+def _omx_nav_to(group_name, page_title):
+    st.session_state.nav_group, st.session_state.nav_page = group_name, page_title
+
+
+def _omx_nav_tree():
+    """Inside Omnix: every page in the side panel under its group name; the open page is highlighted."""
+    single = st.session_state.get("data_mode", "single") != "multi"
+    with st.sidebar.container(key="omx_navtree"):
+        for group_name, _pages in NAV_GROUPS:
+            shown = [pt for pt, _ in _pages if not (single and "Multi-Dataset" in pt)]
+            if not shown:
+                continue
+            st.markdown(f"<div class='omx-navgrp'>{group_name}</div>", unsafe_allow_html=True)
+            for pt in shown:
+                here = group_name == st.session_state.nav_group and pt == st.session_state.nav_page
+                st.button(pt, key=f"navtree__{_slug(group_name)}__{_slug(pt)}", on_click=_omx_nav_to,
+                          args=(group_name, pt), type="primary" if here else "secondary", use_container_width=True)
+
+
 # --- Sidebar: group names only ---
-st.sidebar.title("Proteomics")
-st.sidebar.caption("LC-MS/MS based Proteomics Analysis")
-with st.sidebar.container(key="nav_group_box"):
-    for group_name, _pages in NAV_GROUPS:
-        if st.button(group_name, key=f"navgrp__{_slug(group_name)}", use_container_width=True):
-            st.session_state.nav_group = group_name
-            st.session_state.nav_page = _pages[0][0]
-            st.rerun()
+if OMNIX:          # inside Omnix: all steps in the side panel (navigation only)
+    _omx_nav_tree()
+else:
+    st.sidebar.title("Proteomics")
+    st.sidebar.caption("LC-MS/MS based Proteomics Analysis")
+    with st.sidebar.container(key="nav_group_box"):
+        for group_name, _pages in NAV_GROUPS:
+            if st.button(group_name, key=f"navgrp__{_slug(group_name)}", use_container_width=True):
+                st.session_state.nav_group = group_name
+                st.session_state.nav_page = _pages[0][0]
+                st.rerun()
 # filled at the end of the script, below the navigation
 _sidebar_status = st.sidebar.container()
 
@@ -374,13 +396,17 @@ active_pages = _GROUP_BY_NAME[st.session_state.nav_group]
 if st.session_state.nav_page not in dict(active_pages):
     st.session_state.nav_page = active_pages[0][0]
 
-with st.container(key="nav_page_row"):
-    cols = st.columns(len(active_pages))
-    for col, (page_title, _page_idx) in zip(cols, active_pages):
-        with col:
-            if st.button(page_title, key=f"navpg__{_slug(st.session_state.nav_group)}__{_slug(page_title)}", use_container_width=False):
-                st.session_state.nav_page = page_title
-                st.rerun()
+if OMNIX:
+    st.markdown(f"<div class='omx-crumb'>{st.session_state.nav_group} / {st.session_state.nav_page}</div>",
+                unsafe_allow_html=True)
+else:
+    with st.container(key="nav_page_row"):
+        cols = st.columns(len(active_pages))
+        for col, (page_title, _page_idx) in zip(cols, active_pages):
+            with col:
+                if st.button(page_title, key=f"navpg__{_slug(st.session_state.nav_group)}__{_slug(page_title)}", use_container_width=False):
+                    st.session_state.nav_page = page_title
+                    st.rerun()
 
 # Sub-step (page) tabs get the second MetaboAnalyst accent — orange — so the two nav
 # levels (workflow step vs. page within it) read as visually distinct tiers.
@@ -407,7 +433,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.divider()
+if not OMNIX:          # inside Omnix the page title follows the one-line "Group / Page" note
+    st.divider()
 
 
 def _go_to(page_title, key):
@@ -1613,6 +1640,9 @@ if ACTIVE_PAGE == 8:
             "Run a two-group comparison in the Statistics page first — the heatmap needs "
             "that result to know which proteins are significant."
         )
+    elif st.session_state.log2_data is None:          # e.g. the normalization method was changed since
+        st.warning("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_heatmap")
     else:
         log2_df_full = st.session_state.log2_data
         result = st.session_state.stats_result
@@ -2022,6 +2052,10 @@ if ACTIVE_PAGE == 10:
         "access**; GSEA can run fully offline if you upload your own .gmt gene set file."
     )
     sig_proteins, stats_df, stats_by_gene = render_significant_protein_selector("gsea")
+    if stats_df is not None and st.session_state.log2_data is None:     # normalization was changed since
+        st.warning("Complete the Normalization page first.")
+        _go_to("Normalization", key="goto_norm_gsea")
+        stats_df = None
 
     if stats_df is not None:
         # All proteins successfully quantified in this study -- the recommended ORA/GSEA

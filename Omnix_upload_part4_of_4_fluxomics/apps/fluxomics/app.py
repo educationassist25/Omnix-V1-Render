@@ -155,14 +155,27 @@ if st.session_state.step not in GROUP_OF:
     st.session_state.step = NAV_GROUPS[0][1][0]
 active_group = GROUP_OF[st.session_state.step]
 
-# --- Sidebar: group names only ---
-st.sidebar.title(APP_NAME)
-st.sidebar.caption("Stable-isotope tracing metabolomics & flux analysis (LC-MS)")
-with st.sidebar.container(key="nav_group_box"):
-    for group_name, steps in NAV_GROUPS:
-        if st.button(group_name, key=f"navgrp__{_slug(group_name)}", use_container_width=True):
-            st.session_state.step = steps[0]
-            st.rerun()
+def _omx_nav_to(step):
+    st.session_state.step = step
+
+
+# --- Sidebar: group names only (inside Omnix: every step, under its group) ---
+if OMNIX:
+    with st.sidebar.container(key="omx_navtree"):
+        for group_name, steps in NAV_GROUPS:
+            st.markdown(f"<div class='omx-navgrp'>{group_name}</div>", unsafe_allow_html=True)
+            for key in steps:
+                st.button(STEP_LABEL[key].split(" · ", 1)[-1], key=f"navtree__{_slug(group_name)}__{key}", on_click=_omx_nav_to,
+                          args=(key,), type="primary" if key == st.session_state.step else "secondary",
+                          use_container_width=True)
+else:
+    st.sidebar.title(APP_NAME)
+    st.sidebar.caption("Stable-isotope tracing metabolomics & flux analysis (LC-MS)")
+    with st.sidebar.container(key="nav_group_box"):
+        for group_name, steps in NAV_GROUPS:
+            if st.button(group_name, key=f"navgrp__{_slug(group_name)}", use_container_width=True):
+                st.session_state.step = steps[0]
+                st.rerun()
 
 ds = st.session_state.ds
 if ds is not None:
@@ -209,13 +222,17 @@ st.markdown(
 
 # --- Main page: the active group's steps, as a row of buttons ---
 steps = dict(NAV_GROUPS)[active_group]
-with st.container(key="nav_page_row"):
-    cols = st.columns(len(steps))
-    for col, key in zip(cols, steps):
-        with col:
-            if st.button(STEP_LABEL[key], key=f"navpg__{_g}__{key}", use_container_width=False):
-                st.session_state.step = key
-                st.rerun()
+if OMNIX:
+    st.markdown(f"<div class='omx-crumb'>{active_group} / {STEP_LABEL[st.session_state.step].split(' · ', 1)[-1]}</div>",
+                unsafe_allow_html=True)
+else:
+    with st.container(key="nav_page_row"):
+        cols = st.columns(len(steps))
+        for col, key in zip(cols, steps):
+            with col:
+                if st.button(STEP_LABEL[key], key=f"navpg__{_g}__{key}", use_container_width=False):
+                    st.session_state.step = key
+                    st.rerun()
 
 # The selected step: orange, as the page tabs of the other platforms.
 _p = f"navpg__{_g}__{st.session_state.step}"
@@ -235,6 +252,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.divider()
+if not OMNIX:          # inside Omnix the page title follows the one-line "Group / Page" note
+    st.divider()
 
 PAGES[st.session_state.step].render()

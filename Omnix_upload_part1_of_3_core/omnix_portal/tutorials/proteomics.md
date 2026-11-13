@@ -5,7 +5,7 @@
 - **Label-Free Proteomics**: each sample is acquired separately and normalized across samples.
 - **TMT Proteomics**: samples are multiplexed, usually with a pooled/bridge reference channel, and every other channel can be normalized as a ratio to that reference.
 
-The sidebar lists the workflow steps in order: **Setup**, **Preprocessing**, **Normalization**, **Statistical Analysis**, **Exploratory Analysis**, **Biomarker Discovery** and **Pathway Analysis**. Click a step and its pages appear as a row of buttons at the top of the main area.
+The sidebar lists the workflow steps in order: **Setup**, **Preprocessing**, **Normalization**, **Statistical Analysis**, **Exploratory Analysis**, **Biomarker Discovery** and **Pathway Analysis**. Every page is listed under its step; click a page to open it, and the open page is highlighted.
 
 Every figure has the same download row: **Format** (PNG, TIFF, JPEG, SVG, PDF, EPS, or all six as one ZIP) and **Resolution (DPI)** of 300, 600 (the default) or 1200. PNG, TIFF and JPEG are high-resolution images; SVG, PDF and EPS are vector files with editable text. Every table downloads as both CSV and Excel. Sample names are written in full in every figure, and every sample is labelled; to shorten long names, use **Sample names in figures** in the side panel (tables keep the full names).
 

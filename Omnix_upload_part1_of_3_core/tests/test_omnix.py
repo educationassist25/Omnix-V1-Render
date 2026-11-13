@@ -34,6 +34,16 @@ def _step(at, group, page):
     return at.run()
 
 
+def _side_head(at):
+    """Platform name in the side-panel head (inside Omnix the apps show no sidebar title)."""
+    import re as _re
+    for m in at.sidebar.markdown:
+        hit = _re.search(r"<div class='n'>([^<]+)</div>", m.value)
+        if hit and "omx-phead" in m.value:
+            return [hit.group(1)]
+    return []
+
+
 def _click(at, label):
     b = next(b for b in at.button if b.label.startswith(label) or label in b.label)
     return b.click().run()
@@ -45,8 +55,8 @@ def test_home_and_portal_pages_render():
     labels = [b.label for b in at.button]
     for name in APPS.values():
         assert name in labels and f"Open {name}  →" in labels and f"About {name}" in labels
-    assert "Subscription" in labels
-    assert not at.sidebar.title                      # portal pages have no app sidebar
+    assert "Pricing" in labels and "Sign in" in labels and "Try a demo" not in labels   # demo is a menu
+    assert not at.sidebar.title and not _side_head(at)    # portal pages have no side panel
     for page in ["subscription", "contact", "help-metabolomics", "help-proteomics", "help-transcriptomics",
                  "help-fluxomics"]:
         _open(at, page)
@@ -61,7 +71,7 @@ def test_menu_buttons_navigate():
     assert at.session_state["omnix_page"] == "help-proteomics" and not at.exception
     _click(at, "Open Proteomics")
     assert at.session_state["omnix_page"] == "proteomics"
-    assert [t.value for t in at.sidebar.title] == ["Proteomics"]
+    assert _side_head(at) == ["Proteomics"]
 
 
 @pytest.mark.parametrize("page", ["metabolomics", "proteomics", "transcriptomics", "fluxomics", "help-transcriptomics",
@@ -78,8 +88,9 @@ def test_each_platform_runs_inside_omnix_under_its_new_name(key, name):
     at = AppTest.from_file(PORTAL, default_timeout=300).run()
     _open(at, key)
     assert not at.exception
-    assert [t.value for t in at.sidebar.title] == [name]
-    assert "Setup" in [b.label for b in at.sidebar.button]
+    assert _side_head(at) == [name]
+    keys = [b.key or "" for b in at.sidebar.button]
+    assert key == "integrix" or any(k.startswith("navtree__setup__") for k in keys)
 
 
 def test_platform_data_stays_separate_and_is_restored():
@@ -207,7 +218,7 @@ def test_demo_mode_locks_every_upload(key):
     ups = at.get("file_uploader")
     assert ups and all(u.disabled for u in ups)
     assert all("subscription required" in u.label for u in ups)
-    assert "Subscribe or enter access key" in [b.label for b in at.button]      # the demo banner
+    assert "omnix_banner_sub" in [b.key for b in at.button]                     # the demo banner
 
 
 def test_access_key_unlocks_uploads_in_every_platform():
@@ -220,7 +231,7 @@ def test_access_key_unlocks_uploads_in_every_platform():
         _open(at, key)
         ups = at.get("file_uploader")
         assert ups and not any(u.disabled for u in ups), key
-        assert "Subscribe or enter access key" not in [b.label for b in at.button]
+        assert "omnix_banner_sub" not in [b.key for b in at.button]
 
 
 def test_expired_key_is_refused():
@@ -299,12 +310,12 @@ def test_owner_console_only_for_owner_and_creates_valid_keys():
                                OWNER_HASH: {"name": "Owner", "plan": "Owner", "role": "admin"}}}
     at = _portal(secrets)
     _activate(at, TEST_KEY)                                                     # subscriber: no console
-    assert "Owner console" not in [b.label for b in at.sidebar.button]
+    assert "Owner console" not in [b.label for b in at.button]
     _open(at, "owner")
     assert any("only available with an owner" in i.value for i in at.info)
     at = _portal(secrets)
     _activate(at, OWNER_KEY)
-    assert "Owner console" in [b.label for b in at.sidebar.button]
+    assert "Owner console" in [b.label for b in at.button]
     _open(at, "owner")
     assert not at.exception and len(at.dataframe) >= 1
     at.text_input(key="omnix_owner_name").input("Sam Lee")
@@ -359,8 +370,8 @@ def _subscribe(at, plan_id, period="Annual", platform=None):
 def test_login_tab_and_signed_out_account_page():
     at = _portal()
     labels = [b.label for b in at.button]
-    assert labels.index("Login") > labels.index("Subscription")           # last item of the main menu
-    _click(at, "Login")
+    assert "Sign in" in labels                                             # top bar, right
+    at.button(key="omxtb_signin").click().run()
     assert at.session_state["omnix_page"] == "account" and not at.exception
     text = " ".join(m.value for m in at.markdown)
     assert "Omnix Account" in text and "Sign in or register" in text
@@ -444,7 +455,7 @@ def test_lab_owner_adds_members():
 
 def test_owner_email_gets_owner_console_with_online_subscriptions():
     at = _sign_in_preview(_portal({**PREVIEW, "owner_emails": [DEMO_EMAIL]}))
-    assert "Owner console" in [b.label for b in at.sidebar.button]
+    assert "Owner console" in [b.label for b in at.button]
     _open(at, "owner")
     assert "Online subscriptions" in [t.label for t in at.tabs]
 
@@ -545,7 +556,7 @@ def test_signin_misconfiguration_is_explained_not_crashing():
 def test_data_preparation_page_and_teal_footer():
     at = _portal()
     labels = [b.label for b in at.button]
-    for link in ["Pricing", "Get a quote", "FAQs", "About Omnix", "Help center", "Data preparation"]:
+    for link in ["Pricing", "Get a quote", "FAQs", "Home", "Help center", "Data preparation"]:
         assert link in labels, link
     next(b for b in at.button if b.label == "Data preparation" and "foot" in str(b.key)).click().run()
     assert at.session_state["omnix_page"] == "data-preparation" and not at.exception
@@ -630,16 +641,15 @@ def test_fluxomics_layout_matches_the_other_platforms():
     at = _portal()
     _open(at, "fluxomics")
     assert not at.exception
-    assert [t.value for t in at.sidebar.title] == ["Fluxomics"]
-    side = [b.label for b in at.sidebar.button]
-    assert side[:7] == ["Setup", "Normalization", "Isotope Labeling", "Statistical Analysis", "Exploratory Analysis",
-                        "Pathway Analysis", "Reset all steps"]                 # no Export & Report group
-    main = [b.label for b in at.main.button]
-    assert "Upload & inspect" in main and "Experimental design" in main     # step names, no numbers
-    # a sidebar group opens its first step; the step row follows
-    at.button(key="navgrp__exploratory-analysis").click().run()
+    assert _side_head(at) == ["Fluxomics"]
+    side = [b.label for b in at.sidebar.button if (b.key or "").startswith("navtree")]
+    assert side == ["Upload & inspect", "Experimental design", "Normalization", "Isotope incorporation", "Label arrival",
+                    "Statistics", "Dynamic bar plots", "Heatmaps", "Pathway mapping"]   # no Export & Report step
+    assert not any(l[:1].isdigit() for l in side)                         # step names, no numbers
+    # a step in the side panel opens it and is highlighted
+    at.button(key="navtree__exploratory-analysis__boxplots").click().run()
     assert at.session_state["step"] == "boxplots" and not at.exception
-    assert "Heatmaps" in [b.label for b in at.main.button]
+    assert at.button(key="navtree__exploratory-analysis__boxplots").proto.type == "primary"
 
 
 def test_fluxomics_workflow_inside_omnix():
@@ -660,7 +670,7 @@ def test_fluxomics_workflow_inside_omnix():
     _click(at, "Run statistics")
     assert not at.exception and at.session_state["stats"]
     _flux_step(at, "upload")
-    main = [b.label for b in at.main.button]
+    main = [b.label for b in at.main.button] + [b.label for b in at.sidebar.button]
     assert "Upload & inspect" in main and not any(l.startswith("✓") for l in main)       # no check marks
     assert not any("Export" in l for l in main + [b.label for b in at.sidebar.button])
     _flux_step(at, "export")                                  # an old link to the removed step opens Upload
@@ -746,11 +756,11 @@ def test_fluxomics_excel_examples_read_like_csv():
 def test_metabolomics_and_lipidomics_tabs_offer_only_their_own_types():
     at = _portal()
     _open(at, "metabolomics")
-    assert not at.exception and [t.value for t in at.sidebar.title] == ["Metabolomics"]
+    assert not at.exception and _side_head(at) == ["Metabolomics"]
     types = next(s for s in at.selectbox if s.label == "Analysis type").options
     assert types == ["Untargeted Metabolomics", "Targeted Metabolomics"]
     _open(at, "lipidomics")
-    assert not at.exception and [t.value for t in at.sidebar.title] == ["Lipidomics"]
+    assert not at.exception and _side_head(at) == ["Lipidomics"]
     assert next(s for s in at.selectbox if s.label == "Analysis type").options == ["Untargeted Lipidomics", "Targeted Lipidomics"]
 
 

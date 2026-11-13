@@ -52,7 +52,7 @@ Press **Run analysis**. Finished analyses are kept on the server, so repeating a
 
 ## Results
 
-Four section cards sit above the results: **Results**, **Networks & targets**, **Advanced** and **Data & export**.
+After the run, the side panel lists four sections under the setup steps: **Results**, **Networks & targets**, **Advanced** and **Data & export**, each with its pages.
 
 - **Overview**: metric cards, key findings, layer concordance across the top pathways and the reaction classification.
 - **Reactions**: the pattern map (enzyme evidence E against metabolite balance M) and the reaction table with label, topology and balance q-values. Patterns include *Throughput-consistent*, *Candidate bottleneck*, *Constrained step*, *Non-abundance regulation* and *Compensated*.
