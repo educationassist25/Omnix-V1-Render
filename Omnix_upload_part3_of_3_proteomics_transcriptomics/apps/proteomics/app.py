@@ -1579,10 +1579,10 @@ if ACTIVE_PAGE == 6:
                 f"Download {volcano_tag}_Complete_Volcano_Data.csv",
                 annotated,
                 file_name=f"{volcano_tag}_Complete_Volcano_Data.csv")
-        st.caption("Figure settings (for reproducibility):")
         settings_json = volcano.export_settings_json(st.session_state.volcano_settings)
-        st.download_button(f"Download {volcano_tag}_Volcano_Figure_Settings.json", settings_json.encode(),
-                            f"{volcano_tag}_Volcano_Figure_Settings.json", "application/json")
+        utils.file_download(st, "Figure settings", settings_json.encode(),
+                            f"{volcano_tag}_Volcano_Figure_Settings.json", "application/json", "JSON",
+                            "dl_volcano_settings", desc="Reproduce this volcano plot exactly")
 
 # ===========================================================================
 # TAB 10 — BIOMARKER DISCOVERY

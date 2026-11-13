@@ -201,16 +201,57 @@ def _xlsx_one(df: pd.DataFrame, sheet: str) -> bytes:
     return to_download_bytes_xlsx({_re.sub(r"[\[\]:*?/\\]", "_", sheet)[:31] or "Sheet1": df})
 
 
-def table_download(container, label, df: pd.DataFrame, file_name: str, key=None, **kwargs):
-    """CSV and Excel downloads for one table, the same in every Omnix platform. The CSV is UTF-8 with a BOM
-    (opens correctly in Excel); the Excel file is built only when its button is pressed."""
-    import functools as _ft
-    container.download_button(label, to_download_bytes_csv(df), file_name=file_name, mime="text/csv", key=key,
-                              **kwargs)
+def _dl_title(label, file_name):
+    """Card title: the label when it is a name ('Rewired pairs (CSV)' -> 'Rewired pairs'), otherwise the file
+    name without the comparison prefix ('Mild_over_Control_PCA_Scores.csv' -> 'PCA Scores')."""
+    import re as _re
+    label = str(label or "")
+    if label and not label.startswith("Download "):
+        return _re.sub(r"\s*\((CSV|csv)\)\s*$", "", label)
     stem = file_name.rsplit(".", 1)[0]
-    container.download_button(f"Download {stem}.xlsx", _ft.partial(_xlsx_one, df, stem), file_name=f"{stem}.xlsx",
-                              mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                              key=(f"{key}_xlsx" if key else None), **kwargs)
+    if "_over_" in stem:
+        rest = stem.split("_over_", 1)[1]
+        if "_" in rest:
+            stem = rest.split("_", 1)[1]
+    return stem.replace("_", " ").strip() or file_name
+
+
+def table_download(container, label, df: pd.DataFrame, file_name: str, key=None, desc=None, **kwargs):
+    """CSV and Excel downloads for one table, the same in every Omnix platform: one small card with the table's
+    name, its file name and two buttons (CSV, Excel). The CSV is UTF-8 with a BOM (opens correctly in Excel);
+    the Excel file is built only when its button is pressed. The files are unchanged."""
+    import functools as _ft
+    import html as _html
+    import re as _re
+    import streamlit as st
+    stem = file_name.rsplit(".", 1)[0]
+    bkey = key or ("dl_" + _re.sub(r"[^A-Za-z0-9]+", "_", file_name))
+    desc = desc or kwargs.pop("help", None)
+    kwargs.pop("help", None)
+    with container.container(key=f"omxdl_{bkey}", border=True):
+        st.markdown(f"<div class='omx-dl-t'>{_html.escape(_dl_title(label, file_name))}</div>"
+                    + (f"<div class='omx-dl-d'>{_html.escape(desc)}</div>" if desc else "")
+                    + f"<div class='omx-dl-f'>{_html.escape(stem)}</div>", unsafe_allow_html=True)
+        with st.container(horizontal=True, gap="small"):
+            st.download_button("CSV", to_download_bytes_csv(df), file_name=file_name, mime="text/csv", key=bkey,
+                               icon=":material/download:", help=f"{stem}.csv", **kwargs)
+            st.download_button("Excel", _ft.partial(_xlsx_one, df, stem), file_name=f"{stem}.xlsx",
+                               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                               key=f"{bkey}_xlsx", icon=":material/download:", help=f"{stem}.xlsx", **kwargs)
+
+
+def file_download(container, title, data, file_name: str, mime: str, fmt: str, key: str, desc=None, **kwargs):
+    """A single-format download (JSON, HTML, ZIP...) in the same card style as table_download."""
+    import html as _html
+    import streamlit as st
+    desc = desc or kwargs.pop("help", None)
+    kwargs.pop("help", None)
+    with container.container(key=f"omxdl_{key}", border=True):
+        st.markdown(f"<div class='omx-dl-t'>{_html.escape(title)}</div>"
+                    + (f"<div class='omx-dl-d'>{_html.escape(desc)}</div>" if desc else "")
+                    + f"<div class='omx-dl-f'>{_html.escape(file_name.rsplit('.', 1)[0])}</div>", unsafe_allow_html=True)
+        st.download_button(fmt, data, file_name=file_name, mime=mime, key=key, icon=":material/download:",
+                           help=file_name, **kwargs)
 
 
 def to_download_bytes_xlsx(sheets: dict) -> bytes:

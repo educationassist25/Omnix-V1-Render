@@ -1370,19 +1370,20 @@ def _render_msea(st, state, render_single_figure, ctx):
     }
     params_df = pd.DataFrame({"Value": [str(v) for v in params.values()]},
                              index=pd.Index(list(params.keys()), name="Parameter"))
-    b = st.columns([1, 1, 1, 3])
-    b[0].download_button("ID mapping (CSV)", _csv(sel_view[MSEA_ID_COLUMNS], "Metabolite"),
-                         file_name=f"{tag}_ID_Mapping.csv", mime="text/csv", key="msea_dl_map")
-    b[1].download_button("Pathway results (CSV)", _csv(results, "Pathway_ID"), file_name=f"{tag}_Pathway_Results.csv",
-                         mime="text/csv", key="msea_dl_res", disabled=len(results) == 0)
     sheets = {"Parameters": params_df, "Input_Selection": selected,
               "ID_Mapping": xls_view.set_index("Metabolite"),
               "Not_In_Library": xls_view[xls_view["In_Selected_Library"] == "No"].set_index("Metabolite"),
               "Reference_Metabolome": ref_df.set_index("Library_Key"),
               "Pathway_Results": results.set_index("Pathway_ID") if len(results) else results}
-    b[2].download_button("Complete results (Excel)", utils.to_download_bytes_xlsx(sheets),
-                         file_name=f"{tag}_Complete_Results.xlsx",
-                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", key="msea_dl_xlsx")
+    b = st.columns(3)
+    utils.file_download(b[0], "ID mapping", _csv(sel_view[MSEA_ID_COLUMNS], "Metabolite"), f"{tag}_ID_Mapping.csv",
+                        "text/csv", "CSV", "msea_dl_map", desc="Each selected metabolite and its library IDs")
+    utils.file_download(b[1], "Pathway results", _csv(results, "Pathway_ID"), f"{tag}_Pathway_Results.csv",
+                        "text/csv", "CSV", "msea_dl_res", desc="Enrichment statistics per pathway",
+                        disabled=len(results) == 0)
+    utils.file_download(b[2], "Complete results", utils.to_download_bytes_xlsx(sheets),
+                        f"{tag}_Complete_Results.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Excel", "msea_dl_xlsx",
+                        desc="Parameters, input, mapping and results, one sheet each")
     if fig is not None:
         plt.close(fig)
 
@@ -1622,15 +1623,16 @@ def _render_option_b(st, state, render_single_figure, ctx):
         uni = state.get("mgpa_ora_universe_genes")
         if uni is not None:
             sheets["Universe_Genes"] = pd.DataFrame({"Gene": sorted(set(uni))}).set_index("Gene")
-    b = st.columns([1, 1, 1, 1, 2])
-    b[0].download_button("HMDB mapping (CSV)", _csv(sel_map, "Metabolite"), file_name=f"{tag}_HMDB_Mapping.csv",
-                         mime="text/csv", key="pa_b_dl_map")
-    b[1].download_button("Metabolite–Gene mapping (CSV)", _csv(mg_df, "Metabolite"),
-                         file_name=f"{tag}_Metabolite_Gene_Mapping.csv", mime="text/csv", key="pa_b_dl_mg")
-    b[2].download_button("Unique gene list (CSV)", _csv(ug_df, "Gene"),
-                         file_name=f"{tag}_Unique_Gene_List.csv", mime="text/csv", key="pa_b_dl_ug")
-    b[3].download_button("Complete results (Excel)", utils.to_download_bytes_xlsx(sheets),
-                         file_name=f"{tag}_Complete_Results.xlsx",
-                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", key="pa_b_dl_xlsx")
+    b = st.columns(4)
+    utils.file_download(b[0], "HMDB mapping", _csv(sel_map, "Metabolite"), f"{tag}_HMDB_Mapping.csv", "text/csv",
+                        "CSV", "pa_b_dl_map", desc="Selected metabolites with HMDB IDs")
+    utils.file_download(b[1], "Metabolite–gene mapping", _csv(mg_df, "Metabolite"),
+                        f"{tag}_Metabolite_Gene_Mapping.csv", "text/csv", "CSV", "pa_b_dl_mg",
+                        desc="Gene associations of each metabolite")
+    utils.file_download(b[2], "Unique gene list", _csv(ug_df, "Gene"), f"{tag}_Unique_Gene_List.csv", "text/csv",
+                        "CSV", "pa_b_dl_ug", desc="Genes used as the input list")
+    utils.file_download(b[3], "Complete results", utils.to_download_bytes_xlsx(sheets),
+                        f"{tag}_Complete_Results.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Excel", "pa_b_dl_xlsx",
+                        desc="All tables, one sheet each")
     if fig is not None:
         plt.close(fig)

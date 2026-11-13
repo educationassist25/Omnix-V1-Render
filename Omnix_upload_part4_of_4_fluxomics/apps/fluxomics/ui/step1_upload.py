@@ -226,14 +226,19 @@ def _inspect(ds):
                        f"{len(r.m0_only)} metabolite(s) with only M+0 were excluded (listed in Removed peaks). "
                        "This is exactly the table used by every later step.")
             C.show_df(r.W, height=420)
-            st.download_button("⬇ Combined workbook (.xlsx)", r.workbook_bytes(),
-                               "Fluxomics_combined_one_peak_per_metabolite.xlsx",
-                               "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            C.dl_card("Combined workbook", "Fluxomics_combined_one_peak_per_metabolite",
+                      "One peak per metabolite, as used by every later step", key="up_combined_wb",
+                      buttons=[("Excel", r.workbook_bytes(), "Fluxomics_combined_one_peak_per_metabolite.xlsx",
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "up_combined_wb_xlsx")])
         with T[4]:
             C.show_df(r.decisions, height=420)
         with T[5]:
             C.show_df(r.W_removed, height=420)
     t, mtab = dsm.to_generic(ds)
-    c1, c2, _ = st.columns([1, 1, 2])
-    c1.download_button("⬇ Channel table (generic CSV)", t, "isotopologue_channel_table.csv", "text/csv")
-    c2.download_button("⬇ Sample metadata (CSV)", mtab, "sample_metadata.csv", "text/csv")
+    c1, c2, _ = st.columns([1, 1, 1])
+    with c1:
+        C.dl_card("Channel table", "isotopologue_channel_table", "Generic format, one row per isotopologue",
+                  key="up_channel", buttons=[("CSV", t, "isotopologue_channel_table.csv", "text/csv", "up_channel_csv")])
+    with c2:
+        C.dl_card("Sample metadata", "sample_metadata", "Groups, time points and replicates", key="up_meta_dl",
+                  buttons=[("CSV", mtab, "sample_metadata.csv", "text/csv", "up_meta_dl_csv")])

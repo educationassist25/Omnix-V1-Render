@@ -254,8 +254,37 @@ def table(df, height=380, key=None):
         st.dataframe(df, height=h, hide_index=True, key=key)
 
 
+def dl_card(title, file_stem, desc="", key="", buttons=()):
+    """One download card, the same style in every Omnix platform: title, a short description, the file name and
+    the buttons (label, data, file name, mime, key). The files are unchanged."""
+    import html as _h
+    with st.container(key=f"omxdl_{key}", border=True):
+        st.markdown(f"<div class='omx-dl-t'>{_h.escape(title)}</div>"
+                    + (f"<div class='omx-dl-d'>{_h.escape(desc)}</div>" if desc else "")
+                    + f"<div class='omx-dl-f'>{_h.escape(file_stem)}</div>", unsafe_allow_html=True)
+        with st.container(horizontal=True, gap="small"):
+            for lab, data, fn, mime, bk in buttons:
+                st.download_button(lab, data, fn, mime=mime, key=bk, icon=":material/download:", help=fn)
+
+
+def _xlsx_of(df, sheet):
+    buf = io.BytesIO()
+    with pd.ExcelWriter(buf, engine="openpyxl") as w:
+        df.to_excel(w, sheet_name=str(sheet)[:31] or "Table", index=False)
+    return buf.getvalue()
+
+
 def csv_button(df, name, label="Download table (CSV)", key=None):
-    st.download_button(label, df.to_csv(index=False).encode(), file_name=name, mime="text/csv", key=key)
+    """A table as a download card (CSV and Excel). The CSV is the same file as before."""
+    import functools
+    import re
+    stem = name.rsplit(".", 1)[0]
+    title = label if label != "Download table (CSV)" else stem.replace("_", " ").capitalize()
+    title = re.sub(r"^Download\s+", "", title)
+    bk = key or "dl_" + re.sub(r"[^A-Za-z0-9]+", "_", stem)
+    dl_card(title[:1].upper() + title[1:], stem, f"{len(df):,} rows", key=bk, buttons=[
+        ("CSV", df.to_csv(index=False).encode(), name, "text/csv", bk),
+        ("Excel", functools.partial(_xlsx_of, df, stem), f"{stem}.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", f"{bk}_xlsx")])
 
 
 def _fonts():
@@ -1241,14 +1270,21 @@ def network_ui(prefix: str):
         o2 = dataclasses.replace(o, width_in=w, height_in=h or o.height_in * w / o.width_in, font_size=fs_)
         return NV.render_mpl(N, E, o2)
     download_panel(f"{prefix}_pub", build, o.width_in, o.height_in, o.font_size, f"{prefix}_network")
-    c = st.columns(2)
-    c[0].download_button("Cytoscape (.cyjs)", NV.to_cyjs(N, E, g), f"{prefix}_network.cyjs", key=f"{prefix}_cy",
-                         width="stretch")
-    c[1].download_button("GraphML", NV.to_graphml(N, E), f"{prefix}_network.graphml", key=f"{prefix}_gml",
-                         width="stretch")
     nt, et = NV.export_tables(N, E)
-    c[0].download_button("Nodes (CSV)", nt, f"{prefix}_nodes.csv", key=f"{prefix}_nodes", width="stretch")
-    c[1].download_button("Edges (CSV)", et, f"{prefix}_edges.csv", key=f"{prefix}_edges", width="stretch")
+    c = st.columns(4)
+    with c[0]:
+        dl_card("Cytoscape", f"{prefix}_network", "Open in Cytoscape (.cyjs)", key=f"{prefix}_cycard",
+                buttons=[("CYJS", NV.to_cyjs(N, E, g), f"{prefix}_network.cyjs", "application/json", f"{prefix}_cy")])
+    with c[1]:
+        dl_card("GraphML", f"{prefix}_network", "For Gephi, yEd and other tools", key=f"{prefix}_gmlcard",
+                buttons=[("GraphML", NV.to_graphml(N, E), f"{prefix}_network.graphml", "application/xml",
+                          f"{prefix}_gml")])
+    with c[2]:
+        dl_card("Nodes", f"{prefix}_nodes", "One row per molecule", key=f"{prefix}_nodescard",
+                buttons=[("CSV", nt, f"{prefix}_nodes.csv", "text/csv", f"{prefix}_nodes")])
+    with c[3]:
+        dl_card("Edges", f"{prefix}_edges", "One row per link", key=f"{prefix}_edgescard",
+                buttons=[("CSV", et, f"{prefix}_edges.csv", "text/csv", f"{prefix}_edges")])
 
 
 # ===================================================================================== Overview
@@ -1613,9 +1649,16 @@ with tabs[10]:
       man = R.manifest(res, S["inputs"], kb, extras)
       meth = R.methods_text(res, kb, extras)
       c = st.columns(3)
-      c[0].download_button("Excel workbook (all tables)", xls, "Integrix_results.xlsx", type="primary")
-      c[1].download_button("Run manifest (JSON)", json.dumps(man, indent=2, default=str), "Integrix_manifest.json")
-      c[2].download_button("Methods text (Markdown)", meth, "Integrix_methods.md")
+      with c[0]:
+          dl_card("All tables (Excel, one file)", "Integrix_results", "Every results table, one sheet each",
+                  key="ix_xls", buttons=[("Excel", xls, "Integrix_results.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ix_xls_xlsx")])
+      with c[1]:
+          dl_card("Run manifest", "Integrix_manifest", "Inputs, settings and versions of this run", key="ix_man",
+                  buttons=[("JSON", json.dumps(man, indent=2, default=str), "Integrix_manifest.json",
+                            "application/json", "ix_man_json")])
+      with c[2]:
+          dl_card("Methods text", "Integrix_methods", "Ready to paste into a manuscript", key="ix_meth",
+                  buttons=[("Markdown", meth, "Integrix_methods.md", "text/markdown", "ix_meth_md")])
       st.markdown("### All figures at once")
       from trace_core import plotly_export as PX
       _same = PX.available()

@@ -340,53 +340,49 @@ def render_results(st, result: rw.RewiringResult, *, key_prefix: str, source_lab
     show_html(st, html)
 
     st.markdown("##### Downloads")
-    d1, d2, d3, d4 = st.columns(4)
-    utils.table_download(
-        d1,
-        "Rewired pairs (CSV)",
-        labelled(result.rewired_pairs()),
-        file_name=f"{comparison}_Rewired_Pairs.csv",
-        key=f"{key_prefix}_dl_pairs")
+    st.caption(f"Tables as CSV or Excel. File names start with {comparison}.")
     all_pairs = result.pairs.drop(columns=["i", "j"]).rename(columns={"r_a": f"r_{ga}", "r_b": f"r_{gb}"})
-    utils.table_download(
-        d2,
-        "All pairs (CSV)",
-        labelled(all_pairs),
-        file_name=f"{comparison}_All_Pair_Correlations.csv",
-        key=f"{key_prefix}_dl_all")
-    d3.download_button("Hypothesis evidence (JSON)", result.evidence_json().encode("utf-8"),
-                       file_name=f"{comparison}_Rewiring_Hypotheses.json", mime="application/json",
-                       key=f"{key_prefix}_dl_json")
+    pt = result.pathway_table_display()
+    rt = result.reaction_table_display()
+    idm = result.prep.id_map
     report = render_view_html(result, title=f"{gb} over {ga}", theme="light",
                               generated=f"{source_label} · {_dt.date.today().isoformat()}",
                               pw_top=pw_top, pw_metric=pw_metric, pw_cutoff=pw_cut)
-    d4.download_button("Interactive report (HTML)", report.encode("utf-8"),
-                       file_name=f"{comparison}_Rewiring_Map.html", mime="text/html", key=f"{key_prefix}_dl_html")
-    e1, e2, e3, _ = st.columns(4)
-    pt = result.pathway_table_display()
-    utils.table_download(
-        e1,
-        "Pathway-level tests (CSV)",
-        labelled(pt, "pathways", (ga, gb)) if len(pt) else pd.DataFrame(),
-        file_name=f"{comparison}_Pathway_Rewiring.csv",
-        key=f"{key_prefix}_dl_pw",
-        disabled=not len(pt))
-    rt = result.reaction_table_display()
-    utils.table_download(
-        e2,
-        "Reaction pairs (CSV)",
-        labelled(rt) if len(rt) else pd.DataFrame(),
-        file_name=f"{comparison}_Reaction_Pairs.csv",
-        key=f"{key_prefix}_dl_rx",
-        disabled=not len(rt))
-    idm = result.prep.id_map
-    utils.table_download(
-        e3,
-        "Metabolite ID / pathway mapping (CSV)",
-        idm if idm is not None else pd.DataFrame(),
-        file_name=f"{comparison}_ID_Mapping.csv",
-        key=f"{key_prefix}_dl_ids",
-        disabled=idm is None)
+    d = st.columns(4) + st.columns(4)          # one tidy grid: four cards per row
+    utils.table_download(d[0], "Rewired pairs (CSV)", labelled(result.rewired_pairs()),
+                         file_name=f"{comparison}_Rewired_Pairs.csv", key=f"{key_prefix}_dl_pairs",
+                         desc="Pairs whose correlation changed between the groups")
+    utils.table_download(d[1], "All pairs (CSV)", labelled(all_pairs),
+                         file_name=f"{comparison}_All_Pair_Correlations.csv", key=f"{key_prefix}_dl_all",
+                         desc=_w("Every metabolite pair, with r in each group"))
+    utils.table_download(d[2], "Pathway-level tests (CSV)",
+                         labelled(pt, "pathways", (ga, gb)) if len(pt) else pd.DataFrame(),
+                         file_name=f"{comparison}_Pathway_Rewiring.csv", key=f"{key_prefix}_dl_pw",
+                         desc="Rewiring per pathway, with FDR", disabled=not len(pt))
+    utils.table_download(d[3], "Reaction pairs (CSV)", labelled(rt) if len(rt) else pd.DataFrame(),
+                         file_name=f"{comparison}_Reaction_Pairs.csv", key=f"{key_prefix}_dl_rx",
+                         desc="Product/substrate pairs linked by a reaction", disabled=not len(rt))
+    utils.table_download(d[4], "ID / pathway mapping (CSV)", idm if idm is not None else pd.DataFrame(),
+                         file_name=f"{comparison}_ID_Mapping.csv", key=f"{key_prefix}_dl_ids",
+                         desc=_w("How each metabolite was matched"), disabled=idm is None)
+    utils.file_download(d[5], "Hypothesis evidence", result.evidence_json().encode("utf-8"),
+                        file_name=f"{comparison}_Rewiring_Hypotheses.json", mime="application/json", fmt="JSON",
+                        key=f"{key_prefix}_dl_json", desc="Grouped evidence for each hypothesis")
+    utils.file_download(d[6], "Interactive report", report.encode("utf-8"),
+                        file_name=f"{comparison}_Rewiring_Map.html", mime="text/html", fmt="HTML",
+                        key=f"{key_prefix}_dl_html", desc="The map as a stand-alone web page")
+    import functools as _ft
+    _sheets = {"Rewired pairs": labelled(result.rewired_pairs()), "All pairs": labelled(all_pairs)}
+    if len(pt):
+        _sheets["Pathway tests"] = labelled(pt, "pathways", (ga, gb))
+    if len(rt):
+        _sheets["Reaction pairs"] = labelled(rt)
+    if idm is not None:
+        _sheets["ID mapping"] = idm
+    utils.file_download(d[7], "All tables", _ft.partial(utils.to_download_bytes_xlsx, _sheets),
+                        file_name=f"{comparison}_Rewiring_All_Tables.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fmt="Excel",
+                        key=f"{key_prefix}_dl_alltables", desc="Every table above as a sheet in one workbook")
 
     with st.expander("Tables: pathway tests, reaction pairs, rewired pairs, per-metabolite statistics, modules, ID mapping"):
         if len(pt):

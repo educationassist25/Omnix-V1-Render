@@ -509,6 +509,32 @@ def _frame_css(in_app):
 .stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:focus {{ background: {TEAL} !important; }}
 .stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"] p,
 .stApp [class*="st-key-omx_navtree"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:focus:not(:active) p {{ color: #FFFFFF !important; font-weight: 700 !important; }}
+/* download cards (every table download in every platform): name, file name, CSV + Excel */
+.stApp [class*="st-key-omxdl_"] {{ background: #FFFFFF !important; border-radius: 12px !important; padding: 12px 14px !important;
+  gap: 4px !important; max-width: 560px; }}
+.stApp [data-testid="stColumn"] [class*="st-key-omxdl_"] {{ max-width: none; height: 100%; }}
+.stApp [data-testid="stColumn"]:has([class*="st-key-omxdl_"]) > [data-testid="stVerticalBlock"] {{ height: 100%; }}
+.stApp [class*="st-key-omxdl_"] [data-testid="stMarkdownContainer"] p {{ margin: 0 !important; }}
+.stApp [class*="st-key-omxdl_"] [data-testid="stMarkdown"], .stApp [class*="st-key-omxdl_"] .stMarkdown,
+.stApp [class*="st-key-omxdl_"] [data-testid="stMarkdownContainer"] {{ margin-bottom: 0 !important; }}
+.stApp [class*="st-key-omxdl_"] [data-testid="stElementContainer"]:has(.omx-dl-t) {{ margin-bottom: 6px !important; }}
+.omx-dl-t {{ font-weight: 700; font-size: 16px; color: {INK}; line-height: 1.3; }}
+.omx-dl-d {{ font-size: 14px; color: {INK2}; line-height: 1.35; margin-top: 2px; }}
+.omx-dl-f {{ font-size: 12px; color: #6B7774; line-height: 1.3; margin: 3px 0 4px 0; word-break: break-all;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }}
+.stApp [data-testid="stMarkdownContainer"] .omx-dl-t {{ color: {INK} !important; }}
+.stApp [data-testid="stMarkdownContainer"] .omx-dl-d {{ color: {INK2} !important; }}
+.stApp [class*="st-key-omxdl_"] [data-testid="stDownloadButton"] button {{ min-height: 36px !important; padding: 5px 16px !important;
+  width: auto !important; border-radius: 8px !important; }}
+.stApp [class*="st-key-omxdl_"] [data-testid="stDownloadButton"] button p {{ font-size: 15px !important; font-weight: 600 !important; white-space: nowrap; }}
+.stApp [class*="st-key-omxdl_"] :is([class*="_xlsx"], [class*="_wb"]) [data-testid="stDownloadButton"] button,
+.stApp [class*="st-key-omxdl_"] :is([class*="_xlsx"], [class*="_wb"]) [data-testid="stDownloadButton"] button:focus,
+.stApp [class*="st-key-omxdl_"] :is([class*="_xlsx"], [class*="_wb"]) [data-testid="stDownloadButton"] button:focus:not(:active) {{
+  background: #FFFFFF !important; background-image: none !important; border: 1.5px solid #E65100 !important; box-shadow: none !important; }}
+.stApp [class*="st-key-omxdl_"] :is([class*="_xlsx"], [class*="_wb"]) [data-testid="stDownloadButton"] button p,
+.stApp [class*="st-key-omxdl_"] :is([class*="_xlsx"], [class*="_wb"]) [data-testid="stDownloadButton"] button:focus:not(:active) p,
+.stApp [class*="st-key-omxdl_"] :is([class*="_xlsx"], [class*="_wb"]) [data-testid="stDownloadButton"] button span {{ color: #E65100 !important; }}
+.stApp [class*="st-key-omxdl_"] :is([class*="_xlsx"], [class*="_wb"]) [data-testid="stDownloadButton"] button:hover {{ background: #FFF3EB !important; }}
 .omx-crumb {{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; color: {INK2}; margin: 0 0 4px 0; }}
 .stApp [data-testid="stMarkdownContainer"] .omx-crumb {{ color: {INK2} !important; }}
 """

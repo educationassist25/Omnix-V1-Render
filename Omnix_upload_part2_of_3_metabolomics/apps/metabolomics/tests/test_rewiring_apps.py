@@ -44,9 +44,13 @@ def test_standalone_demo_runs_end_to_end():
     assert "Pathway level:" in msg and "KEGG pathways rewired" in msg
     assert at.get("iframe"), "interactive view should be embedded"
     labels = [d.label for d in at.get("download_button")]
-    for want in ("Rewired pairs (CSV)", "All pairs (CSV)", "Hypothesis evidence (JSON)", "Interactive report (HTML)",
-                 "Pathway-level tests (CSV)", "Reaction pairs (CSV)", "Metabolite ID / pathway mapping (CSV)"):
-        assert want in labels
+    keys = [d.key or "" for d in at.get("download_button")]
+    # one card per table (CSV + Excel), plus the JSON evidence, the HTML report and all tables in one workbook
+    for want in ("_dl_pairs", "_dl_all", "_dl_pw", "_dl_rx", "_dl_ids"):
+        assert any(k.endswith(want) for k in keys) and any(k.endswith(want + "_xlsx") for k in keys), want
+    for want in ("_dl_json", "_dl_html", "_dl_alltables"):
+        assert any(k.endswith(want) for k in keys), want
+    assert {"CSV", "Excel", "JSON", "HTML"} <= set(labels)
     # figures download from the buttons right under each image in the view, not from a separate section
     assert not [x for x in labels if x.startswith(("Download network", "Download correlation plot"))]
 

@@ -346,25 +346,39 @@ def download_panel(stem: str, key: str, make_fig=None, default_size=(8.0, 6.0), 
                     st.caption("ℹ " + st.session_state[f"{key}_note"])
                 with st.expander("Preview", expanded=False):
                     show_image(preview)
-        for name, df in (tables or {}).items():
-            if df is None or (hasattr(df, "empty") and df.empty):
-                continue
-            k = _safe(name)
-            c = st.columns([3.2, 1, 1, 1.8])
-            c[0].markdown(f"<div style='padding-top:0.45rem'>Table · <b>{name}</b> "
-                          f"<span style='color:#000'>({len(df):,} rows)</span></div>", unsafe_allow_html=True)
-            c[1].download_button("⬇ CSV", df.to_csv(index=not isinstance(df.index, pd.RangeIndex)).encode(),
-                                 f"{stem}_{k}.csv" if len(tables) > 1 else f"{stem}.csv", "text/csv",
-                                 key=f"{key}_{k}_csv")
-            c[2].download_button("⬇ Excel", to_excel({name: df}),
-                                 f"{stem}_{k}.xlsx" if len(tables) > 1 else f"{stem}.xlsx", XLSX_MIME,
-                                 key=f"{key}_{k}_xlsx")
-        if workbook:
-            c = st.columns([3.2, 2, 1.8])
-            c[0].markdown("<div style='padding-top:0.45rem'>Workbook · <b>all tables of this view</b> "
-                          f"<span style='color:#000'>({len(workbook)} sheets)</span></div>", unsafe_allow_html=True)
-            c[1].download_button("⬇ Excel workbook", to_excel(workbook), f"{stem}_all.xlsx", XLSX_MIME,
-                                 key=f"{key}_wb")
+        _tabs = [(n, d) for n, d in (tables or {}).items()
+                 if not (d is None or (hasattr(d, "empty") and d.empty))]
+        _cards = len(_tabs) + (1 if workbook else 0)
+        if _cards:
+            _cols = st.columns(3)
+            _i = 0
+            for name, df in _tabs:
+                k = _safe(name)
+                f = f"{stem}_{k}" if len(tables) > 1 else stem
+                with _cols[_i % len(_cols)]:
+                    dl_card(name, f, f"{len(df):,} rows", key=f"{key}_{k}", buttons=[
+                        ("CSV", df.to_csv(index=not isinstance(df.index, pd.RangeIndex)).encode(), f"{f}.csv",
+                         "text/csv", f"{key}_{k}_csv"),
+                        ("Excel", to_excel({name: df}), f"{f}.xlsx", XLSX_MIME, f"{key}_{k}_xlsx")])
+                _i += 1
+            if workbook:
+                with _cols[_i % len(_cols)]:
+                    dl_card("All tables (Excel, one file)", f"{stem}_all", f"{len(workbook)} sheets, one per table",
+                            key=f"{key}_wbcard", buttons=[("Excel", to_excel(workbook), f"{stem}_all.xlsx", XLSX_MIME,
+                                                           f"{key}_wb")])
+
+
+def dl_card(title: str, file_stem: str, desc: str = "", key: str = "", buttons=()):
+    """One download card, the same style in every Omnix platform: title, a short description, the file name and
+    the buttons (label, data, file name, mime, key). The files are unchanged."""
+    import html as _h
+    with st.container(key=f"omxdl_{key}", border=True):
+        st.markdown(f"<div class='omx-dl-t'>{_h.escape(title)}</div>"
+                    + (f"<div class='omx-dl-d'>{_h.escape(desc)}</div>" if desc else "")
+                    + f"<div class='omx-dl-f'>{_h.escape(file_stem)}</div>", unsafe_allow_html=True)
+        with st.container(horizontal=True, gap="small"):
+            for lab, data, fn, mime, bk in buttons:
+                st.download_button(lab, data, fn, mime, key=bk, icon=":material/download:", help=fn)
 
 
 def table_downloads(df: pd.DataFrame, stem: str, key: str, name: str | None = None):
