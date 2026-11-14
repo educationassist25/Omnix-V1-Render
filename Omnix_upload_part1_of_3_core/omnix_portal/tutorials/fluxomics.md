@@ -9,7 +9,7 @@ Two rules hold throughout the platform:
 
 The sidebar lists six workflow groups: **Setup**, **Normalization**, **Isotope Labeling**, **Statistical Analysis**, **Exploratory Analysis** and **Pathway Analysis**. Every step is listed under its group; click a step to open it, and the open step is highlighted. Work through them in order: each step uses earlier results, and a step that needs an earlier one says so and offers a **Go to …** button. Under the steps, the sidebar shows the loaded **Dataset** and the **Intensity dataset for downstream steps** switch (log2 + IQR-normalized, the default, or log2), which every intensity analysis uses.
 
-Every figure and table has the same **⬇ Downloads** box: figure format (PNG, TIFF, JPEG, SVG, PDF, EPS, or all six as one ZIP), resolution 300 / 600 (default) / 1200 DPI and width × height in inches → **Render figure** → download; tables as CSV or Excel. Sample names are written in full in every figure; to shorten long names, use **Sample names in figures** in the side panel.
+Every figure and table has the same **Downloads** box: figure format (PNG, TIFF, JPEG, SVG, PDF, EPS, or all six as one ZIP), resolution 300 / 600 (default) / 1200 DPI and width × height in inches → **Prepare file** → download; tables as CSV or Excel. Sample names are written in full in every figure; to shorten long names, use **Sample names in figures** in the side panel.
 
 ## Before you start: input files
 

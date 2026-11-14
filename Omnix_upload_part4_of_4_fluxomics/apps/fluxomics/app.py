@@ -119,6 +119,8 @@ st.markdown(CSS, unsafe_allow_html=True)
 if not OMNIX:   # on its own: room for Streamlit's toolbar and a comfortable reading width
     st.markdown("<style>.block-container{padding-top:3.4rem;max-width:1400px}</style>", unsafe_allow_html=True)
 C.init_state()
+if OMNIX:      # page title and intro as in the other Omnix platforms (no step numbers: the side panel gives the order)
+    C.header = lambda n, title, desc: (st.header(title), st.caption(desc))
 
 PAGES = {"upload": step1_upload, "design": step2_design, "normalize": step4_normalize,
          "incorporation": step5_incorporation, "boxplots": step6_boxplots, "stats": step7_stats,
@@ -256,3 +258,13 @@ if not OMNIX:          # inside Omnix the page title follows the one-line "Group
     st.divider()
 
 PAGES[st.session_state.step].render()
+
+
+# 'Next: <step> →' at the bottom of every page, in the sidebar order (the same as the other platforms)
+_ORDER = [k for _, ks in NAV_GROUPS for k in ks]
+if st.session_state.step in _ORDER and _ORDER.index(st.session_state.step) + 1 < len(_ORDER):
+    _nxt = _ORDER[_ORDER.index(st.session_state.step) + 1]
+    st.divider()
+    if st.button(f"Next: {STEP_LABEL[_nxt].split(' · ', 1)[-1]} →", key="next_page_footer"):
+        st.session_state.step = _nxt
+        st.rerun()

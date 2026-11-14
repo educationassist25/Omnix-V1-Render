@@ -1512,7 +1512,7 @@ def _render_option_b(st, state, render_single_figure, ctx):
     detected_genes = sorted(genes_for_mapping(background_map, collection_genes))
     signature = (tuple(comparison_genes), organism, collection, universe_choice, int(min_size_ora),
                  int(max_size_ora))
-    if st.button("Run Over-Representation Analysis", type="primary", icon="🧬", key="mgpa_run_ora",
+    if st.button("Run Over-Representation Analysis", type="primary", icon=":material/genetics:", key="mgpa_run_ora",
                  disabled=gene_sets is None):
         universe = detected_genes if universe_choice == gse.UNIVERSE_DETECTED_LABEL else None
         try:
@@ -1556,7 +1556,7 @@ def _render_option_b(st, state, render_single_figure, ctx):
             key="mgpa_dl_ora_results")
         run_meta = state.get("mgpa_ora_run_meta") or {}
         if run_meta:
-            with st.expander("📋 Analysis metadata (for reproducibility)"):
+            with st.expander("Analysis metadata (for reproducibility)"):
                 meta_df = pd.DataFrame([{"Field": k, "Value": str(v)} for k, v in run_meta.items()])
                 st.dataframe(meta_df, width="stretch", hide_index=True)
                 utils.table_download(
@@ -1575,7 +1575,7 @@ def _render_option_b(st, state, render_single_figure, ctx):
                                            index=2, key="mgpa_top")
             dotplot_top_n = None if mgpa_top_choice == "All" else int(mgpa_top_choice.split()[1])
             mgpa_sort_by = d2.selectbox("Sort by", list(gse.ORA_SORT_OPTIONS.keys()), key="mgpa_sort")
-            if st.button("Generate Pathway Dot Plot", type="primary", icon="📌", key="mgpa_dotplot_btn"):
+            if st.button("Generate Pathway Dot Plot", type="primary", icon=":material/push_pin:", key="mgpa_dotplot_btn"):
                 state["mgpa_dotplot_on"] = True
             if state.get("mgpa_dotplot_on"):
                 try:

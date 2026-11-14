@@ -556,7 +556,8 @@ if ACTIVE_PAGE == 0:
 if ACTIVE_PAGE == 1:
     st.header("Data Cleaning")
     if st.session_state.raw_expr_df is None:
-        st.info("Load a dataset in the Data Upload page first.")
+        st.warning("Load data on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_t_data_upload_558")
     else:
         bio_cols = st.session_state.sample_cols
         bio_df = st.session_state.raw_expr_df[bio_cols]
@@ -642,11 +643,14 @@ if ACTIVE_PAGE == 2:
     st.caption("Check library size, detected genes and sample correlation. Samples flagged below as potential "
                "outliers are worth reviewing before normalization.")
     if st.session_state.raw_expr_df is None:
-        st.info("Load a dataset in the Data Upload page first.")
+        st.warning("Load data on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_t_data_upload_644")
     elif st.session_state.input_mode == "Raw Counts" and st.session_state.filtered_counts is None:
-        st.info("Run gene filtering in the Data Cleaning page first.")
+        st.warning("Run gene filtering on the Data Cleaning page first.")
+        _go_to("Data Cleaning", key="goto_t_data_cleaning_648")
     elif st.session_state.input_mode == "Pre-normalized logCPM" and st.session_state.cleaned_logcpm is None:
-        st.info("Visit the Data Cleaning page first.")
+        st.warning("Visit the Data Cleaning page first.")
+        _go_to("Data Cleaning", key="goto_t_data_cleaning_651")
     else:
         bio_cols = st.session_state.sample_cols
         qc_cols = st.session_state.qc_cols
@@ -806,11 +810,14 @@ if ACTIVE_PAGE == 2:
 if ACTIVE_PAGE == 3:
     st.header("Normalization")
     if st.session_state.raw_expr_df is None:
-        st.info("Load a dataset in the Data Upload page first.")
+        st.warning("Load data on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_t_data_upload_808")
     elif st.session_state.input_mode == "Raw Counts" and st.session_state.filtered_counts is None:
-        st.info("Run gene filtering in the Data Cleaning page first.")
+        st.warning("Run gene filtering on the Data Cleaning page first.")
+        _go_to("Data Cleaning", key="goto_t_data_cleaning_813")
     elif st.session_state.input_mode == "Pre-normalized logCPM" and st.session_state.cleaned_logcpm is None:
-        st.info("Visit the Data Cleaning page first.")
+        st.warning("Visit the Data Cleaning page first.")
+        _go_to("Data Cleaning", key="goto_t_data_cleaning_817")
     else:
         meta = st.session_state.meta
         bio_cols = st.session_state.sample_cols
@@ -969,7 +976,7 @@ if ACTIVE_PAGE == 3:
 if ACTIVE_PAGE == 4:
     st.header("PCA Visualization (Biological Samples Only)")
     if st.session_state.log2_data is None:
-        st.info("Complete the Normalization page first.")
+        st.warning("Complete the Normalization page first.")
         _go_to("Normalization", key="goto_norm_944")
     else:
         log2_df_full = st.session_state.log2_data
@@ -1088,7 +1095,7 @@ if ACTIVE_PAGE == 4:
 if ACTIVE_PAGE == 5:
     st.header("Statistical Comparison")
     if st.session_state.log2_data is None:
-        st.info("Complete the Normalization page first.")
+        st.warning("Complete the Normalization page first.")
         _go_to("Normalization", key="goto_norm_1062")
     else:
         log2_df = st.session_state.log2_data
@@ -1607,7 +1614,7 @@ if ACTIVE_PAGE == 6:
     st.header("Volcano Plot")
     _SR, _LBL, _GRP, _GCOL, _EARLIER = _two_group_view()
     if _SR is None:
-        st.info("Run a two-group comparison on the Statistics page first.")
+        st.warning("Run a two-group comparison on the Statistics page first.")
         _go_to("Statistics", key="goto_stats_1583")
     elif str(_LBL or "").startswith("ANOVA"):
         st.info("The current Statistics result is an ANOVA across three or more groups, which has no single "
@@ -1892,7 +1899,7 @@ if ACTIVE_PAGE == 7:
     st.header("Biomarker Discovery")
     _SR, _LBL, _GRP, _GCOL, _EARLIER = _two_group_view()
     if _SR is None:
-        st.info("Run a two-group comparison on the Statistics page first.")
+        st.warning("Run a two-group comparison on the Statistics page first.")
         _go_to("Statistics", key="goto_stats_1860")
     elif str(_LBL or "").startswith("ANOVA"):
         st.info("The current Statistics result is an ANOVA across three or more groups, which has no single "
@@ -1957,9 +1964,10 @@ if ACTIVE_PAGE == 8:
     st.header("Clustered Heatmap")
     if st.session_state.stats_result is None:
         st.warning(
-            "Run a comparison in the Statistics page first — the heatmap needs "
+            "Run a comparison on the Statistics page first — the heatmap needs "
             "that result to know which genes are significant."
         )
+        _go_to("Statistics", key="goto_t_statistics_1965")
     else:
         log2_df_full = st.session_state.log2_data
         result = st.session_state.stats_result
@@ -2173,7 +2181,7 @@ if ACTIVE_PAGE == 8:
                     )
                     st.session_state.heatmap_fig = fig_heat
                     for note in notes:
-                        st.info(f"ℹ️ {note}")
+                        st.info(note)
                     utils.render_figure(st, fig_heat)
                     st.caption(f"{len(sig_feats)} genes shown ({sig_metric} ≤ {sig_threshold}), "
                                f"{len(heat_cols)} samples across {len(selected_heat_groups)} selected group(s), "
@@ -2206,7 +2214,7 @@ if ACTIVE_PAGE == 8:
 if ACTIVE_PAGE == 9:
     st.header("Boxplot of Genes")
     if st.session_state.log2_data is None:
-        st.info("Complete the Normalization page first.")
+        st.warning("Complete the Normalization page first.")
         _go_to("Normalization", key="goto_norm_2164")
     else:
         log2_df_full = st.session_state.log2_data
@@ -2326,8 +2334,9 @@ if ACTIVE_PAGE == 10:
     )
 
     if _SR is None:
-        st.warning("Run a comparison in the Statistics page first — GSEA analyzes the resulting "
+        st.warning("Run a comparison on the Statistics page first — GSEA analyzes the resulting "
                    "Log2FC/p-value/FDR gene list.")
+        _go_to("Statistics", key="goto_t_statistics_2335")
     elif str(_LBL or "").startswith("ANOVA"):
         st.info("The current Statistics result is an ANOVA across three or more groups, which has no single "
                 "fold change. Enrichment analysis needs a two-group comparison: on the Statistics page, run a "
@@ -2584,7 +2593,7 @@ if ACTIVE_PAGE == 10:
                 key="dl_gsea_results")
 
             if st.session_state.get("gsea_run_meta"):
-                with st.expander("📋 Analysis metadata (for reproducibility)"):
+                with st.expander("Analysis metadata (for reproducibility)"):
                     meta_df = pd.DataFrame(
                         [{"Field": k, "Value": v} for k, v in st.session_state.gsea_run_meta.items()]
                     )

@@ -62,6 +62,8 @@ if _theme:
     st.session_state["_mode"] = _theme
 MODE = "dark" if st.session_state.get("_mode", "light") == "dark" else "light"
 st.markdown(UI.css(MODE), unsafe_allow_html=True)
+if OMNIX:      # the same white page as the other Omnix platforms
+    st.markdown("<style>.stApp{background:#FFFFFF !important}</style>", unsafe_allow_html=True)
 
 
 @st.cache_data(show_spinner=False)
@@ -839,6 +841,15 @@ def draw_topbar(done: bool):
     sec = st.session_state.get("nav_sec", 0)
     kb_txt = f"Human-GEM {kb.manifest['sources']['Human-GEM'].get('version', '')}"
     with _top:
+        if OMNIX:      # inside Omnix the portal bar shows the brand: a 'Section / Page' note and the page title instead
+            if done:
+                _title = (st.session_state.get(f"tabs_{sec}") or TAB_NAMES[SECTIONS[sec][0]]).split(": ", 1)[-1]
+                _crumb = SECTION_NAMES[sec]
+            else:
+                _crumb, _title = "Setup", "Analysis setup"
+            st.markdown(f"<div class='omx-crumb'>{_crumb} / {_title}</div>", unsafe_allow_html=True)
+            st.header(_title)
+            return
         with st.container(key="brandbar"):
             st.markdown(UI.topbar(__version__, LOGO, UI.status_pill(tr is not None, tr.get("seconds") if tr else None),
                                   kb_txt, with_nav=False), unsafe_allow_html=True)
@@ -1060,7 +1071,8 @@ if 0 < _nperm < 200:
                 f'{res.params["alpha"]:g}. Treat results as exploratory; more samples per group give real power.</div>',
                 unsafe_allow_html=True)
 try:  # Streamlit >= 1.50: remember the active tab and render only that tab (much faster)
-    _sub = st.tabs([TAB_NAMES[i] for i in SEC_IDX], key=_tkey, on_change="rerun")
+    with st.container(key="ix_pages_lazy"):
+        _sub = st.tabs([TAB_NAMES[i] for i in SEC_IDX], key=_tkey, on_change="rerun")
     LAZY = True
 except TypeError:              # older Streamlit: every tab renders; open the one a button asked for (Export)
     # after a button asked for a page (Export), the labels change invisibly (zero-width space) so the browser
@@ -1069,11 +1081,16 @@ except TypeError:              # older Streamlit: every tab renders; open the on
     _labels = [TAB_NAMES[i] + _zw for i in SEC_IDX]
     _want = st.session_state.get(_tkey)
     _want = _want + _zw if _want else None
-    try:
-        _sub = st.tabs(_labels, default=_want if _want in _labels else None)
-    except TypeError:
-        _sub = st.tabs(_labels)
+    with st.container(key="ix_pages"):
+        try:
+            _sub = st.tabs(_labels, default=_want if _want in _labels else None)
+        except TypeError:
+            _sub = st.tabs(_labels)
     LAZY = False
+if OMNIX:      # the pages are listed in the side panel (and reached with Next): no second row of page tabs
+    st.markdown("<style>[class*='st-key-ix_pages'] [data-testid='stTabs'] [role='tablist']{display:none !important}"
+                "[class*='st-key-ix_pages'] [role='tabpanel'] [role='tablist']{display:flex !important}</style>",
+                unsafe_allow_html=True)
 _hidden = st.container()          # tabs of other sections render nothing
 tabs = [(_sub[SEC_IDX.index(i)] if i in SEC_IDX else _hidden) for i in range(len(TAB_NAMES))]
 
@@ -1748,7 +1765,8 @@ with tabs[10]:
                       out[f"{nm}.{ext}"] = PF.export(b(), ext, dpi)
               st.session_state["figzip"] = R.bundle(out)
       if "figzip" in st.session_state:
-          st.download_button("Download figure set (ZIP)", st.session_state["figzip"], "Integrix_figures.zip", type="primary")
+          dl_card("Figure set", "Integrix_figures", "Every figure, ready for a manuscript", key="ix_figzip",
+                  buttons=[("ZIP", st.session_state["figzip"], "Integrix_figures.zip", "application/zip", "ix_figzip_zip")])
       st.markdown("### Everything in one archive")
       if st.button("Build full bundle"):
           files = {"Integrix_results.xlsx": xls, "Integrix_manifest.json": man, "Integrix_methods.md": meth}
@@ -1761,7 +1779,8 @@ with tabs[10]:
               files["Integrix_subnetwork.graphml"] = to_graphml(*extras["subnet"])
           st.session_state["fullzip"] = R.bundle(files)
       if "fullzip" in st.session_state:
-          st.download_button("Download full bundle (ZIP)", st.session_state["fullzip"], "Integrix_bundle.zip")
+          dl_card("Full bundle", "Integrix_bundle", "Tables, manifest, methods and figures in one archive", key="ix_fullzip",
+                  buttons=[("ZIP", st.session_state["fullzip"], "Integrix_bundle.zip", "application/zip", "ix_fullzip_zip")])
 
 # ===================================================================================== Methods
 with tabs[11]:
@@ -1779,6 +1798,17 @@ with tabs[11]:
       with st.expander("Knowledge base"):
           st.json(kb.manifest)
 
+
+# ===================================================================================== next page
+# 'Next: <page> →' at the bottom of every result page, in the side-panel order (the same as the other platforms)
+_ORDER = [(_s, _t) for _s, _ts in enumerate(SECTIONS) for _t in _ts]
+for _t in SEC_IDX:
+    with tabs[_t]:
+        if on(_t) and (SEC, _t) in _ORDER and _ORDER.index((SEC, _t)) + 1 < len(_ORDER):
+            _ns, _nt = _ORDER[_ORDER.index((SEC, _t)) + 1]
+            st.divider()
+            st.button(f"Next: {TAB_NAMES[_nt].split(': ', 1)[-1]} →", key=f"next_page_footer_{_t}", on_click=_go,
+                      args=(_ns, _nt))
 
 # ===================================================================================== footer
 st.markdown(UI.footer(__version__, kb.version), unsafe_allow_html=True)

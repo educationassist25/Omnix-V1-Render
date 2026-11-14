@@ -76,13 +76,13 @@ def render():
         C.export_widget(lambda w, h: _dist_mpl(Nn, order, An, gc, w, h), "normalization_sample_distributions",
                         "exp_norm", (max(8.0, 0.32 * len(order) + 1.5), 6.5),
                         caption="Per-sample distributions before / after IQR normalization",
-                        title="⬇ Downloads — both panels (log2 and log2 + IQR)")
+                        title="Downloads — both panels (log2 and log2 + IQR)")
         C.export_widget(lambda w, h: _dist_one_mpl(Nn["L"], "log2 intensity", order, An, gc, w, h),
                         "sample_distributions_log2", "exp_norm_l2", (max(8.0, 0.32 * len(order) + 1.5), 4.0),
-                        caption="Per-sample distributions — log2", title="⬇ Downloads — log2 plot")
+                        caption="Per-sample distributions — log2", title="Downloads — log2 plot")
         C.export_widget(lambda w, h: _dist_one_mpl(Nn["N"], "log2 + IQR-normalized intensity", order, An, gc, w, h),
                         "sample_distributions_log2_IQR", "exp_norm_iqr", (max(8.0, 0.32 * len(order) + 1.5), 4.0),
-                        caption="Per-sample distributions — log2 + IQR", title="⬇ Downloads — log2 + IQR plot")
+                        caption="Per-sample distributions — log2 + IQR", title="Downloads — log2 + IQR plot")
     with t2:
         C.show_df(Nn["info"].round(3))
         C.table_downloads(Nn["info"].reset_index(), "IQR_normalization_scale_factors", "norm_sf",

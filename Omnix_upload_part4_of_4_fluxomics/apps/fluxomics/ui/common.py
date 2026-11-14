@@ -84,7 +84,7 @@ def require(*steps) -> bool:
     names = dict(STEPS)
     for k in steps:
         if not done(k):
-            st.info(f"Complete **{names[k]}** first.", icon="ℹ️")
+            st.warning(f"Complete the {names[k]} page first.")
             if st.button(f"Go to {names[k]}", key=f"goto_{k}_{st.session_state.step}"):
                 st.session_state.step = k
                 st.rerun()
@@ -280,7 +280,7 @@ def _all_formats(fig, stem: str, dpi: int) -> bytes:
 
 def download_panel(stem: str, key: str, make_fig=None, default_size=(8.0, 6.0), tables: dict | None = None,
                    workbook: dict | None = None, caption: str = "", add_to_report: bool = True,
-                   title: str = "⬇ Downloads"):
+                   title: str = "Downloads"):
     """
     One consistent download box used under every figure / table of the app.
       Figure row : format · resolution (DPI, default 600) · width · height (inches) → Render → Download
@@ -339,11 +339,11 @@ def download_panel(stem: str, key: str, make_fig=None, default_size=(8.0, 6.0), 
                 data, f, preview, d_, wi, hi = st.session_state[f"{key}_data"]
                 ext = "zip" if f.startswith("All") else f.lower().replace("jpeg", "jpg")
                 c[5].markdown("<div style='height:1.75rem'></div>", unsafe_allow_html=True)
-                c[5].download_button(f"⬇ {stem}.{ext}", data, f"{stem}.{ext}", MIME[f], key=f"{key}_dl")
+                c[5].download_button(f"{stem}.{ext}", data, f"{stem}.{ext}", MIME[f], key=f"{key}_dl", icon=":material/download:")
                 size = ("vector" if f in VECTOR_FORMATS else ("all formats" if f.startswith("All") else f"{int(wi * d_):,} × {int(hi * d_):,} px at {d_} DPI"))
                 st.caption(f"Ready: {f} · {wi:.1f} × {hi:.1f} in · {size} · {len(data) / 1e6:.1f} MB")
                 if st.session_state.get(f"{key}_note"):
-                    st.caption("ℹ " + st.session_state[f"{key}_note"])
+                    st.caption(st.session_state[f"{key}_note"])
                 with st.expander("Preview", expanded=False):
                     show_image(preview)
         _tabs = [(n, d) for n, d in (tables or {}).items()
@@ -386,7 +386,7 @@ def table_downloads(df: pd.DataFrame, stem: str, key: str, name: str | None = No
 
 
 def export_widget(make_fig, stem: str, key: str, default_size=(8.0, 6.0), add_to_report=True, caption="",
-                  tables: dict | None = None, workbook: dict | None = None, title: str = "⬇ Downloads"):
+                  tables: dict | None = None, workbook: dict | None = None, title: str = "Downloads"):
     download_panel(stem, key, make_fig=make_fig, default_size=default_size, tables=tables, workbook=workbook,
                    caption=caption, add_to_report=add_to_report, title=title)
 
@@ -465,10 +465,9 @@ def note(text: str, ok: bool = False):
 
 
 def next_button(to: str, label: str):
-    st.write("")
-    if st.button(f"Continue to {label} →", type="primary", key=f"next_{to}"):
-        st.session_state.step = to
-        st.rerun()
+    """Kept for the steps' calls; the 'Next: <step> →' button now comes once, at the bottom of every page
+    (app.py, in the sidebar order), the same as in the other Omnix platforms."""
+    return None
 
 
 def arms_times():

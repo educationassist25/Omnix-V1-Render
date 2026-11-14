@@ -192,6 +192,7 @@ PLATFORMS = {
         "integration": True,
         "name": "Integrix",
         "subtitle": "Tri-omics integration: transcriptomics · proteomics · metabolomics",
+        "side_subtitle": "Tri-omics integration",
         "chips": ["Gene → protein → enzyme → metabolite", "Paired or partial samples"],
         "highlights": [
             "Reaction-level coherence of enzyme and metabolite changes",

@@ -184,7 +184,7 @@ def render_workspace(st, data: pd.DataFrame, meta: pd.DataFrame, annotations: pd
                                 "across all tested pairs.")
     min_delta = c9.slider("Minimum |Δr|", 0.0, 1.2, 0.45, 0.05, key=k("dmin"))
     if fdr > 0.25:
-        c8.caption("⚠️ A high FDR q-value cutoff lets through many false positives. Use for exploration.")
+        c8.caption("A high FDR q-value cutoff lets through many false positives. Use for exploration.")
 
     with st.expander("Advanced settings"):
         a1, a2, a3 = st.columns(3)
@@ -214,7 +214,7 @@ def render_workspace(st, data: pd.DataFrame, meta: pd.DataFrame, annotations: pd
             st.caption("Permutations are set to 0, so Benjamini–Hochberg will be used and the pathway-level test "
                        "is skipped.")
 
-    run = st.button("Run Rewiring Analysis", type="primary", icon="🕸️", key=k("run"))
+    run = st.button("Run Rewiring Analysis", type="primary", icon=":material/hub:", key=k("run"))
     state_key = k("result")
     scope = SCOPES[scope_label]
     settings = dict(group_col=group_col, group_a=group_a, group_b=group_b, pw_col=pw_col, batch_col=batch_col, scope=scope,

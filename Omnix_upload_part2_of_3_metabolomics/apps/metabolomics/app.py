@@ -555,7 +555,7 @@ def page_data_upload():
         row_annot_file = st.file_uploader("Upload row annotation table (CSV/XLSX)",
                                            type=["csv", "xlsx"], key="row_annot_upload")
 
-        if st.button("Load & Validate Data", type="primary", icon="✅"):
+        if st.button("Load & Validate Data", type="primary", icon=":material/check_circle:"):
             try:
                 row_annotations = None
                 if use_demo or peak_file is None:
@@ -651,7 +651,7 @@ def page_data_upload():
     else:
         st.caption(
             "Each dataset is cleaned, QC'd, and normalized **independently**. Once all are "
-            "normalized, click **🔗 Generate Combined Normalized Data** in the Normalization "
+            "normalized, click **Generate Combined Normalized Data** in the Normalization "
             "page — the combined table then feeds every downstream page."
         )
 
@@ -679,7 +679,7 @@ def page_data_upload():
                 "Lipidomics) sharing 24 biological samples — real metabolite and lipid names with "
                 "HMDB IDs (row annotations included)."
             )
-            if st.button("Load Demo Datasets", type="primary", icon="🧪"):
+            if st.button("Load Demo Datasets", type="primary", icon=":material/science:"):
                 meta_path = os.path.join(os.path.dirname(__file__), "sample_metadata_multimethod.csv")
                 meta_raw = pd.read_csv(meta_path)
                 demo_types = list(DATA_TYPES)
@@ -762,7 +762,7 @@ def page_data_upload():
             shared_meta_file = st.file_uploader("Upload shared metadata table (CSV/XLSX)",
                                                  type=["csv", "xlsx"], key="shared_meta_upload")
 
-            if st.button("Load All Datasets", type="primary", icon="📥"):
+            if st.button("Load All Datasets", type="primary", icon=":material/download:"):
                 if shared_meta_file is None:
                     st.error("Please upload the shared metadata table above — it's required to "
                              "identify QC vs. biological samples and group assignments for every "
@@ -839,12 +839,12 @@ def page_data_upload():
             st.dataframe(utils.format_df_for_display(st.session_state.meta), width='stretch')
 
             st.divider()
-            st.subheader("🚀 Quick Start")
+            st.subheader("Quick Start")
             already_processed = dataset_manager.all_datasets_ready(st.session_state.datasets)
             if already_processed:
                 st.success(
                     "All datasets are cleaned, QC'd, and normalized — go to **Combined Normalized "
-                    "Data → 🔗 Generate Combined Normalized Data** to combine them. That combined "
+                    "Data → Generate Combined Normalized Data** to combine them. That combined "
                     "table is required before any downstream page (PCA, Statistics, Volcano, "
                     "Biomarker Discovery, Heatmap, Boxplot) can be used."
                 )
@@ -857,7 +857,7 @@ def page_data_upload():
                 "Does not combine them — that's a separate step (Combined Normalization Data "
                 "(Multi-Dataset) page)."
             )
-            if st.button("🚀 Auto-Process All Datasets (recommended defaults)", type="primary"):
+            if st.button("Auto-Process All Datasets (recommended defaults)", type="primary", icon=":material/rocket_launch:"):
                 with st.spinner("Cleaning, QC'ing, and normalizing every dataset independently..."):
                     try:
                         notes = dataset_manager.auto_process_all_datasets(
@@ -873,7 +873,7 @@ def page_data_upload():
                 )
                 st.success(
                     f"All {len(st.session_state.datasets)} datasets cleaned, QC'd, and normalized "
-                    "independently. Go to **Combined Normalized Data → 🔗 Generate Combined "
+                    "independently. Go to **Combined Normalized Data → Generate Combined "
                     "Normalized Data** to combine them — required before PCA, Statistics, or any "
                     "other downstream page."
                 )
@@ -942,7 +942,7 @@ def render_qc_ui(peak_df, qc_cols, sample_cols, key_prefix, state):
         value=False, key=f"{key_prefix}_filter_cv"
     )
 
-    if st.button("Confirm QC & Proceed", type="primary", icon="✅", key=f"{key_prefix}_confirm_qc"):
+    if st.button("Confirm QC & Proceed", type="primary", icon=":material/check_circle:", key=f"{key_prefix}_confirm_qc"):
         if state.get("imputed_data") is not None:
             working_df = state["imputed_data"].copy()
             source_desc = "cleaned & imputed data from Data Cleaning & Imputation"
@@ -988,12 +988,14 @@ def page_qc():
     if st.session_state.data_mode == "single":
         if st.session_state.raw_peak_df is None:
             st.warning("Load data on the Data Upload page first.")
+            _go_to("Data Upload", key="goto_m_data_upload_989")
         else:
             render_qc_ui(st.session_state.raw_peak_df, st.session_state.qc_cols,
                          st.session_state.sample_cols, "single", _SingleDatasetState())
     else:
         if not st.session_state.datasets:
             st.warning("Load datasets on the Data Upload page first.")
+            _go_to("Data Upload", key="goto_m_data_upload_996")
         else:
             selected_id = render_dataset_dropdown(st.session_state.datasets, "qc", "2. QC")
             ds = st.session_state.datasets[selected_id]
@@ -1012,6 +1014,7 @@ def page_combined_qc():
                 "mode, see QC Validation for QC diagnostics.")
     elif not st.session_state.datasets:
         st.warning("Load datasets on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_m_data_upload_1014")
     else:
         st.subheader("QC Comparison Across All Datasets")
         comparison_table = dataset_manager.qc_comparison_table(st.session_state.datasets)
@@ -1053,10 +1056,11 @@ def page_combined_qc():
             }
             if not eligible_datasets:
                 st.info("Confirm QC (QC Validation → 'Confirm QC & Proceed') for at least one dataset first.")
+                _go_to("QC Validation", key="goto_m_qc_validation_1057")
             else:
                 st.caption(f"{len(eligible_datasets)}/{len(st.session_state.datasets)} dataset(s) "
                            "have completed QC confirmation and are eligible below.")
-                if st.button("Apply to All Eligible Datasets", type="primary", icon="⚙️",
+                if st.button("Apply to All Eligible Datasets", type="primary", icon=":material/settings:",
                               key="combined_apply_cv_filter"):
                     summary_rows = []
                     for label, ds in eligible_datasets.items():
@@ -1170,6 +1174,7 @@ def page_combined_qc():
                 st.caption("Raw peak areas across all features, samples, and datasets pooled together.")
                 if fig_peak_hist_c is None:
                     st.info("Run Cleaning & Imputation on at least one dataset first.")
+                    _go_to("Data Cleaning & Imputation", key="goto_m_data_cleaning_imputation_1175")
                 else:
                     st.pyplot(fig_peak_hist_c, width="content")
                     dataset_manager.render_figure_download(st, fig_peak_hist_c, "Combined_Peak_Area_Histogram",
@@ -1238,7 +1243,7 @@ def render_cleaning_ui(source_df, key_prefix, state):
     with st.expander("View missingness table"):
         st.dataframe(utils.format_df_for_display(missingness_table), width='stretch', height=250)
 
-    if st.button("Apply Missingness Filter", type="primary", icon="🧹", key=f"{key_prefix}_apply_filter"):
+    if st.button("Apply Missingness Filter", type="primary", icon=":material/cleaning_services:", key=f"{key_prefix}_apply_filter"):
         state["cleaned_data"] = cleaned_preview
         state["processing_notes"].append(
             f"Missingness filtering: removed {source_df.shape[0] - cleaned_preview.shape[0]} of "
@@ -1276,7 +1281,7 @@ def render_cleaning_ui(source_df, key_prefix, state):
             elif method == "BPCA (approximated)":
                 kwargs["max_iter"] = st.slider("Iterations", 1, 15, 5, key=f"{key_prefix}_bpca_iter")
 
-            if st.button("Apply Imputation", type="primary", icon="🧩", key=f"{key_prefix}_apply_impute"):
+            if st.button("Apply Imputation", type="primary", icon=":material/extension:", key=f"{key_prefix}_apply_impute"):
                 with st.spinner(f"Running {method}... this may take a moment for Random Forest or BPCA."):
                     imputed = imputation_module.impute(
                         state["cleaned_data"], method, treat_zero_as_missing=treat_zero_as_missing, **kwargs
@@ -1312,12 +1317,14 @@ def page_cleaning():
     if st.session_state.data_mode == "single":
         if st.session_state.raw_peak_df is None:
             st.warning("Load data on the Data Upload page first.")
+            _go_to("Data Upload", key="goto_m_data_upload_1313")
         else:
             source_df = st.session_state.raw_peak_df[st.session_state.sample_cols]
             render_cleaning_ui(source_df, "single", _SingleDatasetState())
     else:
         if not st.session_state.datasets:
             st.warning("Load datasets on the Data Upload page first.")
+            _go_to("Data Upload", key="goto_m_data_upload_1321")
         else:
             selected_id = render_dataset_dropdown(st.session_state.datasets, "clean", "1. Cleaning")
             ds = st.session_state.datasets[selected_id]
@@ -1398,7 +1405,7 @@ def _render_istd_step(base_df, data_type, key_prefix, state, detected, required)
         st.warning(f"{istd} is zero or missing in {int(summary['Zero/missing samples'].iloc[0])} sample(s); "
                    "all features become missing (NaN) in those samples.")
 
-    if st.button("Apply ISTD Normalization", type="primary", icon="⚖️", key=f"{key_prefix}_apply_istd"):
+    if st.button("Apply ISTD Normalization", type="primary", icon=":material/balance:", key=f"{key_prefix}_apply_istd"):
         try:
             working, mapping = normalization.istd_normalize_mapped(
                 base_df, [istd], row_annotations, label=label, method=data_type, drop_features=others)
@@ -1448,7 +1455,7 @@ def render_normalization_ui(base_df, data_type, key_prefix, state, meta):
         if working is None:
             st.info("Apply ISTD normalization above first (required for targeted assays) before "
                     "Log2 transformation.")
-        elif st.button("Apply Strict Log2 Transformation", type="primary", icon="📐", key=f"{key_prefix}_log2_targeted_btn"):
+        elif st.button("Apply Strict Log2 Transformation", type="primary", icon=":material/straighten:", key=f"{key_prefix}_log2_targeted_btn"):
             log2_df = stats_analysis.strict_log2(working)
             state["log2_data"] = log2_df
             state["log2_constant"] = 0.0
@@ -1465,7 +1472,8 @@ def render_normalization_ui(base_df, data_type, key_prefix, state, meta):
             else:
                 st.success("Strict log2 transformation complete: log2(x), with no pseudocount or shift.")
             fig_dist = normalization.distribution_plots(working, log2_df)
-            render_single_figure(fig_dist)
+            render_single_figure(fig_dist, download_name=f"{key_prefix.replace(' ', '_')}_Distribution_AfterISTDLog2",
+                                 key_prefix=f"{key_prefix}_istd_log2_dist")
 
     if not is_targeted:
         use_istd = False
@@ -1486,7 +1494,7 @@ def render_normalization_ui(base_df, data_type, key_prefix, state, meta):
                 st.caption(f"{len(detected)} internal standard row(s) are left out (not biological features): "
                            f"{', '.join(map(str, detected[:8]))}{'…' if len(detected) > 8 else ''}.")
         st.markdown("**Step 1: Strict Log2 Transformation**")
-        if st.button("Apply Strict Log2 Transformation", type="primary", icon="📐", key=f"{key_prefix}_log2_untgt_btn"):
+        if st.button("Apply Strict Log2 Transformation", type="primary", icon=":material/straighten:", key=f"{key_prefix}_log2_untgt_btn"):
             log2_only = stats_analysis.strict_log2(untgt_input)
             state["log2_only"] = log2_only
             # Also log2-transform the full (pre-CV-filter) feature table, if it
@@ -1528,7 +1536,7 @@ def render_normalization_ui(base_df, data_type, key_prefix, state, meta):
                              index=0, key=f"{key_prefix}_iqr_axis")
         if state.get("log2_only") is None:
             st.info("Run Step 1 (Strict Log2 Transformation) first.")
-        elif st.button("Apply Median-IQR Normalization", type="primary", icon="⚖️", key=f"{key_prefix}_iqr_untgt_btn"):
+        elif st.button("Apply Median-IQR Normalization", type="primary", icon=":material/balance:", key=f"{key_prefix}_iqr_untgt_btn"):
             batch_map = meta["Batch"] if iqr_axis == "batch" else None
             stats_source = state.get("log2_full") if iqr_axis == "sample" else None
             log2_full = state.get("log2_full")
@@ -1624,6 +1632,7 @@ def page_normalization():
     if st.session_state.data_mode == "single":
         if st.session_state.raw_peak_df is None:
             st.warning("Load data on the Data Upload page first.")
+            _go_to("Data Upload", key="goto_m_data_upload_1625")
         else:
             if st.session_state.get("raw_peak_df_qc") is not None:
                 base_df = st.session_state.raw_peak_df_qc
@@ -1636,6 +1645,7 @@ def page_normalization():
     else:
         if not st.session_state.datasets:
             st.warning("Load datasets on the Data Upload page first.")
+            _go_to("Data Upload", key="goto_m_data_upload_1640")
         else:
             selected_id = render_dataset_dropdown(st.session_state.datasets, "norm", "3. Normalization")
             ds = st.session_state.datasets[selected_id]
@@ -1660,6 +1670,7 @@ def page_combined_normalized():
                 "Normalization's output already feeds every downstream page directly.")
     elif not st.session_state.datasets:
         st.warning("Load datasets on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_m_data_upload_1664")
     else:
         st.caption(
             f"Combines every dataset's normalized matrix into one table ({_M} names "
@@ -1676,11 +1687,11 @@ def page_combined_normalized():
                 f"⏳ {n_ready} of {n_total} datasets are normalized. **Generate Combined "
                 f"Normalized Data** stays disabled until all {n_total} are complete — finish "
                 "each remaining dataset's Log2 Transformation step in Normalization (select it from "
-                "the dropdown), or use the 🚀 Quick Start button in Data Upload to normalize all of "
+                "the dropdown), or use the Quick Start button in Data Upload to normalize all of "
                 "them at once."
             )
         generate_clicked = st.button(
-            "🔗 Generate Combined Normalized Data", type="primary", disabled=(n_ready < n_total)
+            "Generate Combined Normalized Data", type="primary", icon=":material/link:", disabled=(n_ready < n_total)
         )
         if generate_clicked:
             # Intermediate reference table: each dataset's matrix from immediately before
@@ -1770,13 +1781,15 @@ def page_statistics():
         st.warning(
             "Complete the Normalization page first."
             if st.session_state.data_mode == "single" else
-            "Complete Normalization for every dataset, then click **🔗 Generate Combined "
+            "Complete Normalization for every dataset, then click **Generate Combined "
             "Normalized Data** first — that combined table is what every "
             "downstream page (PCA, Statistics, Volcano, Biomarker Discovery, Heatmap, "
             "Boxplot) analyzes."
         )
         if st.session_state.data_mode == "single":
             _go_to("Normalization", key="goto_norm_0")
+        else:
+            _go_to("Combined Normalization Data (Multi-Dataset)", key="goto_norm_0_multi")
     else:
         if st.session_state.data_mode == "multi":
             st.caption("Analyzing the **combined normalized data** across all datasets.")
@@ -1804,7 +1817,7 @@ def page_statistics():
             method = c3.selectbox("Method", ["Welch's t-test", "Wilcoxon rank-sum"])
             method_key = "ttest" if method.startswith("Welch") else "wilcoxon"
 
-            if st.button("Run Two-Group Test", type="primary", icon="📊"):
+            if st.button("Run Two-Group Test", type="primary", icon=":material/bar_chart:"):
                 a_samples = meta.index[meta[grouping_var] == group_a].tolist()
                 b_samples = meta.index[meta[grouping_var] == group_b].tolist()
                 a_samples = [s for s in a_samples if s in log2_df.columns]
@@ -1851,7 +1864,7 @@ def page_statistics():
 
                 if len(anova_groups) < 3:
                     st.warning(f"Select at least 3 groups to run ANOVA (currently {len(anova_groups)} selected).")
-                elif st.button("Run ANOVA", type="primary", icon="📊"):
+                elif st.button("Run ANOVA", type="primary", icon=":material/bar_chart:"):
                     group_map = meta.loc[sample_cols, grouping_var]
                     group_map = group_map[group_map.isin(anova_groups)]
                     group_map = group_map[group_map.index.isin(log2_df.columns)]
@@ -1913,12 +1926,14 @@ def page_pca():
         st.warning(
             "Complete the Normalization page first."
             if st.session_state.data_mode == "single" else
-            "Complete Normalization for every dataset, then click **🔗 Generate Combined "
+            "Complete Normalization for every dataset, then click **Generate Combined "
             "Normalized Data** first — that combined table is what every "
             "downstream page analyzes."
         )
         if st.session_state.data_mode == "single":
             _go_to("Normalization", key="goto_norm_1")
+        else:
+            _go_to("Combined Normalization Data (Multi-Dataset)", key="goto_norm_1_multi")
     else:
         if st.session_state.data_mode == "multi":
             st.caption("Analyzing the **combined normalized data** across all datasets.")
@@ -2298,7 +2313,7 @@ def page_biomarker():
         p_cutoff = c2.number_input("p-value cutoff", value=0.05, min_value=0.0001, max_value=1.0, step=0.01)
         fdr_cutoff = c3.number_input(f"{fdr_label} cutoff", value=FDR_CUT, min_value=0.0001, max_value=1.0, step=0.01)
 
-        if st.button("Discover Biomarkers", type="primary", icon="🎯"):
+        if st.button("Discover Biomarkers", type="primary", icon=":material/target:"):
             biomarkers = biomarker.discover_biomarkers(result, criterion=criterion,
                                                         p_cutoff=p_cutoff, fdr_cutoff=fdr_cutoff,
                                                         fdr_label=fdr_label)
@@ -2324,9 +2339,10 @@ def page_heatmap():
     st.header("Clustered Heatmap")
     if st.session_state.stats_result is None:
         st.warning(
-            "Run a two-group comparison in Statistics first — the heatmap needs "
+            "Run a two-group comparison on the Statistics page first — the heatmap needs "
             f"that result to know which {_MS} are significant."
         )
+        _go_to("Statistics", key="goto_m_statistics_2335")
     else:
         log2_df_full = utils.with_display_feature_names(st.session_state.log2_data)
         result = st.session_state.stats_result
@@ -2613,7 +2629,7 @@ def page_heatmap():
                     st.session_state.heatmap_fig = fig_heat
                     st.session_state.heatmap_zscore = z_ordered
                     for note in notes:
-                        st.info(f"ℹ️ {note}")
+                        st.info(note)
                     render_single_figure(fig_heat, width_ratio=(1, 8, 1))
                     st.caption(f"{len(sig_feats)} {_MS} shown ({cutoff_label}), "
                                f"{len(heat_cols)} samples across {len(selected_heat_groups)} selected group(s), "
@@ -2652,12 +2668,14 @@ def page_boxplot():
         st.warning(
             "Complete the Normalization page first."
             if st.session_state.data_mode == "single" else
-            "Complete Normalization for every dataset, then click **🔗 Generate Combined "
+            "Complete Normalization for every dataset, then click **Generate Combined "
             "Normalized Data** in Normalization first — that combined table is what "
             "every downstream page analyzes."
         )
         if st.session_state.data_mode == "single":
             _go_to("Normalization", key="goto_norm_2")
+        else:
+            _go_to("Combined Normalization Data (Multi-Dataset)", key="goto_norm_2_multi")
     else:
         if st.session_state.data_mode == "multi":
             st.caption("Analyzing the **combined normalized data** across all datasets.")
@@ -2807,6 +2825,7 @@ def page_rewiring():
                else ".")
             + " You can try the method now on a simulated dataset with known answers."
         )
+        _go_to("Normalization", key="goto_m_normalization_2814")
         if st.toggle("Explore with the simulated rewiring demo (Tumor over Control, 30 + 30 samples)",
                      key="rewire_use_demo"):
             peak, meta, ann = rewiring_ui.load_simulated_demo()

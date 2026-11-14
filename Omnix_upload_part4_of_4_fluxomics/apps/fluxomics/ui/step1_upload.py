@@ -31,8 +31,8 @@ def _template_buttons(items, key):
         return
     cols = st.columns(len(items))
     for c, (lab, f) in zip(cols, items):
-        c.download_button(f"⬇ {lab}", f.read_bytes(), f.name, "text/csv" if f.suffix == ".csv" else XLSX,
-                          key=f"{key}_{f.stem}")
+        c.download_button(lab, f.read_bytes(), f.name, "text/csv" if f.suffix == ".csv" else XLSX,
+                          key=f"{key}_{f.stem}", icon=":material/download:")
 
 TEMPLATE_TABLE = pd.DataFrame({
     "Metabolite": ["Citrate"] * 7 + ["Lactate"] * 4,
@@ -134,10 +134,10 @@ def _generic_route(s):
             _template_buttons(GEN_TEMPLATES, "gen_tpl")
         else:   # fallback: minimal templates built in
             d1, d2 = st.columns(2)
-            d1.download_button("⬇ Table template (CSV)", TEMPLATE_TABLE.to_csv(index=False).encode(),
-                               "isotopologue_table_template.csv", "text/csv")
-            d2.download_button("⬇ Metadata template (CSV)", TEMPLATE_META.to_csv(index=False).encode(),
-                               "sample_metadata_template.csv", "text/csv")
+            d1.download_button("Table template (CSV)", TEMPLATE_TABLE.to_csv(index=False).encode(),
+                               "isotopologue_table_template.csv", "text/csv", icon=":material/download:")
+            d2.download_button("Metadata template (CSV)", TEMPLATE_META.to_csv(index=False).encode(),
+                               "sample_metadata_template.csv", "text/csv", icon=":material/download:")
     ex = GENERIC / "synthetic_isotopologue_table.csv"
     use_example = st.button("Load synthetic example data (GeneKD over shControl, [U-13C6]-glucose, 2 / 8 / 24 h)",
                             disabled=not ex.exists(), key="gen_example",

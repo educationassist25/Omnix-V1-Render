@@ -708,7 +708,8 @@ def render_qc_ui(peak_df, qc_cols, sample_cols, key_prefix, state):
 if ACTIVE_PAGE == 2:
     st.header("Quality Control (QC) Validation")
     if st.session_state.raw_peak_df is None:
-        st.warning("Load data in Setup → Data Upload first.")
+        st.warning("Load data on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_p_data_upload_710")
     else:
         render_qc_ui(st.session_state.raw_peak_df, st.session_state.qc_cols,
                      st.session_state.sample_cols, "single", _SingleDatasetState())
@@ -848,7 +849,8 @@ if ACTIVE_PAGE == 1:
         "samples (QC replicates are never included here), before QC validation and normalization."
     )
     if st.session_state.raw_peak_df is None:
-        st.warning("Load data in Setup → Data Upload first.")
+        st.warning("Load data on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_p_data_upload_850")
     else:
         source_df = st.session_state.raw_peak_df[st.session_state.sample_cols]
         render_cleaning_ui(source_df, "single", _SingleDatasetState())
@@ -1067,7 +1069,8 @@ def render_normalization_ui(base_df, data_type, key_prefix, state, meta):
 # ===========================================================================
 if ACTIVE_PAGE == 3:
     if st.session_state.raw_peak_df is None:
-        st.warning("Load data in Setup → Data Upload first.")
+        st.warning("Load data on the Data Upload page first.")
+        _go_to("Data Upload", key="goto_p_data_upload_1069")
     else:
         if st.session_state.get("raw_peak_df_qc") is not None:
             base_df = st.session_state.raw_peak_df_qc
@@ -1644,9 +1647,10 @@ if ACTIVE_PAGE == 8:
     st.header("Clustered Heatmap")
     if st.session_state.stats_result is None:
         st.warning(
-            "Run a two-group comparison in the Statistics page first — the heatmap needs "
+            "Run a two-group comparison on the Statistics page first — the heatmap needs "
             "that result to know which proteins are significant."
         )
+        _go_to("Statistics", key="goto_p_statistics_1648")
     elif st.session_state.log2_data is None:          # e.g. the normalization method was changed since
         st.warning("Complete the Normalization page first.")
         _go_to("Normalization", key="goto_norm_heatmap")
@@ -1855,7 +1859,7 @@ if ACTIVE_PAGE == 8:
                     st.session_state.heatmap_fig = fig_heat
                     st.session_state.heatmap_zscore = z_ordered
                     for note in notes:
-                        st.info(f"ℹ️ {note}")
+                        st.info(note)
                     utils.render_figure(st, fig_heat)
                     st.caption(f"{len(sig_feats)} proteins shown ({sig_metric} ≤ {sig_threshold}), "
                                f"{len(heat_cols)} samples across {len(selected_heat_groups)} selected group(s), "
@@ -2002,8 +2006,9 @@ def render_significant_protein_selector(key_prefix: str):
     stats_result is available yet.
     """
     if st.session_state.stats_result is None:
-        st.warning("Run a two-group statistical comparison in the Statistics page first — "
+        st.warning("Run a two-group statistical comparison on the Statistics page first — "
                    "Pathway Analysis uses the resulting Log2FC/p-value/FDR list.")
+        _go_to("Statistics", key="goto_p_statistics_2008")
         return None, None, None
     stats_df = st.session_state.stats_result
     groups_used = st.session_state.get("stats_result_groups")
@@ -2292,7 +2297,7 @@ if ACTIVE_PAGE == 10:
                 key="dl_gsea_results")
 
             if st.session_state.get("gsea_run_meta"):
-                with st.expander("📋 Analysis metadata (for reproducibility)"):
+                with st.expander("Analysis metadata (for reproducibility)"):
                     meta_df = pd.DataFrame(
                         [{"Field": k, "Value": v} for k, v in st.session_state.gsea_run_meta.items()]
                     )

@@ -1081,7 +1081,7 @@ def platform_side_head(key):
     """Top of a platform's side panel: its icon, name and what it analyzes."""
     p = config.PLATFORMS[key]
     st.sidebar.markdown(f"<div class='omx-phead'><span class='i'>{_svg(ICONS.get(key, ICONS['workflow']), 26)}</span>"
-                        f"<div><div class='n'>{html.escape(p['name'])}</div><div class='s'>{html.escape(p['subtitle'])}</div>"
+                        f"<div><div class='n'>{html.escape(p['name'])}</div><div class='s'>{html.escape(p.get('side_subtitle') or p['subtitle'])}</div>"
                         f"</div></div>", unsafe_allow_html=True)
 
 
