@@ -518,6 +518,21 @@ def _frame_css(in_app):
 .stApp [class*="st-key-omxdl_"] [data-testid="stMarkdown"], .stApp [class*="st-key-omxdl_"] .stMarkdown,
 .stApp [class*="st-key-omxdl_"] [data-testid="stMarkdownContainer"] {{ margin-bottom: 0 !important; }}
 .stApp [class*="st-key-omxdl_"] [data-testid="stElementContainer"]:has(.omx-dl-t) {{ margin-bottom: 6px !important; }}
+/* Volcano: settings beside the plot on wide pages; stacked (settings, then plot) when the page is narrow */
+.stApp [class*="st-key-omx_volc_cols"] {{ container-type: inline-size; }}
+@container (max-width: 900px) {{
+  .stApp [class*="st-key-omx_volc_cols"] [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap !important; row-gap: 20px !important; }}
+  .stApp [class*="st-key-omx_volc_cols"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; min-width: 100% !important; }}
+  .stApp [class*="st-key-omx_volc_cols"] > div > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:last-child,
+  .stApp [class*="st-key-omx_volc_cols"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:last-child {{ order: -1; }}   /* plot first */
+}}
+.stApp [class*="st-key-omx_volc_thr"], .stApp [class*="st-key-omx_heat_top"] {{ container-type: inline-size; }}
+@container (max-width: 900px) {{       /* narrow page: the controls three to a row instead of squeezed into one */
+  .stApp [class*="st-key-omx_volc_thr"] [data-testid="stHorizontalBlock"],
+  .stApp [class*="st-key-omx_heat_top"] [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap !important; row-gap: 12px !important; }}
+  .stApp [class*="st-key-omx_volc_thr"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+  .stApp [class*="st-key-omx_heat_top"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {{ flex: 1 1 30% !important; min-width: 150px !important; }}
+}}
 /* Volcano: figure-settings tabs beside the plot wrap onto two lines instead of scrolling */
 .stApp .st-key-omx_volc_side [data-baseweb="tab-list"] {{ flex-wrap: wrap !important; gap: 2px 18px !important; overflow: visible !important; }}
 .stApp .st-key-omx_volc_side [data-baseweb="tab-highlight"], .stApp .st-key-omx_volc_side [data-baseweb="tab-border"] {{ display: none !important; }}
@@ -647,6 +662,10 @@ def _frame_css(in_app):
 
 /* ---- top bar: larger on computers, stays at the top while scrolling, marks the page you are on ---- */
 div:has(> [class*="st-key-omxtb_bar"]) {{ position: sticky !important; top: 0; z-index: 990; }}
+/* The bar adapts to its own width (a platform's side menu takes room), so nothing spills out of the frame */
+div:has(> [class*="st-key-omxtb_bar"]) {{ container-type: inline-size; container-name: omxbar; }}
+[class*="st-key-omxtb_bar"] > * {{ min-width: 0; }}
+.stApp [class*="st-key-omxtb_me"] {B} p {{ max-width: 230px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
 @media (min-width: 1101px) {{
   [class*="st-key-omxtb_bar"] {{ padding: 15px 24px !important; column-gap: 26px !important; }}
   .omx-logo.tb {{ height: 56px; }}
@@ -677,6 +696,47 @@ div:has(> [class*="st-key-omxtb_bar"]) {{ position: sticky !important; top: 0; z
 .stApp [class*="st-key-omxtb_links"] [class*="_on"] {B}, .stApp [class*="st-key-omxtb_links"] [class*="_on"] {P},
 .stApp [class*="st-key-omxtb_links"][class*="_on"] {B} {{ box-shadow: inset 0 -3px 0 {TEAL} !important; border-radius: 0 !important; }}
 
+@media (min-width: 1101px) {{
+@container omxbar (max-width: 1400px) {{     /* narrower bar: a step smaller, tighter gaps */
+  [class*="st-key-omxtb_bar"] {{ column-gap: 14px !important; padding: 12px 18px !important; }}
+  .omx-logo.tb {{ height: 42px !important; }}
+  .stApp [class*="st-key-omxtb_brand"] {B} p, .stApp [class*="st-key-omxtb_brand"] {B}:focus:not(:active) p {{ font-size: 46px !important; }}
+  .stApp [class*="st-key-omxtb_links"] {B}, .stApp [class*="st-key-omxtb_links"] {P} {{ padding: 8px 10px !important; }}
+  .stApp [class*="st-key-omxtb_links"] {B} p, .stApp [class*="st-key-omxtb_links"] {P} p,
+  .stApp [class*="st-key-omxtb_links"] {B}:focus:not(:active) p {{ font-size: 17px !important; }}
+  .stApp [class*="st-key-omxtb_switch"] {P} p {{ font-size: 18px !important; }}
+  .stApp [class*="st-key-omxtb_cta"] {B}, .stApp [class*="st-key-omxtb_ctapop"] {P} {{ padding: 10px 18px !important; min-height: 46px !important; }}
+}}
+}}
+@container omxbar (max-width: 1100px) {{     /* not enough room for the links: they move into the Menu button */
+  [class*="st-key-omxtb_links"], div:has(> [class*="st-key-omxtb_links"]) {{ display: none !important; }}
+  [class*="st-key-omxtb_menu"], div:has(> [class*="st-key-omxtb_menu"]) {{ display: flex !important; }}
+}}
+
+@container omxbar (max-width: 920px) {{      /* narrow bar (tablet, or a laptop with a platform's side menu) */
+  .stApp [class*="st-key-omxtb_bar"] {{ padding: 8px 12px !important; column-gap: 10px !important; flex-wrap: nowrap !important; }}
+  .omx-logo.tb {{ height: 36px !important; top: 0 !important; }}
+  .stApp [class*="st-key-omxtb_brand"] {B} p, .stApp [class*="st-key-omxtb_brand"] {B}:focus:not(:active) p {{ font-size: 32px !important; letter-spacing: -0.5px; top: 0 !important; }}
+  [class*="st-key-omxtb_brand"] {{ column-gap: 4px !important; }}
+  .stApp [class*="st-key-omxtb_switch"] {P} {{ min-height: 40px !important; padding: 6px 10px !important; }}
+  .stApp [class*="st-key-omxtb_switch"] {P} p {{ font-size: 16px !important; }}
+  [class*="st-key-omxtb_right"] {{ column-gap: 6px !important; }}
+  .stApp [class*="st-key-omxtb_signin"] {B} p, .stApp [class*="st-key-omxtb_signin"] {B}:focus:not(:active) p {{ font-size: 16px !important; }}
+  .stApp [class*="st-key-omxtb_me"] {B} {{ padding: 6px 12px !important; }}
+  .stApp [class*="st-key-omxtb_me"] {B} p, .stApp [class*="st-key-omxtb_me"] {B}:focus:not(:active) p {{ font-size: 15px !important; max-width: 150px; }}
+  .stApp [class*="st-key-omxtb_cta"] {B}, .stApp [class*="st-key-omxtb_ctapop"] {P} {{ padding: 8px 12px !important; min-height: 42px !important; }}
+  .stApp [class*="st-key-omxtb_cta"] {B} p, .stApp [class*="st-key-omxtb_ctapop"] {P} p {{ font-size: 15px !important; }}
+  .stApp [class*="st-key-omxtb_menu"] {P} p {{ display: none; }}
+  .stApp [class*="st-key-omxtb_menu"] {P} {{ padding: 6px 10px !important; min-width: 44px; }}
+  .stApp [class*="st-key-omxtb_menu"] {P} [data-testid="stIconMaterial"]:last-child:not(:first-child),
+  .stApp [class*="st-key-omxtb_menu"] {P} > div > div:last-child:not(:first-child) {{ display: none !important; }}
+}}
+@container omxbar (max-width: 700px) {{      /* very narrow: the phone layout (Sign in and platforms move into Menu) */
+  .omx-logo.tb {{ height: 32px !important; }}
+  .stApp [class*="st-key-omxtb_brand"] {B} p, .stApp [class*="st-key-omxtb_brand"] {B}:focus:not(:active) p {{ font-size: 24px !important; }}
+  [class*="st-key-omxtb_signin"], [class*="st-key-omxtb_switch"], div:has(> [class*="st-key-omxtb_switch"]) {{ display: none !important; }}
+  .stApp [class*="st-key-omxtb_me"] {B} p, .stApp [class*="st-key-omxtb_me"] {B}:focus:not(:active) p {{ max-width: 110px; }}
+}}
 /* ---- demo banner ---- */
 [class*="st-key-omnix_demo_banner"] {{ background: #FFF4E5 !important; border: 1px solid #F3D3AD !important; border-radius: 10px !important;
   padding: 8px 16px !important; margin-bottom: 12px !important; flex-wrap: wrap !important; }}
@@ -689,6 +749,10 @@ div:has(> [class*="st-key-omxtb_bar"]) {{ position: sticky !important; top: 0; z
   color: #8A4B08 !important; font-weight: 700 !important; font-size: 17px !important; text-decoration: underline; }}
 
 /* ---- home ---- */
+@media (max-width: 960px) {{      /* half a laptop screen or a tablet: headline first, then the figure at full width */
+  [class*="st-key-omxh_hero"] [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap !important; row-gap: 28px !important; }}
+  [class*="st-key-omxh_hero"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; min-width: 100% !important; }}
+}}
 [class*="st-key-omxh_hero"] {{ background: #FFFFFF; border: 1px solid {LINE}; border-radius: 18px; padding: clamp(24px, 4vw, 56px) !important; }}
 .omxh-eyebrow {{ font-size: 15px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: {TEAL}; margin-bottom: 14px; }}
 .stApp .stMainBlockContainer h1.omxh-h1 {{ font-family: 'Sora', system-ui, sans-serif !important; font-weight: 700 !important;

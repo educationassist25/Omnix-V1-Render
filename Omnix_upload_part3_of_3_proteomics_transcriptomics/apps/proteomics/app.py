@@ -1354,7 +1354,7 @@ if ACTIVE_PAGE == 6:
         # Layout: what counts as significant on top; figure settings (tabs) beside the plot.
         _vthr = st.container(border=True, key="omx_volc_thr")
         _vthr.markdown("**What counts as significant**")
-        _vleft, _vright = st.columns([1.15, 1.85], gap="large")
+        _vleft, _vright = st.container(key="omx_volc_cols").columns([1.15, 1.85], gap="large")
         _vleft.markdown("**Customize the figure**")
         _vt = _vleft.container(key="omx_volc_side").tabs(['Points', 'Labels', 'Axes', 'Legend & grid', 'Highlight', 'Size & theme'])
 
