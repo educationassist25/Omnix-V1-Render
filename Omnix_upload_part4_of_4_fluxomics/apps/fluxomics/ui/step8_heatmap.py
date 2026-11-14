@@ -56,8 +56,16 @@ def render():
     X, info = C.layer("int")
     A = C.annotation()
 
+    # ---- layout (as the heatmaps of the other platforms): what goes in on top, the look in tabs, heatmap below
+    _top = st.container(border=True, key="omx_heat_top")
+    _top.markdown("**What goes into the heatmap**")
+    _cust = st.container(border=True, key="omx_heat_cust")
+    _cust.markdown("**Customize the figure**")
+    _t = _cust.tabs(["Rows & labels", "Pathways", "Annotations & clustering", "Colors", "Size", "Fonts"])
+    _rl_box = _t[0].container()            # row-label controls first, 'Highlight rows' after them
+
     # ---- columns (conditions × time points) and pathway scope
-    with st.expander("Conditions, time points and pathways", expanded=True):
+    with _top:
         a = st.columns(2)
         gsel = a[0].multiselect("Conditions (groups)", arms, default=arms, key="hm_groups",
                                 help="E.g. Control and KD. The Z-score is recomputed across the samples shown.")
@@ -66,7 +74,7 @@ def render():
         present = {_comp(r) for r in X.index}
         members = {p: [c for c in dict.fromkeys(v) if c in present] for p, v in pw.pathway_members(A).items()}
         members = {p: v for p, v in members.items() if v}
-        b = st.columns([1.3, 3.2, 1.5])
+        b = st.columns([1.3, 4.7])
         scope = b[0].radio("Metabolites", ["all", "pw"], key="hm_scope",
                            format_func={"all": "Entire dataset", "pw": "Selected pathways"}.get,
                            help="Pathways come from the metabolite annotation (High, Medium and user-confirmed "
@@ -74,10 +82,15 @@ def render():
         psel = b[1].multiselect("Pathways", sorted(members), key="hm_pws", disabled=scope == "all",
                                 format_func=lambda p: f"{p}  ·  {len(members[p])} metabolites",
                                 placeholder="Choose one or more pathways")
-        layout = b[2].radio("Layout", ["combined", "each"], key="hm_pw_layout", disabled=scope == "all",
+    with _t[1]:
+        if scope == "all":
+            st.caption("These settings apply when **Metabolites** is set to **Selected pathways** (above), except "
+                       "“Separate rows by pathway”.")
+        b2 = st.columns([1.4, 2, 1.4])
+        layout = b2[0].radio("Layout", ["combined", "each"], key="hm_pw_layout", disabled=scope == "all",
                             format_func={"combined": "One combined heatmap",
                                          "each": "One heatmap per pathway"}.get)
-        c = st.columns([2, 1.4, 2.6])
+        c = b2[1:]
         can_sep = not (scope == "pw" and layout == "each")
         sep_on = c[0].toggle("Separate rows by pathway", scope == "pw", key=f"hm_pw_sep_{scope}",
                              disabled=not can_sep,
@@ -94,28 +107,30 @@ def render():
     cols_sel = An[An.Group.isin(gsel) & An.Hours.isin(tsel)].Sample.tolist()
     cols_sel = [c for c in cols_sel if c in X.columns]
     if len(cols_sel) < 3:
-        st.warning("Choose conditions and time points with at least three samples in total."); return
+        _top.warning("Choose conditions and time points with at least three samples in total."); return
     if scope == "pw" and not psel:
-        st.info("Choose at least one pathway, or switch to “Entire dataset”."); return
+        _top.info("Choose at least one pathway, or switch to “Entire dataset”."); return
     M_all = X[cols_sel]
 
     # ---- rows: significance (Step 6), variance or all
-    with st.expander("Rows to show", expanded=True):
-        r = st.columns([2, 2, 1, 1])
+    with _top:
+        r = st.columns([2, 2.6, 1])
+        cnt_slot = r[2].empty()
         mode = r[0].radio("Select rows by", ["sig", "var", "all"], key="hm_rows",
                           format_func={"sig": "Significance (p value / FDR, Statistics)", "var": "Top N by variance",
                                        "all": "All channels"}.get)
         sig_set = tested = None
         thr_txt = rs = ""
+        q = st.columns([2.2, 1.1, 1.35, 1.35, 1.5])
         if s.stats:
             rs = r[1].selectbox("Statistics result", list(s.stats), index=len(s.stats) - 1, key="hm_res")
             T = s.stats[rs]["table"]
             comps = list(dict.fromkeys(T.Comparison))
-            csel = r[1].multiselect("Comparisons (significant in any)", comps, default=comps, key="hm_cmps")
-            crit = r[2].radio("Criterion", ["FDR", "P value", "P value and FDR"], key="hm_crit")
-            thr_q = r[3].number_input("FDR threshold (≤ 1)", 0.0001, 1.0, 0.25, 0.01, format="%.4f",
+            csel = q[0].multiselect("Comparisons (significant in any)", comps, default=comps, key="hm_cmps")
+            crit = q[1].radio("Criterion", ["FDR", "P value", "P value and FDR"], key="hm_crit")
+            thr_q = q[2].number_input("FDR threshold (≤ 1)", 0.0001, 1.0, 0.25, 0.01, format="%.4f",
                                       key="hm_thr_fdr", disabled=crit == "P value")
-            thr_p = r[3].number_input("P value threshold (≤ 1)", 0.0001, 1.0, 0.05, 0.01, format="%.4f",
+            thr_p = q[3].number_input("P value threshold (≤ 1)", 0.0001, 1.0, 0.05, 0.01, format="%.4f",
                                       key="hm_thr_p", disabled=crit == "FDR")
             TT = T[T.Comparison.isin(csel)]
             qc = ["FDR"] if "FDR" in TT else [x for x in TT.columns if x.startswith("FDR ")]
@@ -133,8 +148,8 @@ def render():
         elif mode == "sig":
             r[1].warning("Run Statistics first; showing top 60 by variance.")
         top = r[1].number_input("Top N rows by variance", 2, 5000, 60, 10, key="hm_top") if mode == "var" else 60
-        inc_m0 = r[1].toggle("Include M+0 channels", True, key="hm_m0")
-        ns_show = r[2].radio("Non-significant rows (n.s.)", ["hide", "show"], key="hm_ns_rows",
+        inc_m0 = r[0].toggle("Include M+0 channels", True, key="hm_m0")
+        ns_show = q[4].radio("Non-significant rows (n.s.)", ["hide", "show"], key="hm_ns_rows",
                              disabled=sig_set is None or mode != "sig",
                              format_func={"hide": "Hide (significant only)",
                                           "show": "Show, marked “(n.s.)”"}.get,
@@ -142,7 +157,7 @@ def render():
                                   "selected comparison are labeled e.g. “M+2 (n.s.)” (on screen and in the "
                                   "export).") == "show"
         ns_mark = ns_show and mode == "sig" and sig_set is not None
-        pick_box = st.container()
+        pick_box = _t[0]
 
     # ---- panels (one heatmap, or one per pathway)
     if scope == "pw":
@@ -177,6 +192,7 @@ def render():
             M = M.loc[M.var(axis=1).sort_values(ascending=False).index[:int(top)]]
         prepared.append((pname, M, msg))
     all_rows = sorted({i for _, M, _ in prepared for i in M.index})
+    cnt_slot.metric("Rows in the heatmap", sum(len(M) for _, M, _ in prepared))
     with pick_box:
         pick = st.multiselect("Highlight rows", all_rows, key="hm_pick")
 
@@ -184,7 +200,7 @@ def render():
     base_tracks = [t for t in ["Group", "Time", "Treatment", "Replicate"] if t in ci0.columns
                    and ci0[t].astype(str).str.strip().replace({"0": "", "nan": ""}).ne("").any()]
     meta_tracks = [t for t in ci0.columns if t.startswith("Meta: ")]
-    with st.expander("Column annotations, clustering and colors", expanded=False):
+    with _rl_box:
         rl = st.columns([2, 1, 1])
         row_style = rl[0].radio("Row label style", ["full", "grouped"], horizontal=True, key="hm_row_style",
                                 format_func={"full": "Metabolite | M+i", "grouped": "Grouped by metabolite"}.get,
@@ -194,6 +210,7 @@ def render():
                                      "dendrogram, since clustering single rows would split a metabolite apart).")
         row_labels = rl[1].toggle("Show row labels", True, key="hm_rl")
         seps = rl[2].toggle("Lines between metabolites", True, key="hm_seps", disabled=row_style != "grouped")
+    with _t[2]:
         tracks = st.multiselect("Column annotations (sample group and metadata)", base_tracks + meta_tracks,
                                 default=[t for t in ["Group", "Time"] if t in base_tracks], key="hm_tracks")
         z = st.columns(3)
@@ -203,15 +220,16 @@ def render():
         k = st.columns(3)
         metric = k[0].selectbox("Distance", list(hm.DISTANCES), format_func=hm.DISTANCES.get, key="hm_dist")
         method = k[1].selectbox("Linkage", list(hm.LINKAGES), format_func=hm.LINKAGES.get, key="hm_link")
-        cmap = k[2].selectbox("Color scale", list(hm.CMAPS), key="hm_cmap")
+    with _t[3]:
         ap = st.columns(3)
-        auto = ap[0].toggle("Automatic color limits", True, key="hm_auto")
-        lim = ap[1].number_input("Color limit ±", 0.1, 100.0, 3.0, 0.5, key="hm_lim", disabled=auto)
+        cmap = ap[0].selectbox("Color scale", list(hm.CMAPS), key="hm_cmap")
+        auto = ap[1].toggle("Automatic color limits", True, key="hm_auto")
+        lim = ap[2].number_input("Color limit ±", 0.1, 100.0, 3.0, 0.5, key="hm_lim", disabled=auto)
     grouped = row_style == "grouped"
 
     n0 = max(len(prepared[0][1]), 2)
     bw, bh = hm.balanced_cells(n0, len(cols_sel))
-    with st.expander("Figure size and fonts", expanded=False):
+    with _t[4]:
         sizing = st.radio("Proportions", ["balanced", "cells", "custom"], horizontal=True, key="hm_sizing",
                           format_func={"balanced": "Balanced (automatic, proportional)",
                                        "cells": "Fixed cell size", "custom": "Custom figure size"}.get,
@@ -234,12 +252,13 @@ def render():
         if sizing == "balanced":
             st.caption(f"Balanced cells for the {'first ' if len(prepared) > 1 else ''}heatmap: "
                        f"{bw:.2f} in wide × {bh:.2f} in high ({len(cols_sel)} samples × {n0} rows).")
+    with _t[5]:
         f1 = st.columns(4)
         sec_fs = f1[0].number_input("Pathway names (pt, 0 = auto)", 0.0, 30.0, hm.DEFAULT_FONTS["section"], 0.5,
                                     key="hm_fs_section", disabled=not sep_on,
                                     help="Auto = the metabolite-name size; long names wrap or shrink to fit their "
                                          "block.")
-        fam = f1[3].selectbox("Font family", hm.FONT_FAMILIES, key="hm_font_family")
+        fam = f1[1].selectbox("Font family", hm.FONT_FAMILIES, key="hm_font_family")
         f2 = st.columns(6)
         fonts = dict(
             family=fam,
