@@ -518,6 +518,25 @@ def _frame_css(in_app):
 .stApp [class*="st-key-omxdl_"] [data-testid="stMarkdown"], .stApp [class*="st-key-omxdl_"] .stMarkdown,
 .stApp [class*="st-key-omxdl_"] [data-testid="stMarkdownContainer"] {{ margin-bottom: 0 !important; }}
 .stApp [class*="st-key-omxdl_"] [data-testid="stElementContainer"]:has(.omx-dl-t) {{ margin-bottom: 6px !important; }}
+/* 'Next: <page> →' and 'Go to <page>' look the same in every platform (Integrix included) */
+.stApp [class*="st-key-next_page_footer"] [data-testid="stButton"] button,
+.stApp [class*="st-key-next_page_footer"] [data-testid="stButton"] button:focus,
+.stApp [class*="st-key-next_page_footer"] [data-testid="stButton"] button:focus:not(:active),
+.stApp [class*="st-key-goto_"] [data-testid="stButton"] button,
+.stApp [class*="st-key-goto_"] [data-testid="stButton"] button:focus,
+.stApp [class*="st-key-goto_"] [data-testid="stButton"] button:focus:not(:active) {{
+  background: linear-gradient(135deg, #00897b 0%, #00695c 100%) !important; border: none !important;
+  border-radius: 8px !important; padding: 0.5rem 1.1rem !important; min-height: 2.5rem !important; height: auto !important;
+  box-shadow: 0 2px 6px rgba(0, 105, 92, 0.35) !important; width: auto !important; }}
+.stApp [class*="st-key-next_page_footer"] [data-testid="stButton"] button p,
+.stApp [class*="st-key-goto_"] [data-testid="stButton"] button p {{
+  color: #ffffff !important; font-weight: 600 !important; font-size: 16px !important; line-height: 1.25 !important; }}
+.stApp [class*="st-key-next_page_footer"] [data-testid="stButton"] button:hover,
+.stApp [class*="st-key-goto_"] [data-testid="stButton"] button:hover {{
+  background: linear-gradient(135deg, #00695c 0%, #004d40 100%) !important; box-shadow: 0 4px 12px rgba(0, 105, 92, 0.45) !important;
+  transform: translateY(-1px); }}
+.stApp [class*="st-key-next_page_footer"] [data-testid="stButton"] button:hover p,
+.stApp [class*="st-key-goto_"] [data-testid="stButton"] button:hover p {{ color: #ffffff !important; }}
 /* Volcano: settings beside the plot on wide pages; stacked (settings, then plot) when the page is narrow */
 .stApp [class*="st-key-omx_volc_cols"] {{ container-type: inline-size; }}
 @container (max-width: 900px) {{
